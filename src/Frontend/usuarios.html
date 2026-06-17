@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MatteIUCAB | Gestión de Usuarios</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ------ RESET Y GLOBAL ------ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: #fef2f5;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* ------ SIDEBAR (barra izquierda) ------ */
+        .sidebar {
+            width: 260px;
+            background: #d43f6b;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+        }
+        .sidebar-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid #e86f96;
+        }
+        .sidebar-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        .sidebar-header h2 span {
+            font-weight: 300;
+            color: #fff0b5;
+        }
+        .sidebar-header p {
+            font-size: 0.75rem;
+            margin-top: 4px;
+            color: #fff0e6;
+        }
+        .sidebar nav {
+            padding: 1rem 0;
+        }
+        .sidebar nav ul {
+            list-style: none;
+        }
+        .sidebar nav ul li {
+            padding: 0;
+            margin: 0.1rem 0.5rem;
+            border-radius: 0.5rem;
+            transition: background 0.2s;
+        }
+        .sidebar nav ul li a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.7rem 1.5rem;
+            text-decoration: none;
+            color: inherit;
+            font-size: 0.9rem;
+            font-weight: 500;
+            width: 100%;
+            border-radius: 0.5rem;
+            transition: background 0.2s, border-left 0.2s;
+        }
+        .sidebar nav ul li a i {
+            width: 1.2rem;
+            font-size: 1rem;
+        }
+        .sidebar nav ul li:hover a {
+            background: #b83a61;
+            border-left: 4px solid #ffd966;
+        }
+        .sidebar nav ul li.activo a {
+            background: #b83a61;
+            border-left: 4px solid #ffd966;
+        }
+
+        /* ------ CONTENIDO PRINCIPAL ------ */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem 2rem 2rem;
+        }
+
+        /* Top bar */
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .welcome h1 {
+            color: #b13e61;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+        .date {
+            background: #fff;
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            color: #a8637c;
+            border: 1px solid #ffe0e9;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .date i {
+            color: #d43f6b;
+        }
+
+        /* Título de sección */
+        .section-title {
+            margin-bottom: 0.5rem;
+        }
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #b13e61;
+            font-weight: 700;
+        }
+        .section-title p {
+            color: #a8637c;
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+
+        /* Barra de búsqueda */
+        .search-bar {
+            margin: 1.2rem 0 1.5rem;
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .search-bar input {
+            flex: 1;
+            min-width: 220px;
+            padding: 0.7rem 1.2rem;
+            border: 1.5px solid #ffe0e9;
+            border-radius: 2rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            background: #fff;
+            transition: 0.2s;
+        }
+        .search-bar input:focus {
+            border-color: #d43f6b;
+            box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.1);
+        }
+        .search-bar input::placeholder {
+            color: #b9c4d4;
+        }
+
+        /* Tabla de usuarios */
+        .table-wrapper {
+            overflow-x: auto;
+            background: #ffffff;
+            border-radius: 1.5rem;
+            border: 1px solid #ffe0e9;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+        }
+        .table-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .table-wrapper th,
+        .table-wrapper td {
+            padding: 0.9rem 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #f0e2e8;
+        }
+        .table-wrapper th {
+            background: #fff5f8;
+            color: #b13e61;
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .table-wrapper td {
+            color: #2d2f36;
+        }
+        .table-wrapper tr:last-child td {
+            border-bottom: none;
+        }
+        .table-wrapper .estado {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        .estado.activo {
+            background: #e3f5e9;
+            color: #1e7a4a;
+        }
+        .estado.inactivo {
+            background: #fce4e4;
+            color: #b13e61;
+        }
+        .acciones i {
+            color: #a8637c;
+            margin: 0 0.2rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .acciones i:hover {
+            color: #d43f6b;
+        }
+
+        /* Botón Nuevo Usuario */
+        .btn-nuevo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #d43f6b;
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
+            text-decoration: none;
+        }
+        .btn-nuevo:hover {
+            background: #b83a61;
+            transform: translateY(-2px);
+        }
+
+        /* ------ MODALES ------ */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal-overlay.mostrar {
+            display: flex;
+        }
+        .modal {
+            background: #ffffff;
+            border-radius: 2rem;
+            max-width: 550px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 2rem;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            border: 1px solid #ffe0e9;
+            position: relative;
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #ffe0e9;
+            padding-bottom: 0.8rem;
+        }
+        .modal-header h2 {
+            color: #b13e61;
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            font-size: 1.8rem;
+            color: #a8637c;
+            cursor: pointer;
+            transition: 0.2s;
+            padding: 0 0.5rem;
+        }
+        .modal-close:hover {
+            color: #d43f6b;
+            transform: rotate(90deg);
+        }
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #aa4e72;
+            font-size: 0.85rem;
+            margin-bottom: 0.3rem;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #ffe0e9;
+            border-radius: 1rem;
+            font-family: inherit;
+            font-size: 0.9rem;
+            outline: none;
+            background: #fefefe;
+        }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #d43f6b;
+            box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.1);
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        .modal-actions .btn-cancelar {
+            background: transparent;
+            border: 1px solid #d43f6b;
+            color: #d43f6b;
+            padding: 0.6rem 1.8rem;
+            border-radius: 3rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-actions .btn-cancelar:hover {
+            background: #d43f6b;
+            color: #fff;
+        }
+        .modal-actions .btn-guardar {
+            background: #d43f6b;
+            border: none;
+            color: #fff;
+            padding: 0.6rem 2rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
+        }
+        .modal-actions .btn-guardar:hover {
+            background: #b83a61;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+        @media (max-width: 600px) {
+            .sidebar {
+                display: none;
+            }
+            .table-wrapper th,
+            .table-wrapper td {
+                padding: 0.6rem 0.5rem;
+                font-size: 0.75rem;
+            }
+            .search-bar input {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Mattel<span>UCAB</span></h2>
+            <p>Sistema de Gestión</p>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                <li><a href="productos.html"><i class="fas fa-boxes"></i> Productos</a></li>
+                <li class="activo"><a href="usuarios.html"><i class="fas fa-users"></i> Usuarios</a></li>
+                <li><a href="roles.html"><i class="fas fa-user-tag"></i> Roles y Permisos</a></li>
+                <li><a href="reportes.html"><i class="fas fa-chart-bar"></i> Reportes</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+        <div class="top-bar">
+            <div class="welcome">
+                <h1>Bienvenido al Sistema MattelUCAB</h1>
+            </div>
+            <div class="date">
+                <i class="fas fa-calendar-alt"></i>
+                <span id="fechaActual"></span>
+            </div>
+        </div>
+
+        <div class="section-title">
+            <h2>Gestión de Usuarios</h2>
+            <p>Administra los usuarios del sistema y asigna roles</p>
+        </div>
+
+        <!-- Barra de búsqueda -->
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, email, rol..." />
+        </div>
+
+        <!-- Tabla de usuarios -->
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Rol Asignado</th>
+                        <th>Último Acceso</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaUsuarios">
+                    <!-- Los datos se inyectan con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Botón Nuevo Usuario -->
+        <button class="btn-nuevo" id="btnNuevoUsuario">
+            <i class="fas fa-plus-circle"></i> Nuevo Usuario
+        </button>
+    </main>
+
+    <!-- ===== MODAL PARA NUEVO USUARIO ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Nuevo Usuario</h2>
+                <button class="modal-close" id="btnCerrarModal">&times;</button>
+            </div>
+            <form id="formUsuario">
+                <div class="form-group">
+                    <label for="nombre">Nombre completo</label>
+                    <input type="text" id="nombre" placeholder="ej. Juan Pérez" required />
+                </div>
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email" placeholder="ej. juan@matteiucab.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="rol">Rol Asignado</label>
+                    <select id="rol">
+                        <option value="Administrador">Administrador</option>
+                        <option value="Gerente de Ventas">Gerente de Ventas</option>
+                        <option value="Gerente de Inventario">Gerente de Inventario</option>
+                        <option value="Agente de Ventas">Agente de Ventas</option>
+                        <option value="Contador">Contador</option>
+                        <option value="Supervisor de Manufacturas">Supervisor de Manufacturas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select id="estado">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar" id="btnCancelar">Cancelar</button>
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== MODAL PARA EDITAR USUARIO ===== -->
+    <div class="modal-overlay" id="modalEditarOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Editar Usuario</h2>
+                <button class="modal-close" id="btnCerrarModalEditar">&times;</button>
+            </div>
+            <form id="formEditarUsuario">
+                <!-- Campo oculto para guardar el email original (identificador) -->
+                <input type="hidden" id="editEmailOriginal" />
+                <div class="form-group">
+                    <label for="editNombre">Nombre completo</label>
+                    <input type="text" id="editNombre" required />
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Correo electrónico</label>
+                    <input type="email" id="editEmail" required />
+                </div>
+                <div class="form-group">
+                    <label for="editRol">Rol Asignado</label>
+                    <select id="editRol">
+                        <option value="Administrador">Administrador</option>
+                        <option value="Gerente de Ventas">Gerente de Ventas</option>
+                        <option value="Gerente de Inventario">Gerente de Inventario</option>
+                        <option value="Agente de Ventas">Agente de Ventas</option>
+                        <option value="Contador">Contador</option>
+                        <option value="Supervisor de Manufacturas">Supervisor de Manufacturas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="editEstado">Estado</label>
+                    <select id="editEstado">
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar" id="btnCancelarEditar">Cancelar</button>
+                    <button type="submit" class="btn-guardar">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // ----- DATOS DE EJEMPLO (se cargan desde JavaScript) -----
+        let usuariosData = [
+            { nombre: 'Admin Principal', email: 'admin@matteiucab.com', rol: 'Administrador', ultimoAcceso: '11/04/2026 10:30', estado: 'Activo' },
+            { nombre: 'María González', email: 'maria.g@matteiucab.com', rol: 'Gerente de Ventas', ultimoAcceso: '11/04/2026 09:15', estado: 'Activo' },
+            { nombre: 'Carlos Ruiz', email: 'carlos.r@matteiucab.com', rol: 'Gerente de Inventario', ultimoAcceso: '11/04/2026 08:45', estado: 'Activo' },
+            { nombre: 'Ana Martínez', email: 'ana.m@matteiucab.com', rol: 'Agente de Ventas', ultimoAcceso: '10/04/2026 18:20', estado: 'Activo' },
+            { nombre: 'Roberto Pérez', email: 'roberto.p@matteiucab.com', rol: 'Gerente de Inventario', ultimoAcceso: '10/04/2026 16:30', estado: 'Activo' },
+            { nombre: 'Laura Torres', email: 'laura.t@matteiucab.com', rol: 'Contador', ultimoAcceso: '09/04/2026 14:00', estado: 'Inactivo' },
+            { nombre: 'Pedro Sánchez', email: 'pedro.s@matteiucab.com', rol: 'Supervisor de Manufacturas', ultimoAcceso: '11/04/2026 07:20', estado: 'Activo' },
+            { nombre: 'Lucía Ramírez', email: 'lucia.r@matteiucab.com', rol: 'Agente de Ventas', ultimoAcceso: '10/04/2026 19:45', estado: 'Activo' }
+        ];
+
+        // ----- FUNCIÓN PARA RENDERIZAR LA TABLA (con eventos para editar/eliminar) -----
+        function renderizarTabla(filtro = '') {
+            const tbody = document.getElementById('tablaUsuarios');
+            const filtroLower = filtro.toLowerCase();
+            const datosFiltrados = usuariosData.filter(u =>
+                u.nombre.toLowerCase().includes(filtroLower) ||
+                u.email.toLowerCase().includes(filtroLower) ||
+                u.rol.toLowerCase().includes(filtroLower)
+            );
+
+            if (datosFiltrados.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#a8637c; padding:2rem;">No se encontraron usuarios.</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = datosFiltrados.map((u, index) => `
+                <tr data-index="${index}">
+                    <td><strong>${u.nombre}</strong></td>
+                    <td>${u.email}</td>
+                    <td>${u.rol}</td>
+                    <td>${u.ultimoAcceso}</td>
+                    <td><span class="estado ${u.estado.toLowerCase()}">${u.estado}</span></td>
+                    <td class="acciones">
+                        <i class="fas fa-edit btn-editar" data-email="${u.email}" title="Editar"></i>
+                        <i class="fas fa-trash-alt btn-eliminar" data-email="${u.email}" title="Eliminar"></i>
+                    </td>
+                </tr>
+            `).join('');
+
+            // Asignar eventos a los botones de editar y eliminar
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const email = this.getAttribute('data-email');
+                    abrirEditar(email);
+                });
+            });
+
+            document.querySelectorAll('.btn-eliminar').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const email = this.getAttribute('data-email');
+                    eliminarUsuario(email);
+                });
+            });
+        }
+
+        // ----- FUNCIONES PARA EDITAR -----
+        function abrirEditar(email) {
+            const usuario = usuariosData.find(u => u.email === email);
+            if (!usuario) return;
+
+            // Rellenar el formulario
+            document.getElementById('editEmailOriginal').value = email;
+            document.getElementById('editNombre').value = usuario.nombre;
+            document.getElementById('editEmail').value = usuario.email;
+            document.getElementById('editRol').value = usuario.rol;
+            document.getElementById('editEstado').value = usuario.estado;
+
+            // Abrir modal
+            document.getElementById('modalEditarOverlay').classList.add('mostrar');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarEditar() {
+            document.getElementById('modalEditarOverlay').classList.remove('mostrar');
+            document.body.style.overflow = '';
+            document.getElementById('formEditarUsuario').reset();
+        }
+
+        // ----- ACTUALIZAR USUARIO -----
+        document.getElementById('formEditarUsuario').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailOriginal = document.getElementById('editEmailOriginal').value;
+            const nombre = document.getElementById('editNombre').value.trim();
+            const email = document.getElementById('editEmail').value.trim();
+            const rol = document.getElementById('editRol').value;
+            const estado = document.getElementById('editEstado').value;
+
+            if (!nombre || !email) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            // Buscar el usuario por email original
+            const index = usuariosData.findIndex(u => u.email === emailOriginal);
+            if (index === -1) {
+                alert('Usuario no encontrado.');
+                return;
+            }
+
+            // Verificar si el nuevo email ya existe (excepto si es el mismo)
+            if (email !== emailOriginal && usuariosData.some(u => u.email === email)) {
+                alert('Ya existe un usuario con ese correo electrónico.');
+                return;
+            }
+
+            // Actualizar datos
+            usuariosData[index] = {
+                ...usuariosData[index],
+                nombre,
+                email,
+                rol,
+                estado
+            };
+
+            cerrarEditar();
+            renderizarTabla(document.getElementById('searchInput').value);
+            alert('✅ Usuario actualizado correctamente.');
+        });
+
+        // ----- ELIMINAR USUARIO -----
+        function eliminarUsuario(email) {
+            if (!confirm(`¿Estás seguro de eliminar al usuario "${email}"?`)) return;
+
+            const index = usuariosData.findIndex(u => u.email === email);
+            if (index === -1) return;
+
+            usuariosData.splice(index, 1);
+            renderizarTabla(document.getElementById('searchInput').value);
+            alert('🗑️ Usuario eliminado.');
+        }
+
+        // ----- EVENTO DE BÚSQUEDA -----
+        document.getElementById('searchInput').addEventListener('input', function() {
+            renderizarTabla(this.value);
+        });
+
+        // ----- MOSTRAR FECHA ACTUAL -----
+        function mostrarFecha() {
+            const hoy = new Date();
+            const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            let fecha = hoy.toLocaleDateString('es-ES', opciones);
+            fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+            document.getElementById('fechaActual').textContent = fecha;
+        }
+        mostrarFecha();
+
+        // ----- CARGAR TABLA INICIAL -----
+        renderizarTabla();
+
+        // ----- MODAL NUEVO USUARIO: ABRIR Y CERRAR -----
+        const modalNuevo = document.getElementById('modalOverlay');
+        const btnAbrir = document.getElementById('btnNuevoUsuario');
+        const btnCerrar = document.getElementById('btnCerrarModal');
+        const btnCancelar = document.getElementById('btnCancelar');
+
+        function abrirModal() {
+            modalNuevo.classList.add('mostrar');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal() {
+            modalNuevo.classList.remove('mostrar');
+            document.body.style.overflow = '';
+            document.getElementById('formUsuario').reset();
+        }
+
+        btnAbrir.addEventListener('click', abrirModal);
+        btnCerrar.addEventListener('click', cerrarModal);
+        btnCancelar.addEventListener('click', cerrarModal);
+        modalNuevo.addEventListener('click', (e) => {
+            if (e.target === modalNuevo) cerrarModal();
+        });
+
+        // ----- MODAL EDITAR: CERRAR -----
+        document.getElementById('btnCerrarModalEditar').addEventListener('click', cerrarEditar);
+        document.getElementById('btnCancelarEditar').addEventListener('click', cerrarEditar);
+        document.getElementById('modalEditarOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) cerrarEditar();
+        });
+
+        // Cerrar con tecla ESC (ambos modales)
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (modalNuevo.classList.contains('mostrar')) cerrarModal();
+                if (document.getElementById('modalEditarOverlay').classList.contains('mostrar')) cerrarEditar();
+            }
+        });
+
+        // ----- ENVÍO DEL FORMULARIO (agregar usuario) -----
+        document.getElementById('formUsuario').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nombre = document.getElementById('nombre').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const rol = document.getElementById('rol').value;
+            const estado = document.getElementById('estado').value;
+
+            if (!nombre || !email) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+
+            // Verificar si el email ya existe
+            if (usuariosData.some(u => u.email === email)) {
+                alert('Ya existe un usuario con ese correo electrónico.');
+                return;
+            }
+
+            const nuevoUsuario = {
+                nombre,
+                email,
+                rol,
+                ultimoAcceso: new Date().toLocaleString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }),
+                estado
+            };
+            usuariosData.push(nuevoUsuario);
+            renderizarTabla(document.getElementById('searchInput').value);
+            cerrarModal();
+            alert(`✅ Usuario "${nombre}" agregado correctamente.`);
+        });
+    </script>
+</body>
+</html>
