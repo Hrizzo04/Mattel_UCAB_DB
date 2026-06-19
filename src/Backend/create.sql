@@ -207,7 +207,9 @@ CREATE TABLE Despacho_BTB (
      DesBTB_fecha_hora       TIMESTAMP  NOT NULL , 
      DesBTB_cantidad_paletas INTEGER  NOT NULL , 
      DesBTB_direccion        VARCHAR (250)  NOT NULL , 
-     Lugar_L_id              INTEGER  NOT NULL 
+     Orden_Compra_OC_id      INTEGER  NOT NULL , 
+     Lugar_L_id              INTEGER  NOT NULL , 
+     Transportista_T_id      INTEGER  NOT NULL 
 );
 
 
@@ -223,7 +225,10 @@ CREATE TABLE Despacho_BTC (
      DesBTC_costo            NUMERIC  NOT NULL , 
      DesBTC_numero_tracking  VARCHAR (100)  NOT NULL , 
      Courier_Cou_id          INTEGER  NOT NULL , 
-     Lugar_L_id              INTEGER  NOT NULL 
+     Lugar_L_id              INTEGER  NOT NULL , 
+     Pago_Metodo_Pago_MP_id  INTEGER  NOT NULL , 
+     Pago_Orden_Compra_OC_id INTEGER  NOT NULL , 
+     Pago_Compra_BTC_CBTC_id INTEGER  NOT NULL 
 );
 
 
@@ -330,6 +335,15 @@ CREATE TABLE Estado_Envio (
 
 ALTER TABLE Estado_Envio ADD CONSTRAINT Estado_Envio_PK PRIMARY KEY ( Envio_E_id, Estado_Est_id ) ;
 
+CREATE TABLE Estado_Orden_Compra ( 
+     Estado_Est_id        INTEGER  NOT NULL , 
+     Orden_Compra_OC_id   INTEGER  NOT NULL , 
+     EOC_fecha_cambio     TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP, 
+     EOC_comentario       VARCHAR (250) 
+);
+
+ALTER TABLE Estado_Orden_Compra 
+    ADD CONSTRAINT Estado_Orden_Compra_PK PRIMARY KEY ( Estado_Est_id, Orden_Compra_OC_id, EOC_fecha_cambio ) ;
 
 CREATE TABLE Exclusividad_Producto ( 
      EP_id       SERIAL  NOT NULL , 
@@ -552,11 +566,11 @@ ALTER TABLE Orden_Compra ADD CONSTRAINT Orden_Compra_PK PRIMARY KEY ( OC_id ) ;
 
 
 CREATE TABLE Pago ( 
-     Pa_monto           NUMERIC  NOT NULL , 
-     Pa_fecha_hora      TIMESTAMP  NOT NULL , 
-     Metodo_Pago_MP_id  INTEGER  NOT NULL , 
-     Orden_Compra_OC_id INTEGER  NOT NULL , 
-     Compra_BTC_CBTC_id INTEGER  NOT NULL 
+     Pa_monto                  NUMERIC  NOT NULL , 
+     Pa_fecha_hora             TIMESTAMP  NOT NULL , 
+     Metodo_Pago_MP_id         INTEGER  NOT NULL , 
+     Orden_Compra_OC_id        INTEGER  NOT NULL , 
+     Compra_BTC_CBTC_id        INTEGER  NOT NULL 
 );
 
 
@@ -822,8 +836,7 @@ CREATE TABLE Transportista (
      T_p_nombre             VARCHAR (50)  NOT NULL , 
      T_s_nombre             VARCHAR (50) , 
      T_p_apellido           VARCHAR (50)  NOT NULL , 
-     T_s_apellido           VARCHAR (50)  NOT NULL , 
-     Despacho_BTB_DesBTB_id INTEGER  NOT NULL 
+     T_s_apellido           VARCHAR (50)  NOT NULL 
 );
 
 
@@ -893,6 +906,7 @@ ALTER TABLE Compatibilidad ADD CONSTRAINT Compatibilidad_Categoria_FK FOREIGN KE
 ALTER TABLE Compatibilidad ADD CONSTRAINT Compatibilidad_Categoria_FKv2 FOREIGN KEY ( Categoria_Cat_id2 ) REFERENCES Categoria ( Cat_id );
 ALTER TABLE Cryptomoneda ADD CONSTRAINT Cryptomoneda_Metodo_Pago_FK FOREIGN KEY ( MP_id ) REFERENCES Metodo_Pago ( MP_id );
 ALTER TABLE Despacho_BTB ADD CONSTRAINT Despacho_BTB_Lugar_FK FOREIGN KEY ( Lugar_L_id ) REFERENCES Lugar ( L_id );
+ALTER TABLE Despacho_BTB ADD CONSTRAINT Despacho_BTB_Orden_Compra_FK FOREIGN KEY ( Orden_Compra_OC_id ) REFERENCES Orden_Compra ( OC_id );
 ALTER TABLE Despacho_BTC ADD CONSTRAINT Despacho_BTC_Courier_FK FOREIGN KEY ( Courier_Cou_id ) REFERENCES Courier ( Cou_id );
 ALTER TABLE Despacho_BTC ADD CONSTRAINT Despacho_BTC_Lugar_FK FOREIGN KEY ( Lugar_L_id ) REFERENCES Lugar ( L_id );
 ALTER TABLE Diseño_Producto ADD CONSTRAINT Diseño_Producto_Material_FK FOREIGN KEY ( Material_M_id ) REFERENCES Material ( M_id );
@@ -972,9 +986,11 @@ ALTER TABLE Subasta ADD CONSTRAINT Subasta_Producto_Final_FK FOREIGN KEY ( Produ
 ALTER TABLE Tarjeta_Credito ADD CONSTRAINT Tarjeta_Credito_Metodo_Pago_FK FOREIGN KEY ( MP_id ) REFERENCES Metodo_Pago ( MP_id );
 ALTER TABLE Tarjeta_Debito ADD CONSTRAINT Tarjeta_Debito_Metodo_Pago_FK FOREIGN KEY ( MP_id ) REFERENCES Metodo_Pago ( MP_id );
 ALTER TABLE Transferencia_Bancaria_Internacional ADD CONSTRAINT Transferencia_Bancaria_Internacional_Metodo_Pago_FK FOREIGN KEY ( MP_id ) REFERENCES Metodo_Pago ( MP_id );
-ALTER TABLE Transportista ADD CONSTRAINT Transportista_Despacho_BTB_FK FOREIGN KEY ( Despacho_BTB_DesBTB_id ) REFERENCES Despacho_BTB ( DesBTB_id );
+ALTER TABLE Despacho_BTB ADD CONSTRAINT Despacho_BTB_Transportista_FK FOREIGN KEY ( Transportista_T_id ) REFERENCES Transportista ( T_id );
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Cliente_FK FOREIGN KEY ( Cliente_Cl_id ) REFERENCES Cliente ( Cl_id );
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Empleado_FK FOREIGN KEY ( Empleado_Em_id ) REFERENCES Empleado ( Em_id );
 ALTER TABLE Usuario ADD CONSTRAINT Usuario_Rol_FK FOREIGN KEY ( Rol_R_id ) REFERENCES Rol ( R_id );
 ALTER TABLE Vinculo ADD CONSTRAINT Vinculo_Producto_Final_FK FOREIGN KEY ( Producto_Final_PF_id ) REFERENCES Producto_Final ( PF_id );
 ALTER TABLE Vinculo ADD CONSTRAINT Vinculo_Producto_Final_FKv2 FOREIGN KEY ( Producto_Final_PF_id2 ) REFERENCES Producto_Final ( PF_id );
+ALTER TABLE Estado_Orden_Compra ADD CONSTRAINT Estado_Orden_Compra_Estado_FK FOREIGN KEY ( Estado_Est_id ) REFERENCES Estado ( Est_id );
+ALTER TABLE Estado_Orden_Compra ADD CONSTRAINT Estado_Orden_Compra_Orden_Compra_FK FOREIGN KEY ( Orden_Compra_OC_id ) REFERENCES Orden_Compra ( OC_id );
