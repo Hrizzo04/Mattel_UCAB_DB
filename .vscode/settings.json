@@ -1,0 +1,16 @@
+{
+  "sqltools.connections": [
+    {
+      "name": "Supabase MattelUCAB",
+      "driver": "PostgreSQL",
+      "server": "aws-1-us-east-1.pooler.supabase.com",
+      "port": 5432,
+      "database": "postgres",
+      "username": "postgres.qrigbgqpcwchaykaqrnr",
+      "password": "MattelProyecto2026",
+      "ssl": true,
+      "previewLimit": 50
+    }
+  ],
+  "sqltools.useNodeRuntime": true
+}

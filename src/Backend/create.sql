@@ -731,18 +731,7 @@ CREATE TABLE Responsable (
      Fase_Logistica_Fase_F_id             INTEGER  NULL , 
      Fase_Logistica_DesBTB_id             INTEGER  NULL , 
      Fase_Logistica_DesBTC_id             INTEGER  NULL , 
-     Fase_Diseno_DP_id                    INTEGER  NULL ,
-     CONSTRAINT arc_responsable_exclusivo CHECK (
-         (Fase_Compra_FC_id IS NOT NULL AND Fase_Diseno_FD_id IS NULL AND Fase_Diseno_Fase_F_id IS NULL AND Fase_Diseno_DP_id IS NULL AND Fase_Logistica_FL_id IS NULL AND Fase_Logistica_Fase_F_id IS NULL AND Fase_Logistica_DesBTB_id IS NULL AND Fase_Logistica_DesBTC_id IS NULL AND Fase_Operativa_FO_id IS NULL AND Fase_Operativa_Lote_Produccion_LP_id IS NULL AND Fase_Operativa_Fase_F_id IS NULL AND Fase_Post_Venta_FPV_id IS NULL AND Fase_Post_Venta_PF_id IS NULL AND Fase_Post_Venta_F_id IS NULL AND Fase_Post_Venta_FC_id IS NULL)
-         OR
-         (Fase_Compra_FC_id IS NULL AND Fase_Diseno_FD_id IS NOT NULL AND Fase_Diseno_Fase_F_id IS NOT NULL AND Fase_Diseno_DP_id IS NOT NULL AND Fase_Logistica_FL_id IS NULL AND Fase_Logistica_Fase_F_id IS NULL AND Fase_Logistica_DesBTB_id IS NULL AND Fase_Logistica_DesBTC_id IS NULL AND Fase_Operativa_FO_id IS NULL AND Fase_Operativa_Lote_Produccion_LP_id IS NULL AND Fase_Operativa_Fase_F_id IS NULL AND Fase_Post_Venta_FPV_id IS NULL AND Fase_Post_Venta_PF_id IS NULL AND Fase_Post_Venta_F_id IS NULL AND Fase_Post_Venta_FC_id IS NULL)
-         OR
-         (Fase_Compra_FC_id IS NULL AND Fase_Diseno_FD_id IS NULL AND Fase_Diseno_Fase_F_id IS NULL AND Fase_Diseno_DP_id IS NULL AND Fase_Logistica_FL_id IS NOT NULL AND Fase_Logistica_Fase_F_id IS NOT NULL AND Fase_Logistica_DesBTB_id IS NOT NULL AND Fase_Logistica_DesBTC_id IS NOT NULL AND Fase_Operativa_FO_id IS NULL AND Fase_Operativa_Lote_Produccion_LP_id IS NULL AND Fase_Operativa_Fase_F_id IS NULL AND Fase_Post_Venta_FPV_id IS NULL AND Fase_Post_Venta_PF_id IS NULL AND Fase_Post_Venta_F_id IS NULL AND Fase_Post_Venta_FC_id IS NULL)
-         OR
-         (Fase_Compra_FC_id IS NULL AND Fase_Diseno_FD_id IS NULL AND Fase_Diseno_Fase_F_id IS NULL AND Fase_Diseno_DP_id IS NULL AND Fase_Logistica_FL_id IS NULL AND Fase_Logistica_Fase_F_id IS NULL AND Fase_Logistica_DesBTB_id IS NULL AND Fase_Logistica_DesBTC_id IS NULL AND Fase_Operativa_FO_id IS NOT NULL AND Fase_Operativa_Lote_Produccion_LP_id IS NOT NULL AND Fase_Operativa_Fase_F_id IS NOT NULL AND Fase_Post_Venta_FPV_id IS NULL AND Fase_Post_Venta_PF_id IS NULL AND Fase_Post_Venta_F_id IS NULL AND Fase_Post_Venta_FC_id IS NULL)
-         OR
-         (Fase_Compra_FC_id IS NULL AND Fase_Diseno_FD_id IS NULL AND Fase_Diseno_Fase_F_id IS NULL AND Fase_Diseno_DP_id IS NULL AND Fase_Logistica_FL_id IS NULL AND Fase_Logistica_Fase_F_id IS NULL AND Fase_Logistica_DesBTB_id IS NULL AND Fase_Logistica_DesBTC_id IS NULL AND Fase_Operativa_FO_id IS NULL AND Fase_Operativa_Lote_Produccion_LP_id IS NULL AND Fase_Operativa_Fase_F_id IS NULL AND Fase_Post_Venta_FPV_id IS NOT NULL AND Fase_Post_Venta_PF_id IS NOT NULL AND Fase_Post_Venta_F_id IS NOT NULL AND Fase_Post_Venta_FC_id IS NOT NULL)
-     )
+      Fase_Diseno_DP_id                    INTEGER  NULL
 );
 
 
