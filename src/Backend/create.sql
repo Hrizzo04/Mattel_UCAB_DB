@@ -225,10 +225,7 @@ CREATE TABLE Despacho_BTC (
      DesBTC_costo            NUMERIC  NOT NULL , 
      DesBTC_numero_tracking  VARCHAR (100)  NOT NULL , 
      Courier_Cou_id          INTEGER  NOT NULL , 
-     Lugar_L_id              INTEGER  NOT NULL , 
-     Pago_Metodo_Pago_MP_id  INTEGER  NOT NULL , 
-     Pago_Orden_Compra_OC_id INTEGER  NOT NULL , 
-     Pago_Compra_BTC_CBTC_id INTEGER  NOT NULL 
+     Lugar_L_id              INTEGER  NOT NULL 
 );
 
 

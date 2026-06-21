@@ -31,6 +31,110 @@ INSERT INTO Material (M_nombre, M_descripcion) VALUES
 ('Silicona Grado Médico', 'Utilizado para moldes de alta precisión y ediciones ultra raras.'),
 ('Policarbonato', 'Plástico transparente de alta resistencia para vitrinas de empaque.');
 
+INSERT INTO Diseno_Producto (DP_nombre_comercial, DP_descripcion, DP_fecha_lanzamiento, DP_precio_inicial, DP_manual_instrucciones, DP_ancho_cm, DP_largo_cm, DP_peso_volumetrico, Material_M_id) VALUES
+('Barbie Lunar', 'Colección de muñeca Barbie espacial con accesorios brillantes y traje galáctico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 8.5, 3.2, 1.0, 1),
+('Barbie Constructora', 'Colección de muñeca Barbie constructora con accesorios de construcción.', '2026-08-15', 89.50, 'Guía paso a paso con 3 niveles de complejidad.', 15.0, 10.0, 2.5, 2),
+('Barbie Artista', 'Colección de muñeca Barbie artista con accesorios de arte y creatividad.', '2026-09-10', 29.90, 'Instrucciones de uso y cuidados para el set.', 25.0, 18.0, 0.9, 3),
+('Barbie Piloto de carros', 'Colección de muñeca Barbie piloto de carros con accesorios de conducción.', '2026-07-20', 59.00, 'Manual técnico para ensamblaje y mantenimiento.', 12.0, 6.5, 1.2, 4),
+('Barbie Iluminada', 'Figura de colección Barbie con luces LED y articulaciones móviles.', '2026-08-05', 39.75, 'Manual de seguridad y reemplazo de baterías.', 10.0, 4.0, 0.7, 5),
+('Barbie Cabaña', 'Cabaña de ensueño de Barbie con cuarto principal, cocina y cuarto de juegos.', '2026-10-01', 79.99, 'Instrucciones de armado y decoración de la Dream House.', 22.0, 16.0, 2.3, 6),
+('Barbie Yate', 'Yate de lujo de Barbie con salón, cubierta y accesorios marinos.', '2026-10-15', 54.90, 'Manual de montaje y seguridad para el paseo en yate.', 24.0, 10.0, 2.0, 9),
+('Barbie Apartamento', 'Apartamento de lujo de Barbie con sala, cocina, dormitorio y baño moderno.', '2026-11-05', 44.80, 'Manual de montaje, limpieza y exposición segura.', 30.0, 20.0, 3.4, 10),
+('Barbie Dream Studio', 'Estudio creativo de Barbie con espacio para diseñar ropa y decorar.', '2026-11-20', 39.95, 'Instrucciones detalladas para montaje y uso creativo.', 18.0, 14.0, 1.1, 8),
+('Barbie Dream House Deluxe', 'Dream House Deluxe de Barbie con terraza, piscina y sala de fiestas.', '2026-12-01', 99.99, 'Manual de montaje completo para la casa de Barbie.', 35.0, 25.0, 4.5, 6);
+
+-- Insertar características de cuerpo, tonos de piel, moldes de rostro y colores de ojos
+INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
+('Curvy', 'Tipo de cuerpo Curvy para muñecas con curvas suaves y proporciones modernas.', 1),
+('Original', 'Tipo de cuerpo Original clásico de Barbie con proporciones icónicas.', 2),
+('Petite', 'Tipo de cuerpo Petite para Barbie con estatura más pequeña y estilizada.', 3),
+('Tall', 'Tipo de cuerpo Tall para Barbie con mayor altura y figura esbelta.', 4);
+
+INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
+('Claro', 'Tono de piel claro con matices rosados y luminosos.', 1),
+('Medio', 'Tono de piel medio con aspecto natural y cálido.', 2),
+('Bronceado', 'Tono de piel bronceado con brillo dorado y acabado soleado.', 1),
+('Oscuro', 'Tono de piel oscuro con profundidad y riqueza de color.', 2),
+('Fantasía', 'Tono de piel fantasía con efecto brillante y divertido.', 3),
+('Rubia', 'Tono de piel rubia con matices cálidos y suaves.', 1),
+('Morena', 'Tono de piel morena con un tono rico y natural.', 5),
+('Almendra', 'Tono de piel almendra con notas neutras y elegantes.', 3),
+('Miel Caramelo', 'Tono de piel miel caramelo con brillo cálido y suave.', 4);
+
+INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
+('Millie', 'Molde de rostro Millie con rasgos suaves y sonrisa delicada.', 1),
+('Mackie', 'Molde de rostro Mackie con mirada vivaz y expresión natural.', 2),
+('Superstar', 'Molde de rostro Superstar con estilo glam y labios definidos.', 3),
+('Glamour', 'Molde de rostro Glamour con ojos grandes y maquillae llamativa.', 4),
+('Radiant', 'Molde de rostro Radiant con tez brillante y mejillas sonrosadas.', 5),
+('Bella', 'Molde de rostro Bella con rasgos simétricos y frescura juvenil.', 3),
+('Luxe', 'Molde de rostro Luxe con contornos elegantes y mirada sofisticada.', 4),
+('Satin', 'Molde de rostro Satin con piel suave y acabado sedoso.', 5),
+('Dazzle', 'Molde de rostro Dazzle con ojos chispeantes y energía divertida.', 3),
+('Dream', 'Molde de rostro Dream con expresiones soñadoras y delicadas.', 4),
+('Twinkle', 'Molde de rostro Twinkle con brillo estelar y encanto juguetón.', 2),
+('Sparkle', 'Molde de rostro Sparkle con detalles brillantes y mirada radiante.', 1),
+('Bliss', 'Molde de rostro Bliss con sonrisa suave y rasgos armoniosos.', 4),
+('Enchanted', 'Molde de rostro Enchanted con aura mágica y facciones delicadas.', 1),
+('Mystique', 'Molde de rostro Mystique con mirada profunda y aspecto misterioso.', 2),
+('Petite Glam', 'Molde de rostro Petite Glam con rasgos finos y estilo elegante.', 5),
+('Pearl', 'Molde de rostro Pearl con piel luminosa y acabado perlado.', 2),
+('Coral', 'Molde de rostro Coral con mejillas suaves y tonalidad juvenil.', 5),
+('Rose', 'Molde de rostro Rose con tonos rosados y expresión tierna.', 4),
+('Frost', 'Molde de rostro Frost con detalles glaseados y estilo moderno.', 3),
+('Aurora', 'Molde de rostro Aurora con brillo suave y expresión serena.', 3),
+('Velvet', 'Molde de rostro Velvet con piel aterciopelada y rasgos pulidos.', 5),
+('Jewel', 'Molde de rostro Jewel con facciones preciosas y mirada intensa.', 4),
+('Corazón', 'Molde de rostro Corazón con labios llenos y sonrisa cálida.', 5),
+('Luna', 'Molde de rostro Luna con rasgos etéreos y aura delicada.', 2),
+('Starlight', 'Molde de rostro Starlight con brillo sutil y expresión soñadora.', 2),
+('Marina', 'Molde de rostro Marina con fresco toque marino y estilo sereno.', 2),
+('Carly', 'Molde de rostro Carly con mirada dulce y detalle moderno.', 1),
+('Mia', 'Molde de rostro Mia con rasgos clásicos y sensación contemporánea.', 1),
+('Ariel', 'Molde de rostro Ariel con labios definidos y frescura náutica.', 5),
+('Nova', 'Molde de rostro Nova con brillo futurista y acabado suave.', 3),
+('Sierra', 'Molde de rostro Sierra con expresiones naturales y estilo relajado.', 3),
+('Isla', 'Molde de rostro Isla con sensación tropical y rasgos suaves.', 4),
+('Zephyra', 'Molde de rostro Zephyra con aire etéreo y detalles artísticos.', 4),
+('Jade', 'Molde de rostro Jade con elegancia mineral y look refinado.', 5),
+('Eden', 'Molde de rostro Eden con rasgos suaves y expresión natural.', 3);
+
+INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
+('Azul Claro', 'Color de ojos azul claro con efecto transparente.', 5),
+('Azul Oscuro', 'Color de ojos azul oscuro con profundidad marina.', 4),
+('Verde', 'Color de ojos verde brillante con toque natural.', 1),
+('Verde Esmeralda', 'Color de ojos verde esmeralda con brillo intenso.', 2),
+('Gris', 'Color de ojos gris suave con estilo moderno.', 4),
+('Marrón', 'Color de ojos marrón cálido con mirada acogedora.', 3),
+('Avellana', 'Color de ojos avellana con mezcla de tonos tierra.', 5),
+('Ámbar', 'Color de ojos ámbar dorado con aspecto cálido.', 1),
+('Violeta', 'Color de ojos violeta mágico con un toque fantasía.', 1),
+('Rosa', 'Color de ojos rosa pastel con tono encantador.', 2),
+('Turquesa', 'Color de ojos turquesa brillante con chispa marina.', 3),
+('Azul Petróleo', 'Color de ojos azul petróleo con matices profundos.', 4),
+('Verde Oliva', 'Color de ojos verde oliva con tono natural.', 4),
+('Gris Plomo', 'Color de ojos gris plomo con estilo sofisticado.', 5),
+('Miel', 'Color de ojos miel dorado con calidez suave.', 3),
+('Gris Claro', 'Color de ojos gris claro con aire cristalino.', 1),
+('Jade', 'Color de ojos jade con tono verde mineral elegante.', 2),
+('Lavanda', 'Color de ojos lavanda suave con sensación onírica.', 4),
+('Topacio', 'Color de ojos topacio brillante con matices dorados.', 5),
+('Esmeralda', 'Color de ojos esmeralda intenso con vibración lujosa.', 3),
+('Azul Celeste', 'Color de ojos azul celeste con tono ligero y abierto.', 2),
+('Bronce', 'Color de ojos bronce cálido con profundidad natural.', 3);
+
+INSERT INTO Caracteristica_Compatibilidad (CarCom_nombre, CarCom_descripcion, Caracteristica_Car_id2, Caracteristica_Diseño_Producto_DP_id2, Caracteristica_Car_id, Caracteristica_Diseño_Producto_DP_id) VALUES
+('Curvy + Claro', 'Compatibilidad entre cuerpo Curvy y tono de piel claro.', 1, 1, 5, 1),
+('Original + Medio', 'Compatibilidad entre cuerpo Original y tono de piel medio.', 2, 2, 6, 2),
+('Petite + Fantasía', 'Compatibilidad entre cuerpo Petite y tono de piel fantasía vibrante.', 3, 3, 9, 3),
+('Tall + Oscuro', 'Compatibilidad entre cuerpo Tall y tono de piel oscuro elegante.', 4, 4, 8, 4),
+('Millie + Azul Claro', 'Molde Millie con ojos azul claro para un estilo etéreo.', 16, 1, 51, 1),
+('Superstar + Esmeralda', 'Molde Superstar combinado con ojos esmeralda intensos.', 18, 3, 70, 3),
+('Glamour + Violeta', 'Molde Glamour con ojos violeta para un look de pasarela.', 19, 1, 59, 1),
+('Dream + Lavanda', 'Molde Dream con ojos lavanda para un aire soñador.', 25, 4, 68, 4),
+('Pearl + Miel', 'Molde Pearl con ojos miel para una belleza cálida.', 32, 2, 65, 2),
+('Eden + Jade', 'Molde Eden con ojos jade para un acabado natural y elegante.', 79, 3, 66, 3);
+
 INSERT INTO Estado (Est_nombre, Est_descripcion) VALUES
 ('Emitida', 'La orden ha sido creada en el sistema por el cliente o vendedor.'),
 ('Validada', 'La orden ha sido revisada y aprobada para su procesamiento.'),
@@ -43,6 +147,30 @@ INSERT INTO Estado (Est_nombre, Est_descripcion) VALUES
 ('Cancelada', 'La orden fue anulada antes de su despacho a petición de las partes.'),
 ('Devuelta', 'La mercancía fue retornada a la sede tras haber sido entregada.');
 
+INSERT INTO Estado_Despacho_BTC (Despacho_BTC_DesBTC_id, Estado_Est_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+INSERT INTO Estado_Despacho_BTB (Despacho_BTB_DesBTB_id, Estado_Est_id) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
 INSERT INTO Empleado (Em_p_nombre, Em_s_nombre, Em_p_apellido, Em_s_apellido, Em_sueldo_actual) VALUES
 ('Roberto', NULL, 'Villanueva', 'Pérez', 1500.00),
 ('Carmen', NULL, 'Ortega', 'García', 1400.00),
@@ -54,6 +182,19 @@ INSERT INTO Empleado (Em_p_nombre, Em_s_nombre, Em_p_apellido, Em_s_apellido, Em
 ('Miguel', NULL, 'Rojas', 'Sánchez', 1300.00),
 ('Sofía', NULL, 'Pérez', 'Martínez', 1280.00),
 ('Carlos', NULL, 'Marín', 'Suárez', 1340.00);
+
+-- 10 registros para Historico_Empleado
+INSERT INTO Historico_Empleado (HEm_fecha_hora_inicio, HEm_fecha_hora_fin, HEm_sueldo, Empleado_Em_id, Cargo_Car_id, Departamento_De_id) VALUES
+('2023-01-01 08:00:00','2023-12-31 17:00:00',1500.00,1,1,1),
+('2022-02-01 08:00:00','2022-12-31 17:00:00',1400.00,2,2,2),
+('2021-03-01 08:00:00','2021-12-31 17:00:00',1350.00,3,3,3),
+('2023-04-01 08:00:00','2023-12-31 17:00:00',1450.00,4,4,4),
+('2022-05-01 08:00:00','2022-12-31 17:00:00',1420.00,5,5,5),
+('2021-06-01 08:00:00','2021-12-31 17:00:00',1380.00,6,6,1),
+('2020-07-01 08:00:00','2020-12-31 17:00:00',1320.00,7,7,2),
+('2019-08-01 08:00:00','2019-12-31 17:00:00',1300.00,8,8,3),
+('2018-09-01 08:00:00','2018-12-31 17:00:00',1280.00,9,9,4),
+('2017-10-01 08:00:00','2017-12-31 17:00:00',1340.00,10,10,5);
 
 INSERT INTO Tabulador_Oficial (TO_sueldo_base_rol, TO_rol) VALUES
 (1200.00, 'Administrador'),
@@ -108,17 +249,91 @@ INSERT INTO Courier (Cou_direccion, Cou_nombre) VALUES
 ('Av. Miranda 215, Maracay', 'Transportes Globales'),
 ('Calle 7, Caracas', 'Express Internacional');
 
-INSERT INTO Transportista (T_p_nombre, T_s_nombre, T_p_apellido, T_s_apellido) VALUES
-('Juan', 'Carlos', 'Martínez', 'Gómez'),
-('María', 'Fernanda', 'Rodríguez', 'López'),
-('Luis', NULL, 'Pérez', 'Ramírez'),
-('Ana', 'Lucía', 'González', 'Santos'),
-('Carlos', NULL, 'Vargas', 'Díaz'),
-('Elena', 'María', 'Castillo', 'Ortiz'),
-('Miguel', NULL, 'Morales', 'Cruz'),
-('Verónica', 'Patricia', 'Gómez', 'Rojas'),
-('Rafael', NULL, 'Torres', 'Campos'),
-('Paula', 'Andrea', 'Sánchez', 'Pérez');
+INSERT INTO transportista ("t_id", "t_p_nombre", "t_s_nombre", "t_p_apellido", "t_s_apellido") VALUES 
+(1, 'Juan', 'Carlos', 'Martínez', 'Gómez'), 
+(2, 'María', 'Fernanda', 'Rodríguez', 'López'), 
+(3, 'Luis', null, 'Pérez', 'Ramírez'), 
+(4, 'Ana', 'Lucía', 'González', 'Santos'), 
+(5, 'Carlos', null, 'Vargas', 'Díaz'), 
+(6, 'Elena', 'María', 'Castillo', 'Ortiz'), 
+(7, 'Miguel', null, 'Morales', 'Cruz'), 
+(8, 'Verónica', 'Patricia', 'Gómez', 'Rojas'), 
+(9, 'Rafael', null, 'Torres', 'Campos'), 
+(10, 'Paula', 'Andrea', 'Sánchez', 'Pérez');
+
+INSERT INTO Lugar (L_id, L_nombre, L_tipo, Lugar_L_id) VALUES
+(1,'Distrito Capital','Estado',NULL),
+(2,'Miranda','Estado',NULL),
+(3,'Zulia','Estado',NULL),
+(4,'Carabobo','Estado',NULL),
+(5,'Aragua','Estado',NULL),
+(6,'Lara','Estado',NULL),
+(7,'Bolívar','Estado',NULL),
+(8,'Anzoátegui','Estado',NULL),
+(9,'Táchira','Estado',NULL),
+(10,'Mérida','Estado',NULL),
+(11,'Libertador','Municipio',1),
+(12,'Chacao','Municipio',2),
+(13,'Sucre','Municipio',2),
+(14,'Baruta','Municipio',2),
+(15,'Maracaibo','Municipio',3),
+(16,'San Francisco','Municipio',3),
+(17,'Cabimas','Municipio',3),
+(18,'Valencia','Municipio',4),
+(19,'Naguanagua','Municipio',4),
+(20,'San Diego','Municipio',4),
+(21,'Girardot','Municipio',5),
+(22,'Santiago Mariño','Municipio',5),
+(23,'Iribarren','Municipio',6),
+(24,'Palavecino','Municipio',6),
+(25,'Caroní','Municipio',7),
+(26,'Angostura del Orinoco','Municipio',7),
+(27,'Simón Bolívar','Municipio',8),
+(28,'Juan Antonio Sotillo','Municipio',8),
+(29,'San Cristóbal','Municipio',9),
+(30,'Cárdenas','Municipio',9),
+(31,'Libertador de Mérida','Municipio',10),
+(32,'Alberto Adriani','Municipio',10),
+(33,'Altagracia','Parroquia',11),
+(34,'Candelaria','Parroquia',11),
+(35,'El Valle','Parroquia',11),
+(36,'Sucre (Catia)','Parroquia',11),
+(37,'Chacao','Parroquia',12),
+(38,'Petare','Parroquia',13),
+(39,'Leoncio Martínez','Parroquia',13),
+(40,'Olebary','Parroquia',15),
+(41,'Juana de Ávila','Parroquia',15),
+(42,'Chiquinquirá','Parroquia',15),
+(43,'San Francisco','Parroquia',16),
+(44,'Francisco Ochoa','Parroquia',16),
+(45,'San José','Parroquia',18),
+(46,'Rafael Urdaneta','Parroquia',18),
+(47,'Las Delicias','Parroquia',21),
+(48,'Madre María de San José','Parroquia',21),
+(49,'Catedral','Parroquia',23),
+(50,'Santa Rosa','Parroquia',23),
+(51,'Cachamay','Parroquia',25),
+(52,'Unare','Parroquia',25),
+(53,'Universidad','Parroquia',25),
+(54,'El Carmen','Parroquia',27),
+(55,'San Cristóbal','Parroquia',27),
+(56,'La Concordia','Parroquia',29),
+(57,'San Juan Bautista','Parroquia',29),
+(58,'Sagrario','Parroquia',31),
+(59,'San Juan Bautista','Parroquia',31),
+(60,'Gonzalo Picón Febres','Parroquia',31);
+
+INSERT INTO Despacho_BTC (DesBTC_fecha_hora, DesBTC_cantidad_paletas, DesBTC_direccion, DesBTC_peso, DesBTC_costo, DesBTC_numero_tracking, Courier_Cou_id, Lugar_L_id) VALUES
+('2026-06-01 08:00:00', 2, 'Av. Libertador 2101, Caracas', 220.5, 1380.00, 'TRK10001', 1, 11),
+('2026-06-02 09:30:00', 1, 'Calle Comercio 45, Valencia', 120.0, 760.00, 'TRK10002', 2, 18),
+('2026-06-03 11:00:00', 3, 'Av. Universidad 67, Barquisimeto', 320.0, 1750.00, 'TRK10003', 3, 15),
+('2026-06-04 14:15:00', 4, 'Calle Bolívar 180, Maracay', 410.0, 2120.00, 'TRK10004', 4, 18),
+('2026-06-05 16:45:00', 2, 'Av. Sucre 321, Caracas', 210.5, 1295.00, 'TRK10005', 5, 11),
+('2026-06-06 10:20:00', 5, 'Calle San Martín 98, Maracaibo', 525.0, 2740.00, 'TRK10006', 6, 15),
+('2026-06-07 12:00:00', 1, 'Av. Las Industrias 200, Valencia', 110.0, 690.00, 'TRK10007', 7, 19),
+('2026-06-08 13:30:00', 3, 'Calle Comercio 10, Caracas', 310.0, 1675.00, 'TRK10008', 8, 11),
+('2026-06-09 15:00:00', 4, 'Av. 19 de Abril 58, Barquisimeto', 420.0, 2180.00, 'TRK10009', 9, 29),
+('2026-06-10 17:45:00', 2, 'Calle del Progreso 12, Maracay', 205.0, 1235.00, 'TRK10010', 10, 18);
 
 INSERT INTO Proveedor (Prov_nombre, Prov_direccion) VALUES
 ('Proveedor Internacional A', 'Av. Libertador 1201, Caracas'),
@@ -133,7 +348,18 @@ INSERT INTO Proveedor (Prov_nombre, Prov_direccion) VALUES
 ('Proveedor de Componentes C.A.', 'Calle del Progreso 87, Maracay');
 
 
--- Inserciones para Pre_Nomina (10 registros) y Pago_nomina (10 registros)
+INSERT INTO Despacho_BTB (DesBTB_fecha_hora, DesBTB_cantidad_paletas, DesBTB_direccion, Orden_Compra_OC_id, Lugar_L_id, Transportista_T_id) VALUES
+('2026-06-01 09:00:00', 2, 'Av. Libertador 1201, Caracas', 1, 1, 1),
+('2026-06-02 10:30:00', 1, 'Calle Sucre 45, Valencia', 2, 2, 2),
+('2026-06-03 11:15:00', 3, 'Av. Bolívar 250, Barquisimeto', 3, 3, 3),
+('2026-06-04 08:45:00', 4, 'Calle Real 78, Maracay', 4, 4, 4),
+('2026-06-05 14:20:00', 2, 'Av. El Rosario 333, Puerto La Cruz', 5, 5, 5),
+('2026-06-06 16:00:00', 5, 'Calle San Martín 190, Maracaibo', 6, 6, 6),
+('2026-06-07 09:30:00', 2, 'Av. Las Industrias 505, Valencia', 7, 7, 7),
+('2026-06-08 12:00:00', 1, 'Calle Comercio 215, Caracas', 8, 8, 8),
+('2026-06-09 15:10:00', 3, 'Av. 19 de Abril 102, Barquisimeto', 9, 9, 9),
+('2026-06-10 18:45:00', 4, 'Calle del Progreso 87, Maracay', 10, 10, 10);
+
 INSERT INTO Pre_Nomina (PN_fecha_hora, PN_total, PN_subtotal, Tabulador_Oficial_TO_id) VALUES
 ('2026-06-01 09:00:00', 1200.00, 1100.00, 1),
 ('2026-06-02 09:00:00', 950.00, 850.00, 2),
@@ -165,3 +391,82 @@ INSERT INTO Fase (F_nombre, F_descripcion) VALUES
 ('fase logistica', 'Planificación y ejecución de transporte, almacenamiento y despacho.'),
 ('fase compra', 'Adquisición de insumos y gestión de órdenes de compra de materiales.'),
 ('fase post venta', 'Atención postventa, garantías y soporte al cliente.');
+
+INSERT INTO Asistencia (A_fecha_hora_llegada, A_fecha_hora_salida, Empleado_Em_id) VALUES
+('2026-06-01 08:00:00','2026-06-01 16:00:00',1),
+('2026-06-02 08:15:00','2026-06-02 16:15:00',2),
+('2026-06-03 07:50:00','2026-06-03 15:50:00',3),
+('2026-06-04 08:05:00','2026-06-04 16:05:00',4),
+('2026-06-05 08:10:00','2026-06-05 16:10:00',5),
+('2026-06-06 08:20:00','2026-06-06 16:20:00',6),
+('2026-06-07 08:00:00','2026-06-07 16:00:00',7),
+('2026-06-08 08:30:00','2026-06-08 16:30:00',8),
+('2026-06-09 07:55:00','2026-06-09 15:55:00',9),
+('2026-06-10 08:00:00','2026-06-10 16:00:00',10);
+
+INSERT INTO Profesion (Prof_nombre, Prof_descripcion) VALUES
+('Astronauta', 'Explora el espacio y pilota misiones interplanetarias.'),
+('Doctora Pediatra', 'Cuida la salud de niños y niñas con cariño y profesionalismo.'),
+('Piloto de Aerolínea', 'Vuela aviones comerciales alrededor del mundo.'),
+('Ingeniera Aeroespacial', 'Diseña naves y sistemas para misiones espaciales.'),
+('Chef Pastelera', 'Crea postres y pasteles artísticos para eventos especiales.'),
+('Veterinaria', 'Atiende y cuida animales, desde mascotas hasta criaturas exóticas.'),
+('Artista Plástica', 'Crea obras y esculturas para exhibiciones y galerías.'),
+('Maestra de STEAM', 'Enseña ciencia, tecnología, ingeniería, arte y matemáticas.'),
+('Diseñadora de Moda', 'Diseña ropa y colecciones para pasarelas y muñecas.'),
+('Ingeniera en Robótica', 'Construye robots y prototipos para resolver problemas reales');
+
+-- 10 registros de historial de profesión para diseños
+INSERT INTO Historico_Profesion (HProf_fecha_inicio, HProf_fecha_fin, Diseño_Producto_DP_id, Profesion_Prof_id) VALUES
+('2024-01-01','2024-12-31',1,1),
+('2019-08-01','2023-06-01',2,2),
+('2022-01-15','2023-01-14',3,3),
+('2021-03-01','2022-02-28',4,4),
+('2020-07-01','2021-06-30',5,5),
+('2025-09-01','2025-10-31',1,6),
+('2023-11-01','2024-10-31',3,7),
+('2022-02-28','2023-02-28',4,8),
+('2021-06-30','2023-12-31',5,9),
+('2024-05-31','2020-07-31',2,10);
+
+INSERT INTO Proveedor_Material (Proveedor_Prov_id, Material_M_id) VALUES
+(1,1),
+(1,2),
+(2,3),
+(2,4),
+(3,5),
+(4,6),
+(5,7),
+(6,8),
+(7,9),
+(8,10);
+
+INSERT INTO Sede (s_nombre, s_direccion, lugar_l_id) VALUES
+('Fabrica Carabobo','Av. 1, Carabobo',4),
+('Hub Aragua','Calle 2, Aragua',5),
+('Fabrica Lara','Av. 3, Lara',6),
+('Hub Zulia','Calle 4, Zulia',3),
+('Fabrica Miranda','Av. 5, Miranda',2),
+('Hub Distrito Capital','Calle 6,cLibertador',1),
+('Fabrica Anzoategui','Av. 7, Simon Bolivar',8),
+('Hub Merida','Calle 8, Merida',10),
+('Fabrica Tachira','Av. 9, San Cristobal',9),
+('Hub Bolivar','Calle 10, Caroni',7);
+
+INSERT INTO Membresia (Mem_nombre, Mem_descripcion) VALUES
+('Gold', 'Membresía Gold con beneficios especiales y acceso prioritario.'),
+('Platinum', 'Membresía Platinum con descuentos exclusivos y acceso prioritario.');
+
+-- 10 registros de Responsable
+INSERT INTO Responsable (R_fecha_inicio, R_fecha_fin, Empleado_Em_id, Cargo_Car_id, Fase_Operativa_FO_id, Fase_Diseno_DP_id) VALUES
+('2024-01-01','2024-12-31',1,1,1,1),
+('2023-02-15','2023-12-31',2,2,1,2),
+('2022-05-01','2022-12-31',3,3,2,3),
+('2024-03-01','2024-11-30',4,4,2,4),
+('2023-07-01','2024-06-30',5,5,3,5),
+('2022-09-10','2023-09-09',6,6,3,6),
+('2021-11-01','2022-10-31',7,7,4,7),
+('2024-04-01','2024-12-31',8,8,4,8),
+('2023-01-01','2023-12-31',9,9,5,9),
+('2020-08-01','2021-07-31',10,10,5,10);
+
