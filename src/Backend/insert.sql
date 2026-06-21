@@ -43,17 +43,17 @@ INSERT INTO Estado (Est_nombre, Est_descripcion) VALUES
 ('Cancelada', 'La orden fue anulada antes de su despacho a petición de las partes.'),
 ('Devuelta', 'La mercancía fue retornada a la sede tras haber sido entregada.');
 
-INSERT INTO Empleado (Em_cedula, Em_nombre, Em_apellido, Em_fecha_ingreso) VALUES
-('V-14258741', 'Roberto', 'Villanueva', '2015-03-15'), 
-('V-16987452', 'Carmen',  'Ortega',     '2017-08-01'), 
-('V-18741258', 'Luis',    'Giménez',    '2018-11-20'), 
-('V-20159632', 'Andrea',  'Salazar',    '2020-02-10'), 
-('V-22365478', 'Jorge',   'Bustamante', '2019-06-05'), 
-('V-17589632', 'Elena',   'Mendoza',    '2016-09-12'), 
-('V-19852147', 'David',   'Castillo',   '2021-01-18'), 
-('V-24587123', 'Miguel',  'Rojas',      '2022-04-25'), 
-('V-26987412', 'Sofía',   'Pérez',      '2023-07-30'), 
-('V-21478523', 'Carlos',  'Marín',      '2020-10-15');
+INSERT INTO Empleado (Em_p_nombre, Em_s_nombre, Em_p_apellido, Em_s_apellido, Em_sueldo_actual) VALUES
+('Roberto', NULL, 'Villanueva', 'Pérez', 1500.00),
+('Carmen', NULL, 'Ortega', 'García', 1400.00),
+('Luis', NULL, 'Giménez', 'Fernández', 1350.00),
+('Andrea', NULL, 'Salazar', 'López', 1450.00),
+('Jorge', NULL, 'Bustamante', 'Ramírez', 1420.00),
+('Elena', NULL, 'Mendoza', 'Torres', 1380.00),
+('David', NULL, 'Castillo', 'Rojas', 1320.00),
+('Miguel', NULL, 'Rojas', 'Sánchez', 1300.00),
+('Sofía', NULL, 'Pérez', 'Martínez', 1280.00),
+('Carlos', NULL, 'Marín', 'Suárez', 1340.00);
 
 INSERT INTO Tabulador_Oficial (TO_sueldo_base_rol, TO_rol) VALUES
 (1200.00, 'Administrador'),
@@ -164,4 +164,4 @@ INSERT INTO Fase (F_nombre, F_descripcion) VALUES
 ('fase diseno', 'Actividades de diseño, creación de prototipos y validación técnica.'),
 ('fase logistica', 'Planificación y ejecución de transporte, almacenamiento y despacho.'),
 ('fase compra', 'Adquisición de insumos y gestión de órdenes de compra de materiales.'),
-('fase post venta', 'Atención postventa, garantías y soporte al cliente.'),
+('fase post venta', 'Atención postventa, garantías y soporte al cliente.');
