@@ -1,6 +1,6 @@
 CREATE TABLE Asignacion_Horario ( 
-     Responsable_R_id                                 INTEGER  NOT NULL , 
-     Turno_Tu_id                                      INTEGER  NOT NULL 
+     Responsable_R_id      INTEGER  NOT NULL , 
+     Turno_Tu_id           INTEGER  NOT NULL 
 );
 
 

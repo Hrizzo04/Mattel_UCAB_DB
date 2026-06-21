@@ -55,17 +55,17 @@ INSERT INTO Empleado (Em_cedula, Em_nombre, Em_apellido, Em_fecha_ingreso) VALUE
 ('V-26987412', 'Sofía',   'Pérez',      '2023-07-30'), 
 ('V-21478523', 'Carlos',  'Marín',      '2020-10-15');
 
-INSERT INTO Tabulador_Oficial (TO_id, TO_sueldo_base_rol, TO_rol) VALUES
-(1, 1200.00, 'Administrador'),
-(2, 950.00, 'Supervisor'),
-(3, 850.00, 'Contador'),
-(4, 780.00, 'Vendedor'),
-(5, 700.00, 'Auxiliar Administrativo'),
-(6, 650.00, 'Auxiliar de Bodega'),
-(7, 900.00, 'Analista de Datos'),
-(8, 1000.00, 'Coordinador de Proyectos'),
-(9, 820.00, 'Técnico de Soporte'),
-(10, 720.00, 'Recepcionista');
+INSERT INTO Tabulador_Oficial (TO_sueldo_base_rol, TO_rol) VALUES
+(1200.00, 'Administrador'),
+(950.00, 'Supervisor'),
+(850.00, 'Contador'),
+(780.00, 'Vendedor'),
+(700.00, 'Auxiliar Administrativo'),
+(650.00, 'Auxiliar de Bodega'),
+(900.00, 'Analista de Datos'),
+(1000.00, 'Coordinador de Proyectos'),
+(820.00, 'Técnico de Soporte'),
+(720.00, 'Recepcionista');
 
 INSERT INTO Turno (Tu_dia, Tu_hora_inicio, Tu_hora_fin) VALUES
 ('diurno', '2026-01-01 06:00:00', '2026-01-01 14:00:00'),
@@ -133,3 +133,35 @@ INSERT INTO Proveedor (Prov_nombre, Prov_direccion) VALUES
 ('Proveedor de Componentes C.A.', 'Calle del Progreso 87, Maracay');
 
 
+-- Inserciones para Pre_Nomina (10 registros) y Pago_nomina (10 registros)
+INSERT INTO Pre_Nomina (PN_fecha_hora, PN_total, PN_subtotal, Tabulador_Oficial_TO_id) VALUES
+('2026-06-01 09:00:00', 1200.00, 1100.00, 1),
+('2026-06-02 09:00:00', 950.00, 850.00, 2),
+('2026-06-03 09:00:00', 850.00, 780.00, 3),
+('2026-06-04 09:00:00', 780.00, 700.00, 4),
+('2026-06-05 09:00:00', 700.00, 650.00, 5),
+('2026-06-06 09:00:00', 650.00, 600.00, 6),
+('2026-06-07 09:00:00', 900.00, 820.00, 7),
+('2026-06-08 09:00:00', 1000.00, 920.00, 8),
+('2026-06-09 09:00:00', 820.00, 760.00, 9),
+('2026-06-10 09:00:00', 720.00, 680.00, 10);
+
+INSERT INTO Pago_nomina (PaN_monto, Empleado_Em_id, Pre_Nomina_PN_id) VALUES
+(1200.00, 1, 1),
+(950.00, 2, 2),
+(850.00, 3, 3),
+(780.00, 4, 4),
+(700.00, 5, 5),
+(650.00, 6, 6),
+(900.00, 7, 7),
+(1000.00, 8, 8),
+(820.00, 9, 9),
+(720.00, 10, 10);
+
+
+INSERT INTO Fase (F_nombre, F_descripcion) VALUES
+('fase operativa', 'Operaciones diarias de planta para manufactura y control de producción.'),
+('fase diseno', 'Actividades de diseño, creación de prototipos y validación técnica.'),
+('fase logistica', 'Planificación y ejecución de transporte, almacenamiento y despacho.'),
+('fase compra', 'Adquisición de insumos y gestión de órdenes de compra de materiales.'),
+('fase post venta', 'Atención postventa, garantías y soporte al cliente.'),
