@@ -123,17 +123,94 @@ INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id)
 ('Azul Celeste', 'Color de ojos azul celeste con tono ligero y abierto.', 2),
 ('Bronce', 'Color de ojos bronce cálido con profundidad natural.', 3);
 
-INSERT INTO Caracteristica_Compatibilidad (CarCom_nombre, CarCom_descripcion, Caracteristica_Car_id2, Caracteristica_Diseño_Producto_DP_id2, Caracteristica_Car_id, Caracteristica_Diseño_Producto_DP_id) VALUES
-('Curvy + Claro', 'Compatibilidad entre cuerpo Curvy y tono de piel claro.', 1, 1, 5, 1),
-('Original + Medio', 'Compatibilidad entre cuerpo Original y tono de piel medio.', 2, 2, 6, 2),
-('Petite + Fantasía', 'Compatibilidad entre cuerpo Petite y tono de piel fantasía vibrante.', 3, 3, 9, 3),
-('Tall + Oscuro', 'Compatibilidad entre cuerpo Tall y tono de piel oscuro elegante.', 4, 4, 8, 4),
-('Millie + Azul Claro', 'Molde Millie con ojos azul claro para un estilo etéreo.', 16, 1, 51, 1),
-('Superstar + Esmeralda', 'Molde Superstar combinado con ojos esmeralda intensos.', 18, 3, 70, 3),
-('Glamour + Violeta', 'Molde Glamour con ojos violeta para un look de pasarela.', 19, 1, 59, 1),
-('Dream + Lavanda', 'Molde Dream con ojos lavanda para un aire soñador.', 25, 4, 68, 4),
-('Pearl + Miel', 'Molde Pearl con ojos miel para una belleza cálida.', 32, 2, 65, 2),
-('Eden + Jade', 'Molde Eden con ojos jade para un acabado natural y elegante.', 79, 3, 66, 3);
+INSERT INTO Caracteristica_Compatibilidad (
+    CarCom_nombre, 
+    CarCom_descripcion, 
+    Caracteristica_Car_id, 
+    Caracteristica_Diseño_Producto_DP_id, 
+    Caracteristica_Car_id2, 
+    Caracteristica_Diseño_Producto_DP_id2
+) VALUES
+(
+    'Curvy + Claro', 
+    'Compatibilidad entre cuerpo Curvy y tono de piel claro.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 
+    1,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 
+    1
+),
+(
+    'Original + Medio', 
+    'Compatibilidad entre cuerpo Original y tono de piel medio.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 
+    2,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 
+    2
+),
+(
+    'Petite + Fantasía', 
+    'Compatibilidad entre cuerpo Petite y tono de piel fantasía vibrante.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 
+    3,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 
+    3
+),
+(
+    'Tall + Oscuro', 
+    'Compatibilidad entre cuerpo Tall y tono de piel oscuro elegante.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 
+    4,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 
+    2
+),
+(
+    'Millie + Azul Claro', 
+    'Molde Millie con ojos azul claro para un estilo etéreo.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 
+    1,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Azul Claro' AND Diseño_Producto_DP_id = 5), 
+    5
+),
+(
+    'Superstar + Esmeralda', 
+    'Molde Superstar combinado con ojos esmeralda intensos.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 
+    3,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Esmeralda' AND Diseño_Producto_DP_id = 3), 
+    3
+),
+(
+    'Glamour + Violeta', 
+    'Molde Glamour con ojos violeta para un look de pasarela.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Glamour' AND Diseño_Producto_DP_id = 4), 
+    4,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Violeta' AND Diseño_Producto_DP_id = 1), 
+    1
+),
+(
+    'Dream + Lavanda', 
+    'Molde Dream con ojos lavanda para un aire soñador.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Dream' AND Diseño_Producto_DP_id = 4), 
+    4,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Lavanda' AND Diseño_Producto_DP_id = 4), 
+    4
+),
+(
+    'Pearl + Miel', 
+    'Molde Pearl con ojos miel para una belleza cálida.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Pearl' AND Diseño_Producto_DP_id = 2), 
+    2,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Miel' AND Diseño_Producto_DP_id = 3), 
+    3
+),
+(
+    'Eden + Jade', 
+    'Molde Eden con ojos jade para un acabado natural y elegante.', 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Eden' AND Diseño_Producto_DP_id = 3), 
+    3,
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Jade' AND Diseño_Producto_DP_id = 2), 
+    2
+);
 
 INSERT INTO Estado (Est_nombre, Est_descripcion) VALUES
 ('Emitida', 'La orden ha sido creada en el sistema por el cliente o vendedor.'),
@@ -457,16 +534,235 @@ INSERT INTO Membresia (Mem_nombre, Mem_descripcion) VALUES
 ('Gold', 'Membresía Gold con beneficios especiales y acceso prioritario.'),
 ('Platinum', 'Membresía Platinum con descuentos exclusivos y acceso prioritario.');
 
--- 10 registros de Responsable
-INSERT INTO Responsable (R_fecha_inicio, R_fecha_fin, Empleado_Em_id, Cargo_Car_id, Fase_Operativa_FO_id, Fase_Diseno_DP_id) VALUES
-('2024-01-01','2024-12-31',1,1,1,1),
-('2023-02-15','2023-12-31',2,2,1,2),
-('2022-05-01','2022-12-31',3,3,2,3),
-('2024-03-01','2024-11-30',4,4,2,4),
-('2023-07-01','2024-06-30',5,5,3,5),
-('2022-09-10','2023-09-09',6,6,3,6),
-('2021-11-01','2022-10-31',7,7,4,7),
-('2024-04-01','2024-12-31',8,8,4,8),
-('2023-01-01','2023-12-31',9,9,5,9),
-('2020-08-01','2021-07-31',10,10,5,10);
 
+
+
+INSERT INTO Envio (E_numero, E_fecha_hora, Courier_Cou_id, Transportista_T_id) VALUES
+('ENV-001', '2026-06-01 10:00:00', 1, 1),
+('ENV-002', '2026-06-02 11:30:00', 2, 2),
+('ENV-003', '2026-06-03 09:15:00', 3, 3),
+('ENV-004', '2026-06-04 14:00:00', 4, 4),
+('ENV-005', '2026-06-05 16:45:00', 5, 5),
+('ENV-006', '2026-06-06 08:30:00', 6, 6),
+('ENV-007', '2026-06-07 12:00:00', 7, 7),
+('ENV-008', '2026-06-08 15:20:00', 8, 8),
+('ENV-009', '2026-06-09 11:10:00', 9, 9),
+('ENV-010', '2026-06-10 17:00:00', 10, 10);
+
+INSERT INTO Estado_Envio (EstEn_fecha_inicio, EstEn_fecha_fin, Envio_E_id, Estado_Est_id) VALUES
+('2026-06-01', '2026-06-02', 1, 5),
+('2026-06-02', '2026-06-03', 2, 5),
+('2026-06-03', '2026-06-04', 3, 5),
+('2026-06-04', '2026-06-05', 4, 5),
+('2026-06-05', '2026-06-06', 5, 5),
+('2026-06-06', '2026-06-07', 6, 5),
+('2026-06-07', '2026-06-08', 7, 5),
+('2026-06-08', '2026-06-09', 8, 5),
+('2026-06-09', '2026-06-10', 9, 5),
+('2026-06-10', '2026-06-11', 10, 5);
+
+INSERT INTO Responsable (R_fecha_inicio, R_fecha_fin, Empleado_Em_id, Cargo_Car_id) VALUES
+('2026-06-01', '2026-12-31', 1, 1),
+('2026-06-02', '2026-12-31', 2, 2),
+('2026-06-03', '2026-12-31', 3, 3),
+('2026-06-04', '2026-12-31', 4, 4),
+('2026-06-05', '2026-12-31', 5, 5),
+('2026-06-06', '2026-12-31', 6, 6),
+('2026-06-07', '2026-12-31', 7, 7),
+('2026-06-08', '2026-12-31', 8, 8),
+('2026-06-09', '2026-12-31', 9, 9),
+('2026-06-10', '2026-12-31', 10, 10);
+
+-- Insertar categorías principales (padres)
+INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
+('Propiedad', 'Categoría principal para inmuebles y edificaciones.', NULL),
+('Vehículo', 'Categoría principal para medios de transporte.', NULL),
+('Accesorio', 'Categoría principal para bolsos, tacones, zarcillos y otros complementos.', NULL),
+('Ropa', 'Categoría principal para prendas de vestir.', NULL);
+
+-- Insertar subcategorías (hijos)
+INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
+('Casa', 'Subcategoría para casas de muñecas y residencias.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad')),
+('Apartamento', 'Subcategoría para apartamentos de juguete y estudios.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad')),
+('Carro', 'Subcategoría para automóviles y vehículos de cuatro ruedas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo')),
+('Moto', 'Subcategoría para motocicletas y vehículos de dos ruedas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo')),
+('Camisa', 'Subcategoría para partes superiores de vestir.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Ropa')),
+('Bolso', 'Subcategoría para bolsos, carteras y morrales de colección.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Accesorio'));
+
+-- Insertar sub-subcategorías (habitaciones de la casa)
+INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
+('Habitación', 'Dormitorio o cuarto principal de la casa de muñecas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
+('Cocina', 'Área de cocina con gabinetes y accesorios de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
+('Baño', 'Cuarto de baño con ducha y lavamanos de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
+('Sala', 'Sala de estar o salón de recreación de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'));
+
+
+INSERT INTO Compatibilidad (Categoria_Cat_id, Categoria_Cat_id2) VALUES
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Carro')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Apartamento'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Moto')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Camisa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Bolso')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Sala'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Cocina')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Habitación'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Baño')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Apartamento')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Carro'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Moto')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Habitación'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Camisa')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Sala'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Bolso')),
+((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Cocina'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'));
+
+-- Insertar registros en la entidad Pieza con IDs directos
+INSERT INTO Pieza (Pie_fecha_inicio, Pie_fecha_fin, Categoria_Cat_id, Diseño_Producto_DP_id) VALUES
+('2026-06-01', '2027-12-31', 5, 10), -- Casa (5), Barbie Dream House Deluxe (10)
+('2026-06-01', '2027-12-31', 6, 8),  -- Apartamento (6), Barbie Apartamento (8)
+('2026-06-01', '2027-12-31', 7, 4),  -- Carro (7), Barbie Piloto de carros (4)
+('2026-06-01', '2027-12-31', 8, 4),  -- Moto (8), Barbie Piloto de carros (4)
+('2026-06-01', '2027-12-31', 9, 3),  -- Camisa (9), Barbie Artista (3)
+('2026-06-01', '2027-12-31', 10, 1), -- Bolso (10), Barbie Lunar (1)
+('2026-06-01', '2027-12-31', 14, 6), -- Sala (14), Barbie Cabaña (6)
+('2026-06-01', '2027-12-31', 12, 6), -- Cocina (12), Barbie Cabaña (6)
+('2026-06-01', '2027-12-31', 13, 6), -- Baño (13), Barbie Cabaña (6)
+('2026-06-01', '2027-12-31', 11, 10);-- Habitación (11), Barbie Dream House Deluxe (10)
+
+-- Insertar registros en la entidad Pieza_Caracteristica
+INSERT INTO Pieza_Caracteristica (
+    PC_valor, 
+    Caracteristica_Car_id, 
+    Caracteristica_Diseño_Producto_DP_id, 
+    Pieza_Pie_id, 
+    Pieza_Categoria_Cat_id, 
+    Pieza_Diseño_Producto_DP_id
+) VALUES
+('Curvy', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 5 AND Diseño_Producto_DP_id = 10), 5, 10),
+('Original', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 6 AND Diseño_Producto_DP_id = 8), 6, 8),
+('Tall', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 4, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 7 AND Diseño_Producto_DP_id = 4), 7, 4),
+('Medio', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 8 AND Diseño_Producto_DP_id = 4), 8, 4),
+('Petite', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 9 AND Diseño_Producto_DP_id = 3), 9, 3),
+('Millie', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 10 AND Diseño_Producto_DP_id = 1), 10, 1),
+('Claro', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 14 AND Diseño_Producto_DP_id = 6), 14, 6),
+('Oscuro', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 12 AND Diseño_Producto_DP_id = 6), 12, 6),
+('Fantasía', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 13 AND Diseño_Producto_DP_id = 6), 13, 6),
+('Superstar', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 11 AND Diseño_Producto_DP_id = 10), 11, 10);
+
+-- Insertar registros en la entidad Lote_Produccion (se crean inicialmente con Control_Calidad_CC_id como NULL)
+INSERT INTO Lote_Produccion (
+    LP_fecha_hora, 
+    LP_cantidad_producida, 
+    Material_M_id, 
+    Pieza_Caracteristica_Caracteristica_Car_id, 
+    Pieza_Caracteristica_Caracteristica_Diseño_Producto_DP_id, 
+    Pieza_Caracteristica_Pieza_Pie_id, 
+    Pieza_Caracteristica_Pieza_Categoria_Cat_id, 
+    Pieza_Caracteristica_Pieza_Diseño_Producto_DP_id, 
+    Compatibilidad_Comp_id, 
+    Compatibilidad_Categoria_Cat_id, 
+    Compatibilidad_Categoria_Cat_id2, 
+    Control_Calidad_CC_id
+) VALUES
+(
+    '2026-06-01 10:00:00', 500, 1, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 1, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 5 AND Diseño_Producto_DP_id = 10), 5, 10, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 5 AND Categoria_Cat_id2 = 7), 5, 7, 
+    NULL
+),
+(
+    '2026-06-02 11:00:00', 450, 2, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 2, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 6 AND Diseño_Producto_DP_id = 8), 6, 8, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 6 AND Categoria_Cat_id2 = 8), 6, 8, 
+    NULL
+),
+(
+    '2026-06-03 12:00:00', 600, 3, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 4, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 7 AND Diseño_Producto_DP_id = 4), 7, 4, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 9 AND Categoria_Cat_id2 = 10), 9, 10, 
+    NULL
+),
+(
+    '2026-06-04 13:00:00', 300, 4, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 2, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 8 AND Diseño_Producto_DP_id = 4), 8, 4, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 14 AND Categoria_Cat_id2 = 12), 14, 12, 
+    NULL
+),
+(
+    '2026-06-05 14:00:00', 350, 5, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 3, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 9 AND Diseño_Producto_DP_id = 3), 9, 3, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 11 AND Categoria_Cat_id2 = 13), 11, 13, 
+    NULL
+),
+(
+    '2026-06-06 15:00:00', 400, 6, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 1, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 10 AND Diseño_Producto_DP_id = 1), 10, 1, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 5 AND Categoria_Cat_id2 = 6), 5, 6, 
+    NULL
+),
+(
+    '2026-06-07 16:00:00', 520, 7, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 1, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 14 AND Diseño_Producto_DP_id = 6), 14, 6, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 7 AND Categoria_Cat_id2 = 8), 7, 8, 
+    NULL
+),
+(
+    '2026-06-08 17:00:00', 480, 8, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 2, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 12 AND Diseño_Producto_DP_id = 6), 12, 6, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 11 AND Categoria_Cat_id2 = 9), 11, 9, 
+    NULL
+),
+(
+    '2026-06-09 18:00:00', 510, 9, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 3, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 13 AND Diseño_Producto_DP_id = 6), 13, 6, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 14 AND Categoria_Cat_id2 = 10), 14, 10, 
+    NULL
+),
+(
+    '2026-06-10 19:00:00', 550, 10, 
+    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 3, 
+    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 11 AND Diseño_Producto_DP_id = 10), 11, 10, 
+    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 12 AND Categoria_Cat_id2 = 5), 12, 5, 
+    NULL
+);
+
+-- Insertar registros en la entidad Control_Calidad (inspecciones post-producción, cada una referencia su lote)
+INSERT INTO Control_Calidad (CC_fecha, CC_muestras_inspeccionadas, CC_unidades_rechazadas, CC_unidades_aprobadas, CC_resultado, CC_observaciones, Lote_Produccion_LP_id) VALUES
+('2026-06-01', 100, 2, 98, 'Aprobado', 'Lote cumple con los estándares de calidad.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-01' LIMIT 1)),
+('2026-06-02', 100, 5, 95, 'Aprobado', 'Lote aprobado con observaciones mínimas en costuras.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-02' LIMIT 1)),
+('2026-06-03', 100, 1, 99, 'Aprobado', 'Excelente acabado superficial.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-03' LIMIT 1)),
+('2026-06-04', 100, 0, 100, 'Aprobado', 'Lote impecable.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-04' LIMIT 1)),
+('2026-06-05', 100, 3, 97, 'Aprobado', 'Pequeñas rebabas plásticas dentro del límite tolerado.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-05' LIMIT 1)),
+('2026-06-06', 100, 4, 96, 'Aprobado', 'Tono de color correcto, sin imperfecciones.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-06' LIMIT 1)),
+('2026-06-07', 100, 2, 98, 'Aprobado', 'Dimensiones correctas en los encajes.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-07' LIMIT 1)),
+('2026-06-08', 100, 1, 99, 'Aprobado', 'Lote aprobado satisfactoriamente.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-08' LIMIT 1)),
+('2026-06-09', 100, 0, 100, 'Aprobado', 'Cumple plenamente con tolerancias de diseño.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-09' LIMIT 1)),
+('2026-06-10', 100, 2, 98, 'Aprobado', 'Pruebas de resistencia mecánica superadas.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-10' LIMIT 1));
+
+-- Insertar registros en la entidad Defecto_Calidad
+INSERT INTO Defecto_Calidad (DC_fecha_reporte, DC_estado, DC_gravedad, DC_tipo) VALUES
+('2026-06-01', 'Reportado', 'Leve', 'Rebaba plástica en el borde del molde'),
+('2026-06-02', 'En revisión', 'Moderado', 'Deformación por temperatura en el cuerpo de la pieza'),
+('2026-06-03', 'Resuelto', 'Leve', 'Tonalidad de color fuera del rango aceptado'),
+('2026-06-04', 'Reportado', 'Crítico', 'Fractura estructural en articulación de brazo'),
+('2026-06-05', 'En revisión', 'Moderado', 'Falta de adhesión en la pintura decorativa'),
+('2026-06-06', 'Resuelto', 'Leve', 'Pequeñas burbujas en la superficie del PVC'),
+('2026-06-07', 'Reportado', 'Crítico', 'Rotura del engranaje de unión en la cabeza'),
+('2026-06-08', 'En revisión', 'Moderado', 'Asimetría en el molde del rostro'),
+('2026-06-09', 'Resuelto', 'Leve', 'Exceso de material en la zona de costura del accesorio'),
+('2026-06-10', 'Reportado', 'Moderado', 'Desprendimiento de nylon del cabello sintético');
+
+INSERT INTO public.producto_final (pf_nombre, pf_era, pf_rareza, pf_estado, exclusividad_producto_ep_id, lote_produccion_lp_id, orden_compra_oc_id, compra_btc_cbtc_id)
+VALUES
+('Producto Final 1','Era 1','Común','Disponible',1,1,1,1),
+('Producto Final 2','Era 1','Común','Disponible',2,2,2,2),
+('Producto Final 3','Era 2','Rara','Disponible',3,3,3,3),
+('Producto Final 4','Era 2','Épica','Disponible',4,4,4,4),
+('Producto Final 5','Era 3','Legendaria','Disponible',5,5,5,5),
+('Producto Final 6','Era 3','Común','En stock',6,6,6,6),
+('Producto Final 7','Era 4','Rara','En stock',7,7,7,7),
+('Producto Final 8','Era 4','Épica','En stock',8,8,8,8),
+('Producto Final 9','Era 5','Legendaria','En stock',9,9,9,9),
+('Producto Final 10','Era 5','Común','Agotado',10,10,10,10);

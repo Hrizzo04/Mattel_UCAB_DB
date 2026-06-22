@@ -155,7 +155,8 @@ CREATE TABLE Control_Calidad (
      CC_unidades_rechazadas     INTEGER  NOT NULL , 
      CC_unidades_aprobadas      INTEGER  NOT NULL , 
      CC_resultado               VARCHAR (50)  NOT NULL , 
-     CC_observaciones           VARCHAR (500)  NOT NULL 
+     CC_observaciones           VARCHAR (500)  NOT NULL,
+     Lote_Produccion_LP_id      INTEGER  NOT NULL
 );
 
 
@@ -487,8 +488,7 @@ CREATE TABLE Lote_Produccion (
      Pieza_Caracteristica_Pieza_Diseño_Producto_DP_id  INTEGER  NOT NULL , 
      Compatibilidad_Comp_id                            INTEGER  NOT NULL , 
      Compatibilidad_Categoria_Cat_id                   INTEGER  NOT NULL , 
-     Compatibilidad_Categoria_Cat_id2                  INTEGER  NOT NULL , 
-     Control_Calidad_CC_id                             INTEGER  NOT NULL 
+     Compatibilidad_Categoria_Cat_id2                  INTEGER  NOT NULL 
 );
 
 
@@ -929,7 +929,7 @@ ALTER TABLE Historico_Producto ADD CONSTRAINT Historico_Producto_Producto_Final_
 ALTER TABLE Historico_Profesion ADD CONSTRAINT Historico_Profesion_Diseño_Producto_FK FOREIGN KEY ( Diseño_Producto_DP_id ) REFERENCES Diseño_Producto ( DP_id );
 ALTER TABLE Historico_Profesion ADD CONSTRAINT Historico_Profesion_Profesion_FK FOREIGN KEY ( Profesion_Prof_id ) REFERENCES Profesion ( Prof_id );
 ALTER TABLE Lote_Produccion ADD CONSTRAINT Lote_Produccion_Compatibilidad_FK FOREIGN KEY ( Compatibilidad_Comp_id, Compatibilidad_Categoria_Cat_id, Compatibilidad_Categoria_Cat_id2 ) REFERENCES Compatibilidad ( Comp_id, Categoria_Cat_id, Categoria_Cat_id2 );
-ALTER TABLE Lote_Produccion ADD CONSTRAINT Lote_Produccion_Control_Calidad_FK FOREIGN KEY ( Control_Calidad_CC_id ) REFERENCES Control_Calidad ( CC_id );
+ALTER TABLE Control_Calidad ADD CONSTRAINT Control_Calidad_Lote_Produccion_FK FOREIGN KEY ( Lote_Produccion_LP_id ) REFERENCES Lote_Produccion ( LP_id );
 ALTER TABLE Lote_Produccion ADD CONSTRAINT Lote_Produccion_Material_FK FOREIGN KEY ( Material_M_id ) REFERENCES Material ( M_id );
 ALTER TABLE Lote_Produccion ADD CONSTRAINT Lote_Produccion_Pieza_Caracteristica_FK FOREIGN KEY ( Pieza_Caracteristica_Caracteristica_Car_id, Pieza_Caracteristica_Caracteristica_Diseño_Producto_DP_id, Pieza_Caracteristica_Pieza_Pie_id, Pieza_Caracteristica_Pieza_Categoria_Cat_id, Pieza_Caracteristica_Pieza_Diseño_Producto_DP_id ) REFERENCES Pieza_Caracteristica ( Caracteristica_Car_id, Caracteristica_Diseño_Producto_DP_id, Pieza_Pie_id, Pieza_Categoria_Cat_id, Pieza_Diseño_Producto_DP_id );
 ALTER TABLE Lugar ADD CONSTRAINT Lugar_Lugar_FK FOREIGN KEY ( Lugar_L_id ) REFERENCES Lugar ( L_id );
