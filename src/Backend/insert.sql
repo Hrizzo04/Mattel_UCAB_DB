@@ -767,3 +767,73 @@ INSERT INTO producto_final(
 ('Barbie Constructora', 'Vintage', 'NRFB', 2, 9, 1350, 70), 
 ('Barbie Piloto de carros', 'Vintage', 'NRFB', 1, 10, 1600, 35), 
 ('Ken Lunar', 'Modern', 'NRFB', 1, 11, 2000, 30);
+
+INSERT INTO historico_producto (
+    hp_fecha_hora_lanzamiento,
+    hp_precio,
+    producto_final_pf_id
+) VALUES 
+-- Registro 1: Barbie Lunar (Precio: 34.00, ID: 1)
+('2026-01-15 08:00:00', 34.00, 1),
+
+-- Registro 2: Skipper Lunar (Precio: 30.00, ID: 2)
+('2026-02-10 09:30:00', 30.00, 2),
+
+-- Registro 3: Barbie Artista (Precio: 50.00, ID: 3)
+('2026-01-20 14:00:00', 50.00, 3),
+
+-- Registro 4: Chelsea Lunar (Precio: 27.00, ID: 4)
+('2026-02-01 10:15:00', 27.00, 4),
+
+-- Registro 5: Barbie Lunar Lote 6 (Precio: 25.00, ID: 5)
+('2026-02-15 11:00:00', 25.00, 5),
+
+-- Registro 6: Stacie Lunar (Precio: 300.00, ID: 6)
+('2026-02-20 13:45:00', 300.00, 6),
+
+-- Registro 7: Barbie Iluminada (Precio: 150.00, ID: 7)
+('2026-03-01 18:30:00', 150.00, 7),
+
+-- Registro 8: Barbie Constructora (Precio: 70.00, ID: 8)
+('2026-03-08 07:00:00', 70.00, 8),
+
+-- Registro 9: Barbie Piloto de carros (Precio: 35.00, ID: 9)
+('2026-03-15 12:00:00', 35.00, 9),
+
+-- Registro 10: Ken Lunar (Precio: 30.00, ID: 10)
+('2026-03-22 15:20:00', 30.00, 10);
+
+INSERT INTO public.mercado_secundario (
+    ms_condicion_fisica,
+    ms_precio_actual,
+    producto_final_pf_id
+) VALUES 
+-- Registro 1: Barbie Lunar (Precio orig: 34 -> NRFB: 55.00)
+('NRFB', 55.00, 1),
+
+-- Registro 2: Skipper Lunar (Precio orig: 30 -> Mint: 42.00)
+('Mint', 42.00, 2),
+
+-- Registro 3: Barbie Artista (Precio orig: 50 -> Mint: 78.00)
+('Mint', 78.00, 3),
+
+-- Registro 4: Chelsea Lunar (Precio orig: 27 -> NRFB: 45.00)
+('NRFB', 45.00, 4),
+
+-- Registro 5: Barbie Lunar Lote 6 (Precio orig: 25 -> restoration needed por caja rota)
+('restoration needed', 18.00, 5),
+
+-- Registro 6: Stacie Lunar [Platinum Exclusivo] (Precio orig: 300 -> NRFB Coleccionista: 680.00)
+('NRFB', 680.00, 6),
+
+-- Registro 7: Barbie Iluminada [Gold Exclusivo] (Precio orig: 150 -> Mint Impecable: 290.00)
+('Mint', 290.00, 7),
+
+-- Registro 8: Barbie Constructora (Precio orig: 70 -> Mint: 115.00)
+('Mint', 115.00, 8),
+
+-- Registro 9: Barbie Piloto de carros (Precio orig: 35 -> NRFB: 60.00)
+('NRFB', 60.00, 9),
+
+-- Registro 10: Ken Lunar (Precio orig: 30 -> restoration needed por desgaste)
+('restoration needed', 22.00, 10);
