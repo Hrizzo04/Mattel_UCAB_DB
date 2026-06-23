@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbie Store | MattelUCAB</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: #fef2f5;
+            min-height: 100vh;
+        }
+
+        /* ===== HEADER ===== */
+        .store-header {
+            background: #d43f6b;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .store-header .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .store-header .logo h1 span {
+            font-weight: 300;
+            color: #fff0b5;
+        }
+        .store-header .logo p {
+            font-size: 0.7rem;
+            color: #fff0e6;
+        }
+        .store-nav {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .store-nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+        .store-nav a:hover {
+            color: #ffd966;
+        }
+        .store-nav .cart-icon {
+            position: relative;
+            font-size: 1.2rem;
+        }
+        .store-nav .cart-icon .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background: #ffd966;
+            color: #b13e61;
+            border-radius: 50%;
+            padding: 0.1rem 0.4rem;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+        .logout-btn-store {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .logout-btn-store:hover {
+            background: rgba(255,255,255,0.4);
+        }
+
+        /* ===== CONTENIDO PRINCIPAL ===== */
+        .store-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .welcome-section {
+            margin-bottom: 2rem;
+        }
+        .welcome-section h2 {
+            color: #b13e61;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        .welcome-section p {
+            color: #a8637c;
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+        .date-store {
+            color: #a8637c;
+            background: white;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 0.5rem;
+            border: 1px solid #ffe0e9;
+            font-size: 0.85rem;
+        }
+
+        /* ===== FILTROS Y BÚSQUEDA ===== */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            align-items: center;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 0.8rem 1.2rem;
+            border-radius: 2rem;
+            border: 1px solid #ffe0e9;
+        }
+        .filters .category-btn {
+            background: transparent;
+            border: 1px solid #ffe0e9;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #6b4e5c;
+        }
+        .filters .category-btn:hover,
+        .filters .category-btn.active {
+            background: #d43f6b;
+            color: white;
+            border-color: #d43f6b;
+        }
+        .filters .search-box {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.4rem 1rem;
+            border: 1.5px solid #ffe0e9;
+            border-radius: 2rem;
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            background: #fefefe;
+        }
+        .filters .search-box:focus {
+            border-color: #d43f6b;
+        }
+
+        /* ===== PRODUCTOS ===== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1rem;
+            border: 1px solid #ffe0e9;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(212, 63, 107, 0.08);
+        }
+        .product-card .product-img {
+            width: 100%;
+            height: 160px;
+            background: #fef2f5;
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #d43f6b;
+            margin-bottom: 0.5rem;
+        }
+        .product-card h3 {
+            font-size: 1rem;
+            color: #b13e61;
+            font-weight: 700;
+        }
+        .product-card .category {
+            font-size: 0.7rem;
+            color: #a8637c;
+            margin: 0.2rem 0;
+        }
+        .product-card .rating {
+            color: #f7a1c4;
+            font-size: 0.8rem;
+            margin: 0.2rem 0;
+        }
+        .product-card .rating span {
+            color: #6b4e5c;
+            margin-left: 0.3rem;
+        }
+        .product-card .price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #d43f6b;
+            margin: 0.3rem 0;
+        }
+        .product-card .stock {
+            font-size: 0.7rem;
+            color: #6b4e5c;
+        }
+        .product-card .add-cart {
+            margin-top: 0.8rem;
+            background: #d43f6b;
+            color: white;
+            border: none;
+            padding: 0.4rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .product-card .add-cart:hover {
+            background: #b83a61;
+        }
+        .product-card .add-cart:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* ===== INDICADOR DE CONEXIÓN ===== */
+        .status-container-store {
+            text-align: center;
+            margin: 1.5rem 0;
+        }
+        .status-badge-store {
+            display: inline-block;
+            padding: 0.3rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+        .status-badge-store.online {
+            background: #e3f5e9;
+            color: #1e7a4a;
+            border-color: #b7e4c7;
+        }
+        .status-badge-store.offline {
+            background: #fce4e4;
+            color: #b13e61;
+            border-color: #f5c6cb;
+        }
+        .status-badge-store.loading {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* ===== FOOTER ===== */
+        .store-footer {
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border-top: 1px solid #ffe0ea;
+            font-size: 0.7rem;
+            color: #bb7c95;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .store-header {
+                flex-direction: column;
+                align-items: stretch;
+                text-align: center;
+            }
+            .store-nav {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .product-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="store-header">
+        <div class="logo">
+            <h1>Barbie <span>Store</span></h1>
+            <p>Tu tienda favorita</p>
+        </div>
+        <nav class="store-nav">
+            <a href="tienda.html"><i class="fas fa-store"></i> Tienda</a>
+            <a href="#"><i class="fas fa-gavel"></i> Subastas</a>
+            <a href="#"><i class="fas fa-box"></i> Mis Pedidos</a>
+            <span class="cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </span>
+            <button class="logout-btn-store" id="logoutBtnStore">Cerrar sesión</button>
+        </nav>
+    </header>
+
+    <!-- ===== CONTENIDO ===== -->
+    <main class="store-main">
+        <div class="welcome-section">
+            <h2>Bienvenido al Sistema MattelUCAB</h2>
+            <p>Descubre nuestra colección exclusiva</p>
+            <div class="date-store" id="fechaStore"></div>
+        </div>
+
+        <!-- Filtros y búsqueda -->
+        <div class="filters">
+            <button class="category-btn active" data-category="Todas">Todas</button>
+            <button class="category-btn" data-category="Fashion Dolls">Fashion Dolls</button>
+            <button class="category-btn" data-category="Playsets">Playsets</button>
+            <button class="category-btn" data-category="Surprise">Surprise</button>
+            <button class="category-btn" data-category="Careers">Careers</button>
+            <button class="category-btn" data-category="Collector">Collector</button>
+            <input type="text" class="search-box" id="searchStore" placeholder="Buscar productos...">
+        </div>
+
+        <!-- Indicador de conexión -->
+        <div class="status-container-store">
+            <span id="statusStore" class="status-badge-store loading">⏳ Conectando...</span>
+        </div>
+
+        <!-- Grid de productos -->
+        <div class="product-grid" id="productGridStore">
+            <!-- Se llena con JS -->
+        </div>
+    </main>
+
+    <footer class="store-footer">
+        © 2025 MattelUCAB. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        // ========== CONFIGURACIÓN SUPABASE ==========
+        const SUPABASE_URL = 'https://qrigbgqpcwchaykaqrnr.supabase.co';
+        const SUPABASE_ANON_KEY = 'TU_CLAVE_ANON_AQUI'; // Reemplaza
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // ========== VARIABLES GLOBALES ==========
+        let productos = [];
+        let carrito = JSON.parse(sessionStorage.getItem('carrito')) || [];
+        let categoriaActual = 'Todas';
+        let busquedaActual = '';
+
+        // ========== ELEMENTOS DOM ==========
+        const grid = document.getElementById('productGridStore');
+        const statusBadge = document.getElementById('statusStore');
+        const cartCount = document.getElementById('cartCount');
+        const searchInput = document.getElementById('searchStore');
+
+        // ========== FUNCIONES ==========
+        function actualizarEstado(estado, mensaje) {
+            statusBadge.className = `status-badge-store ${estado}`;
+            const iconos = {
+                online: '✅ ',
+                offline: '❌ ',
+                loading: '⏳ '
+            };
+            statusBadge.innerHTML = iconos[estado] + mensaje;
+        }
+
+        function actualizarCarrito() {
+            cartCount.textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            sessionStorage.setItem('carrito', JSON.stringify(carrito));
+        }
+
+        function agregarAlCarrito(productoId) {
+            const producto = productos.find(p => p.id === productoId);
+            if (!producto) return;
+            if (producto.stock <= 0) {
+                alert('⚠️ Producto sin stock.');
+                return;
+            }
+            const existente = carrito.find(item => item.id === productoId);
+            if (existente) {
+                if (existente.cantidad < producto.stock) {
+                    existente.cantidad++;
+                } else {
+                    alert('⚠️ No hay suficiente stock.');
+                    return;
+                }
+            } else {
+                carrito.push({ id: productoId, cantidad: 1 });
+            }
+            actualizarCarrito();
+            alert(`✅ ${producto.nombre} agregado al carrito.`);
+        }
+
+        function renderizarProductos() {
+            let filtrados = productos;
+            if (categoriaActual !== 'Todas') {
+                filtrados = filtrados.filter(p => p.categoria === categoriaActual);
+            }
+            if (busquedaActual.trim() !== '') {
+                const q = busquedaActual.toLowerCase().trim();
+                filtrados = filtrados.filter(p =>
+                    p.nombre.toLowerCase().includes(q) ||
+                    p.categoria.toLowerCase().includes(q) ||
+                    p.sku.toLowerCase().includes(q)
+                );
+            }
+
+            if (filtrados.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#a8637c; padding:2rem;">No se encontraron productos.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtrados.map(p => `
+                <div class="product-card" data-id="${p.id}">
+                    <div class="product-img">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <h3>${p.nombre}</h3>
+                    <div class="category">${p.categoria}</div>
+                    <div class="rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                        <span>(${Math.floor(Math.random()*100)+50})</span>
+                    </div>
+                    <div class="price">$${p.precio ? p.precio.toFixed(2) : '0.00'}</div>
+                    <div class="stock">Stock: ${p.stock || 0} unidades</div>
+                    <button class="add-cart" data-id="${p.id}" ${p.stock <= 0 ? 'disabled' : ''}>
+                        ${p.stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
+                    </button>
+                </div>
+            `).join('');
+
+            // Eventos de botones
+            document.querySelectorAll('.add-cart').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    agregarAlCarrito(id);
+                });
+            });
+        }
+
+        // ========== OBTENER PRODUCTOS DE SUPABASE ==========
+        async function cargarProductos() {
+            actualizarEstado('loading', 'Cargando productos...');
+            try {
+                const { data, error } = await supabaseClient
+                    .from('productos')
+                    .select('*');
+
+                if (error) throw error;
+
+                if (data && data.length > 0) {
+                    productos = data;
+                    actualizarEstado('online', `${data.length} productos disponibles`);
+                } else {
+                    // Si no hay datos, usar productos de ejemplo
+                    productos = [
+                        { id: 1, nombre: 'Barbie Fashionista #142', sku: 'BRB-FH-142', categoria: 'Fashion Dolls', precio: 44.99, stock: 245 },
+                        { id: 2, nombre: 'Barbie Dreamhouse', sku: 'BRB-DH-001', categoria: 'Playsets', precio: 199.99, stock: 12 },
+                        { id: 3, nombre: 'Barbie Color Reveal', sku: 'BRB-CR-009', categoria: 'Surprise', precio: 24.99, stock: 156 },
+                        { id: 4, nombre: 'Barbie Extra #5', sku: 'BRB-EX-005', categoria: 'Fashion Dolls', precio: 45.00, stock: 156 },
+                        { id: 5, nombre: 'Barbie Careers Doctor', sku: 'BRB-CA-010', categoria: 'Careers', precio: 19.99, stock: 89 },
+                        { id: 6, nombre: 'Barbie Collector Edition', sku: 'BRB-CO-001', categoria: 'Collector', precio: 79.99, stock: 34 }
+                    ];
+                    actualizarEstado('online', 'Productos de ejemplo (sin BD)');
+                }
+                renderizarProductos();
+            } catch (error) {
+                console.error('Error cargando productos:', error);
+                actualizarEstado('offline', 'Error al cargar');
+                // Cargar productos de ejemplo
+                productos = [
+                    { id: 1, nombre: 'Barbie Fashionista #142', sku: 'BRB-FH-142', categoria: 'Fashion Dolls', precio: 44.99, stock: 245 },
+                    { id: 2, nombre: 'Barbie Dreamhouse', sku: 'BRB-DH-001', categoria: 'Playsets', precio: 199.99, stock: 12 },
+                    { id: 3, nombre: 'Barbie Color Reveal', sku: 'BRB-CR-009', categoria: 'Surprise', precio: 24.99, stock: 156 },
+                    { id: 4, nombre: 'Barbie Extra #5', sku: 'BRB-EX-005', categoria: 'Fashion Dolls', precio: 45.00, stock: 156 }
+                ];
+                renderizarProductos();
+            }
+        }
+
+        // ========== EVENTOS ==========
+        // Filtros por categoría
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                categoriaActual = this.getAttribute('data-category');
+                renderizarProductos();
+            });
+        });
+
+        // Búsqueda
+        searchInput.addEventListener('input', function() {
+            busquedaActual = this.value;
+            renderizarProductos();
+        });
+
+        // Cerrar sesión
+        document.getElementById('logoutBtnStore').addEventListener('click', () => {
+            sessionStorage.clear();
+            window.location.href = 'InicioSesion.html';
+        });
+
+        // ========== VERIFICAR SESIÓN ==========
+        // Si el rol es 'admin' redirigir al dashboard, si no, queda en tienda
+        const userRole = sessionStorage.getItem('userRole');
+        if (userRole === 'admin') {
+            window.location.href = 'dashboard.html';
+        }
+
+        // ========== FECHA ==========
+        function mostrarFechaStore() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const hoy = new Date();
+            const fecha = hoy.toLocaleDateString('es-ES', options);
+            document.getElementById('fechaStore').innerText = fecha.charAt(0).toUpperCase() + fecha.slice(1);
+        }
+        mostrarFechaStore();
+
+        // ========== INICIALIZAR ==========
+        actualizarCarrito();
+        cargarProductos();
+    </script>
+</body>
+</html>
