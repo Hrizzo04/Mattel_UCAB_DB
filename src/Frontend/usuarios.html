@@ -331,7 +331,7 @@
             box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.1);
         }
 
-        /* SELECT MENÚS DESPLEGABLES ELEGANTES */
+        /* SELECT MENÚS DESPLEGABLES */
         .form-group select {
             width: 100%;
             padding: 0.75rem 1.2rem;
@@ -596,7 +596,7 @@
     </div>
 
     <script>
-        // CONFIGURACIÓN GLOBAL DE TU PROYECTO REAL
+        // CREDENCIALES REALES DE TU PROYECTO
         const SUPABASE_URL = 'https://qrigbgqpcwchaykaqrnr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyaWdiZ3FwY3djaGF5a2Fxcm5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NTY0NjEsImV4cCI6MjA5NTIzMjQ2MX0.tbKXha7EyxDK48dbcwgoI9tFvf1juqCNhCzQHH46D7w';
 
@@ -611,6 +611,24 @@
             2: 'Cliente B2C',
             3: 'Cliente B2B'
         };
+
+        // --- FUNCIONALIDAD EXTRA: LIMPIAR CAMPOS AL HACER CLICK SÓLO LA PRIMERA VEZ ---
+        function asignarLimpiezaAlEnfocar() {
+            const campoUsuario = document.getElementById('usuario');
+            const campoContra = document.getElementById('contrasena');
+
+            if (campoUsuario) {
+                campoUsuario.addEventListener('focus', function() {
+                    campoUsuario.value = '';
+                }, { once: true });
+            }
+
+            if (campoContra) {
+                campoContra.addEventListener('focus', function() {
+                    campoContra.value = '';
+                }, { once: true });
+            }
+        }
 
         // --- 1. OBTENER USUARIOS ---
         async function obtenerUsuarios() {
@@ -652,11 +670,10 @@
             }).join('');
         }
 
-        // --- 3. INSERTAR NUEVO EMPLEADO Y LUEGO USUARIO ---
+        // --- 3. INSERTAR NUEVO EMPLEADO Y LUEGO USUARIO (ARCO EXCLUSIVO SOLUCIONADO) ---
         document.getElementById('formUsuario').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            // Enviamos el campo 'em_sueldo_actual' con 0 por defecto para evitar el error de restricción NOT-NULL
             const empleadoPayload = {
                 em_p_nombre: document.getElementById('p_nombre').value.trim(),
                 em_s_nombre: document.getElementById('s_nombre').value.trim() || null,
@@ -665,21 +682,32 @@
                 em_sueldo_actual: 0 
             };
 
-            const usuarioPayload = {
-                u_nombre: document.getElementById('usuario').value.trim(),
-                u_contraseña: document.getElementById('contrasena').value,
-                rol_r_id: parseInt(document.getElementById('rol').value)
-            };
+            const usuarioInput = document.getElementById('usuario').value.trim();
+            const contrasenaInput = document.getElementById('contrasena').value;
+            const rolInput = parseInt(document.getElementById('rol').value);
 
             try {
-                // Guardar primero en la tabla 'empleado'
-                const { error: empError } = await _supabase
+                const { data: nuevoEmpleado, error: empError } = await _supabase
                     .from('empleado')
-                    .insert([empleadoPayload]);
+                    .insert([empleadoPayload])
+                    .select(); 
 
                 if (empError) throw empError;
 
-                // Guardar en la tabla 'usuario'
+                if (!nuevoEmpleado || nuevoEmpleado.length === 0) {
+                    throw new Error("No se pudo obtener el identificador del empleado creado.");
+                }
+
+                const empleadoId = nuevoEmpleado[0].em_id; 
+
+                const usuarioPayload = {
+                    u_nombre: usuarioInput,
+                    u_contraseña: contrasenaInput,
+                    rol_r_id: rolInput,
+                    empleado_em_id: empleadoId, 
+                    cliente_cl_id: null          
+                };
+
                 const { error: userError } = await _supabase
                     .from('usuario')
                     .insert([usuarioPayload]);
@@ -689,8 +717,10 @@
                 cerrarModales();
                 this.reset();
                 obtenerUsuarios();
+                
             } catch (error) {
-                alert('Error al guardar datos: ' + error.message);
+                console.error("Error completo:", error);
+                alert('Error al guardar datos: ' + (error.hint || error.message || JSON.stringify(error)));
             }
         });
 
@@ -791,7 +821,11 @@
             modalConfirmarUpdate.classList.remove('mostrar');
         }
 
-        document.getElementById('btnNuevoUsuario').addEventListener('click', () => modalNuevo.classList.add('mostrar'));
+        document.getElementById('btnNuevoUsuario').addEventListener('click', () => {
+            modalNuevo.classList.add('mostrar');
+            asignarLimpiezaAlEnfocar(); // Reactiva la limpieza limpia al abrir la ventana modal
+        });
+        
         document.getElementById('btnCerrarModal').addEventListener('click', cerrarModales);
         document.getElementById('btnCancelar').addEventListener('click', cerrarModales);
         document.getElementById('btnCerrarModalEditar').addEventListener('click', cerrarModales);
