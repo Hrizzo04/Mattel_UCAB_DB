@@ -31,97 +31,102 @@ INSERT INTO Material (M_nombre, M_descripcion) VALUES
 ('Silicona Grado Médico', 'Utilizado para moldes de alta precisión y ediciones ultra raras.'),
 ('Policarbonato', 'Plástico transparente de alta resistencia para vitrinas de empaque.');
 
-INSERT INTO Diseno_Producto (DP_nombre_comercial, DP_descripcion, DP_fecha_lanzamiento, DP_precio_inicial, DP_manual_instrucciones, DP_ancho_cm, DP_largo_cm, DP_peso_volumetrico, Material_M_id) VALUES
+INSERT INTO Diseño_Producto (DP_nombre_comercial, DP_descripcion, DP_fecha_lanzamiento, DP_precio_inicial, DP_manual_instrucciones, DP_ancho_cm, DP_largo_cm, DP_peso_volumetrico, Material_M_id) VALUES
 ('Barbie Lunar', 'Colección de muñeca Barbie espacial con accesorios brillantes y traje galáctico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 8.5, 3.2, 1.0, 1),
-('Barbie Constructora', 'Colección de muñeca Barbie constructora con accesorios de construcción.', '2026-08-15', 89.50, 'Guía paso a paso con 3 niveles de complejidad.', 15.0, 10.0, 2.5, 2),
-('Barbie Artista', 'Colección de muñeca Barbie artista con accesorios de arte y creatividad.', '2026-09-10', 29.90, 'Instrucciones de uso y cuidados para el set.', 25.0, 18.0, 0.9, 3),
-('Barbie Piloto de carros', 'Colección de muñeca Barbie piloto de carros con accesorios de conducción.', '2026-07-20', 59.00, 'Manual técnico para ensamblaje y mantenimiento.', 12.0, 6.5, 1.2, 4),
-('Barbie Iluminada', 'Figura de colección Barbie con luces LED y articulaciones móviles.', '2026-08-05', 39.75, 'Manual de seguridad y reemplazo de baterías.', 10.0, 4.0, 0.7, 5),
+('Barbie Constructora', 'Colección de muñeca Barbie constructora con accesorios de construcción.', '2026-08-15', 89.50, 'Guía paso a paso con 3 niveles de complejidad.', 15.0, 10.0, 2.5, 1),
+('Barbie Artista', 'Colección de muñeca Barbie artista con accesorios de arte y creatividad.', '2026-09-10', 29.90, 'Instrucciones de uso y cuidados para el set.', 25.0, 18.0, 0.9, 1),
+('Barbie Piloto de carros', 'Colección de muñeca Barbie piloto de carros con accesorios de conducción.', '2026-07-20', 59.00, 'Manual técnico para ensamblaje y mantenimiento.', 12.0, 6.5, 1.2, 1),
+('Barbie Iluminada', 'Figura de colección Barbie con luces LED y articulaciones móviles.', '2026-08-05', 39.75, 'Manual de seguridad y reemplazo de baterías.', 10.0, 4.0, 0.7, 1),
 ('Barbie Cabaña', 'Cabaña de ensueño de Barbie con cuarto principal, cocina y cuarto de juegos.', '2026-10-01', 79.99, 'Instrucciones de armado y decoración de la Dream House.', 22.0, 16.0, 2.3, 6),
 ('Barbie Yate', 'Yate de lujo de Barbie con salón, cubierta y accesorios marinos.', '2026-10-15', 54.90, 'Manual de montaje y seguridad para el paseo en yate.', 24.0, 10.0, 2.0, 9),
 ('Barbie Apartamento', 'Apartamento de lujo de Barbie con sala, cocina, dormitorio y baño moderno.', '2026-11-05', 44.80, 'Manual de montaje, limpieza y exposición segura.', 30.0, 20.0, 3.4, 10),
 ('Barbie Dream Studio', 'Estudio creativo de Barbie con espacio para diseñar ropa y decorar.', '2026-11-20', 39.95, 'Instrucciones detalladas para montaje y uso creativo.', 18.0, 14.0, 1.1, 8),
 ('Barbie Dream House Deluxe', 'Dream House Deluxe de Barbie con terraza, piscina y sala de fiestas.', '2026-12-01', 99.99, 'Manual de montaje completo para la casa de Barbie.', 35.0, 25.0, 4.5, 6);
+('Ken Lunar', 'Colección de muñeca Ken espacial con un reloj del espacio y traje galáctico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 9.5, 15.2, 1.0, 1),
+('Skipper Lunar', 'Colección de muñeca Skipper espacial con accesorios brillantes y traje galáctico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 7.5, 13.2, 1.0, 1),
+('Stacie Lunar', 'Colección de muñeca Stacie espacial con bolso lunar y traje galactico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 8.5, 14, 1.0, 1),
+('chelsea Lunar', 'Colección de muñeca Chelsea espacial con traje galáctico.', '2026-07-01', 49.99, 'Manual de montaje sencillo para niños mayores de 6 años.', 6.5, 10, 1.0, 1);
 
 -- Insertar características de cuerpo, tonos de piel, moldes de rostro y colores de ojos
 INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
-('Curvy', 'Tipo de cuerpo Curvy para muñecas con curvas suaves y proporciones modernas.', 1),
-('Original', 'Tipo de cuerpo Original clásico de Barbie con proporciones icónicas.', 2),
-('Petite', 'Tipo de cuerpo Petite para Barbie con estatura más pequeña y estilizada.', 3),
-('Tall', 'Tipo de cuerpo Tall para Barbie con mayor altura y figura esbelta.', 4);
+('Curvy', 'Tipo de cuerpo Curvy para muñecas con curvas suaves y proporciones modernas.', 11),
+('Original', 'Tipo de cuerpo Original clásico de Barbie con proporciones icónicas.', 22),
+('Petite', 'Tipo de cuerpo Petite para Barbie con estatura más pequeña y estilizada.', 13),
+('Tall', 'Tipo de cuerpo Tall para Barbie con mayor altura y figura esbelta.', 24);
 
 INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
-('Claro', 'Tono de piel claro con matices rosados y luminosos.', 1),
-('Medio', 'Tono de piel medio con aspecto natural y cálido.', 2),
-('Bronceado', 'Tono de piel bronceado con brillo dorado y acabado soleado.', 1),
-('Oscuro', 'Tono de piel oscuro con profundidad y riqueza de color.', 2),
-('Fantasía', 'Tono de piel fantasía con efecto brillante y divertido.', 3),
-('Rubia', 'Tono de piel rubia con matices cálidos y suaves.', 1),
-('Morena', 'Tono de piel morena con un tono rico y natural.', 5),
-('Almendra', 'Tono de piel almendra con notas neutras y elegantes.', 3),
-('Miel Caramelo', 'Tono de piel miel caramelo con brillo cálido y suave.', 4);
+('Claro', 'Tono de piel claro con matices rosados y luminosos.', 11),
+('Medio', 'Tono de piel medio con aspecto natural y cálido.', 21),
+('Bronceado', 'Tono de piel bronceado con brillo dorado y acabado soleado.', 11),
+('Oscuro', 'Tono de piel oscuro con profundidad y riqueza de color.', 22),
+('Fantasía', 'Tono de piel fantasía con efecto brillante y divertido.', 23),
+('Rubia', 'Tono de piel rubia con matices cálidos y suaves.', 11),
+('Morena', 'Tono de piel morena con un tono rico y natural.', 15),
+('Almendra', 'Tono de piel almendra con notas neutras y elegantes.', 13),
+('Miel Caramelo', 'Tono de piel miel caramelo con brillo cálido y suave.', 24);
 
 INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
-('Millie', 'Molde de rostro Millie con rasgos suaves y sonrisa delicada.', 1),
-('Mackie', 'Molde de rostro Mackie con mirada vivaz y expresión natural.', 2),
-('Superstar', 'Molde de rostro Superstar con estilo glam y labios definidos.', 3),
-('Glamour', 'Molde de rostro Glamour con ojos grandes y maquillae llamativa.', 4),
-('Radiant', 'Molde de rostro Radiant con tez brillante y mejillas sonrosadas.', 5),
-('Bella', 'Molde de rostro Bella con rasgos simétricos y frescura juvenil.', 3),
-('Luxe', 'Molde de rostro Luxe con contornos elegantes y mirada sofisticada.', 4),
-('Satin', 'Molde de rostro Satin con piel suave y acabado sedoso.', 5),
-('Dazzle', 'Molde de rostro Dazzle con ojos chispeantes y energía divertida.', 3),
-('Dream', 'Molde de rostro Dream con expresiones soñadoras y delicadas.', 4),
-('Twinkle', 'Molde de rostro Twinkle con brillo estelar y encanto juguetón.', 2),
-('Sparkle', 'Molde de rostro Sparkle con detalles brillantes y mirada radiante.', 1),
-('Bliss', 'Molde de rostro Bliss con sonrisa suave y rasgos armoniosos.', 4),
-('Enchanted', 'Molde de rostro Enchanted con aura mágica y facciones delicadas.', 1),
-('Mystique', 'Molde de rostro Mystique con mirada profunda y aspecto misterioso.', 2),
-('Petite Glam', 'Molde de rostro Petite Glam con rasgos finos y estilo elegante.', 5),
-('Pearl', 'Molde de rostro Pearl con piel luminosa y acabado perlado.', 2),
-('Coral', 'Molde de rostro Coral con mejillas suaves y tonalidad juvenil.', 5),
-('Rose', 'Molde de rostro Rose con tonos rosados y expresión tierna.', 4),
-('Frost', 'Molde de rostro Frost con detalles glaseados y estilo moderno.', 3),
-('Aurora', 'Molde de rostro Aurora con brillo suave y expresión serena.', 3),
-('Velvet', 'Molde de rostro Velvet con piel aterciopelada y rasgos pulidos.', 5),
-('Jewel', 'Molde de rostro Jewel con facciones preciosas y mirada intensa.', 4),
-('Corazón', 'Molde de rostro Corazón con labios llenos y sonrisa cálida.', 5),
-('Luna', 'Molde de rostro Luna con rasgos etéreos y aura delicada.', 2),
-('Starlight', 'Molde de rostro Starlight con brillo sutil y expresión soñadora.', 2),
-('Marina', 'Molde de rostro Marina con fresco toque marino y estilo sereno.', 2),
-('Carly', 'Molde de rostro Carly con mirada dulce y detalle moderno.', 1),
-('Mia', 'Molde de rostro Mia con rasgos clásicos y sensación contemporánea.', 1),
-('Ariel', 'Molde de rostro Ariel con labios definidos y frescura náutica.', 5),
-('Nova', 'Molde de rostro Nova con brillo futurista y acabado suave.', 3),
-('Sierra', 'Molde de rostro Sierra con expresiones naturales y estilo relajado.', 3),
-('Isla', 'Molde de rostro Isla con sensación tropical y rasgos suaves.', 4),
-('Zephyra', 'Molde de rostro Zephyra con aire etéreo y detalles artísticos.', 4),
-('Jade', 'Molde de rostro Jade con elegancia mineral y look refinado.', 5),
-('Eden', 'Molde de rostro Eden con rasgos suaves y expresión natural.', 3);
+('Millie', 'Molde de rostro Millie con rasgos suaves y sonrisa delicada.', 11),
+('Mackie', 'Molde de rostro Mackie con mirada vivaz y expresión natural.', 22),
+('Superstar', 'Molde de rostro Superstar con estilo glam y labios definidos.', 13),
+('Glamour', 'Molde de rostro Glamour con ojos grandes y maquillae llamativa.', 14),
+('Radiant', 'Molde de rostro Radiant con tez brillante y mejillas sonrosadas.', 24),
+('Bella', 'Molde de rostro Bella con rasgos simétricos y frescura juvenil.', 13),
+('Luxe', 'Molde de rostro Luxe con contornos elegantes y mirada sofisticada.', 14),
+('Satin', 'Molde de rostro Satin con piel suave y acabado sedoso.', 15),
+('Dazzle', 'Molde de rostro Dazzle con ojos chispeantes y energía divertida.', 23),
+('Dream', 'Molde de rostro Dream con expresiones soñadoras y delicadas.', 14),
+('Twinkle', 'Molde de rostro Twinkle con brillo estelar y encanto juguetón.', 22),
+('Sparkle', 'Molde de rostro Sparkle con detalles brillantes y mirada radiante.', 11),
+('Bliss', 'Molde de rostro Bliss con sonrisa suave y rasgos armoniosos.', 14),
+('Enchanted', 'Molde de rostro Enchanted con aura mágica y facciones delicadas.', 21),
+('Mystique', 'Molde de rostro Mystique con mirada profunda y aspecto misterioso.', 12),
+('Petite Glam', 'Molde de rostro Petite Glam con rasgos finos y estilo elegante.', 15),
+('Pearl', 'Molde de rostro Pearl con piel luminosa y acabado perlado.', 12),
+('Coral', 'Molde de rostro Coral con mejillas suaves y tonalidad juvenil.', 15),
+('Rose', 'Molde de rostro Rose con tonos rosados y expresión tierna.', 14),
+('Frost', 'Molde de rostro Frost con detalles glaseados y estilo moderno.', 23),
+('Aurora', 'Molde de rostro Aurora con brillo suave y expresión serena.', 13),
+('Velvet', 'Molde de rostro Velvet con piel aterciopelada y rasgos pulidos.', 15),
+('Jewel', 'Molde de rostro Jewel con facciones preciosas y mirada intensa.', 24),
+('Corazón', 'Molde de rostro Corazón con labios llenos y sonrisa cálida.', 15),
+('Luna', 'Molde de rostro Luna con rasgos etéreos y aura delicada.', 12),
+('Starlight', 'Molde de rostro Starlight con brillo sutil y expresión soñadora.', 12),
+('Marina', 'Molde de rostro Marina con fresco toque marino y estilo sereno.', 22),
+('Carly', 'Molde de rostro Carly con mirada dulce y detalle moderno.', 11),
+('Mia', 'Molde de rostro Mia con rasgos clásicos y sensación contemporánea.', 21),
+('Ariel', 'Molde de rostro Ariel con labios definidos y frescura náutica.', 15),
+('Nova', 'Molde de rostro Nova con brillo futurista y acabado suave.', 13),
+('Sierra', 'Molde de rostro Sierra con expresiones naturales y estilo relajado.', 13),
+('Isla', 'Molde de rostro Isla con sensación tropical y rasgos suaves.', 14),
+('Zephyra', 'Molde de rostro Zephyra con aire etéreo y detalles artísticos.', 14),
+('Jade', 'Molde de rostro Jade con elegancia mineral y look refinado.', 15),
+('Eden', 'Molde de rostro Eden con rasgos suaves y expresión natural.', 13);
 
 INSERT INTO Caracteristica (Car_nombre, Car_descripcion, Diseño_Producto_DP_id) VALUES
-('Azul Claro', 'Color de ojos azul claro con efecto transparente.', 5),
-('Azul Oscuro', 'Color de ojos azul oscuro con profundidad marina.', 4),
-('Verde', 'Color de ojos verde brillante con toque natural.', 1),
-('Verde Esmeralda', 'Color de ojos verde esmeralda con brillo intenso.', 2),
-('Gris', 'Color de ojos gris suave con estilo moderno.', 4),
-('Marrón', 'Color de ojos marrón cálido con mirada acogedora.', 3),
-('Avellana', 'Color de ojos avellana con mezcla de tonos tierra.', 5),
-('Ámbar', 'Color de ojos ámbar dorado con aspecto cálido.', 1),
-('Violeta', 'Color de ojos violeta mágico con un toque fantasía.', 1),
-('Rosa', 'Color de ojos rosa pastel con tono encantador.', 2),
-('Turquesa', 'Color de ojos turquesa brillante con chispa marina.', 3),
-('Azul Petróleo', 'Color de ojos azul petróleo con matices profundos.', 4),
-('Verde Oliva', 'Color de ojos verde oliva con tono natural.', 4),
-('Gris Plomo', 'Color de ojos gris plomo con estilo sofisticado.', 5),
-('Miel', 'Color de ojos miel dorado con calidez suave.', 3),
-('Gris Claro', 'Color de ojos gris claro con aire cristalino.', 1),
-('Jade', 'Color de ojos jade con tono verde mineral elegante.', 2),
-('Lavanda', 'Color de ojos lavanda suave con sensación onírica.', 4),
-('Topacio', 'Color de ojos topacio brillante con matices dorados.', 5),
-('Esmeralda', 'Color de ojos esmeralda intenso con vibración lujosa.', 3),
-('Azul Celeste', 'Color de ojos azul celeste con tono ligero y abierto.', 2),
-('Bronce', 'Color de ojos bronce cálido con profundidad natural.', 3);
+('Azul Claro', 'Color de ojos azul claro con efecto transparente.', 15),
+('Azul Oscuro', 'Color de ojos azul oscuro con profundidad marina.', 14),
+('Verde', 'Color de ojos verde brillante con toque natural.', 11),
+('Verde Esmeralda', 'Color de ojos verde esmeralda con brillo intenso.', 12),
+('Gris', 'Color de ojos gris suave con estilo moderno.', 14),
+('Marrón', 'Color de ojos marrón cálido con mirada acogedora.', 13),
+('Avellana', 'Color de ojos avellana con mezcla de tonos tierra.', 15),
+('Ámbar', 'Color de ojos ámbar dorado con aspecto cálido.', 11),
+('Violeta', 'Color de ojos violeta mágico con un toque fantasía.', 11),
+('Rosa', 'Color de ojos rosa pastel con tono encantador.', 12),
+('Turquesa', 'Color de ojos turquesa brillante con chispa marina.', 13),
+('Azul Petróleo', 'Color de ojos azul petróleo con matices profundos.', 14),
+('Verde Oliva', 'Color de ojos verde oliva con tono natural.', 14),
+('Gris Plomo', 'Color de ojos gris plomo con estilo sofisticado.', 15),
+('Miel', 'Color de ojos miel dorado con calidez suave.', 13),
+('Gris Claro', 'Color de ojos gris claro con aire cristalino.', 11),
+('Jade', 'Color de ojos jade con tono verde mineral elegante.', 12),
+('Lavanda', 'Color de ojos lavanda suave con sensación onírica.', 14),
+('Topacio', 'Color de ojos topacio brillante con matices dorados.', 15),
+('Esmeralda', 'Color de ojos esmeralda intenso con vibración lujosa.', 13),
+('Azul Celeste', 'Color de ojos azul celeste con tono ligero y abierto.', 12),
+('Bronce', 'Color de ojos bronce cálido con profundidad natural.', 13),
+('Azul Espacial', 'Color de ojos azul profundo galáctico para la línea lunar.', 21);
 
 INSERT INTO Caracteristica_Compatibilidad (
     CarCom_nombre, 
@@ -134,82 +139,62 @@ INSERT INTO Caracteristica_Compatibilidad (
 (
     'Curvy + Claro', 
     'Compatibilidad entre cuerpo Curvy y tono de piel claro.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 
-    1,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 
-    1
+    74, 11, -- 'Curvy' (Muñeca 11: Barbie Lunar)
+    78, 11  -- 'Claro' (Muñeca 11: Barbie Lunar) -> MISMO PRODUCTO
 ),
 (
-    'Original + Medio', 
-    'Compatibilidad entre cuerpo Original y tono de piel medio.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 
-    2,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 
-    2
+    'Original + Oscuro', 
+    'Compatibilidad entre cuerpo Original y tono de piel oscuro.', 
+    75, 22, -- 'Original' (Muñeca 22: Skipper Lunar)
+    81, 22  -- 'Oscuro' (Muñeca 22: Skipper Lunar) -> MISMO PRODUCTO
 ),
 (
-    'Petite + Fantasía', 
-    'Compatibilidad entre cuerpo Petite y tono de piel fantasía vibrante.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 
-    3,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 
-    3
+    'Petite + Almendra', 
+    'Compatibilidad entre cuerpo Petite y tono de piel almendra.', 
+    76, 13, -- 'Petite' (Muñeca 13: Barbie Artista)
+    85, 13  -- 'Almendra' (Muñeca 13: Barbie Artista) -> MISMO PRODUCTO
 ),
 (
-    'Tall + Oscuro', 
-    'Compatibilidad entre cuerpo Tall y tono de piel oscuro elegante.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 
-    4,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 
-    2
+    'Tall + Miel Caramelo', 
+    'Compatibilidad entre cuerpo Tall y tono de piel miel caramelo.', 
+    77, 24, -- 'Tall' (Muñeca 24: Chelsea Lunar)
+    86, 24  -- 'Miel Caramelo' (Muñeca 24: Chelsea Lunar) -> MISMO PRODUCTO
 ),
 (
-    'Millie + Azul Claro', 
-    'Molde Millie con ojos azul claro para un estilo etéreo.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 
-    1,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Azul Claro' AND Diseño_Producto_DP_id = 5), 
-    5
+    'Millie + Verde', 
+    'Molde Millie con ojos verdes para Barbie Lunar.', 
+    87, 11, -- 'Millie' (Muñeca 11: Barbie Lunar)
+    125, 11 -- 'Verde' (Muñeca 11: Barbie Lunar) -> MISMO PRODUCTO
 ),
 (
-    'Superstar + Esmeralda', 
-    'Molde Superstar combinado con ojos esmeralda intensos.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 
-    3,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Esmeralda' AND Diseño_Producto_DP_id = 3), 
-    3
+    'Superstar + Marrón', 
+    'Molde Superstar combinado con ojos marrón.', 
+    89, 13, -- 'Superstar' (Muñeca 13: Barbie Artista)
+    128, 13 -- 'Marrón' (Muñeca 13: Barbie Artista) -> MISMO PRODUCTO
 ),
 (
-    'Glamour + Violeta', 
-    'Molde Glamour con ojos violeta para un look de pasarela.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Glamour' AND Diseño_Producto_DP_id = 4), 
-    4,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Violeta' AND Diseño_Producto_DP_id = 1), 
-    1
+    'Glamour + Azul Oscuro', 
+    'Molde Glamour con ojos azul oscuro.', 
+    90, 14, -- 'Glamour' (Muñeca 14: Barbie Piloto)
+    124, 14 -- 'Azul Oscuro' (Muñeca 14: Barbie Piloto) -> MISMO PRODUCTO
 ),
 (
     'Dream + Lavanda', 
     'Molde Dream con ojos lavanda para un aire soñador.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Dream' AND Diseño_Producto_DP_id = 4), 
-    4,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Lavanda' AND Diseño_Producto_DP_id = 4), 
-    4
+    96, 14, -- 'Dream' (Muñeca 14: Barbie Piloto)
+    140, 14 -- 'Lavanda' (Muñeca 14: Barbie Piloto) -> MISMO PRODUCTO
 ),
 (
-    'Pearl + Miel', 
-    'Molde Pearl con ojos miel para una belleza cálida.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Pearl' AND Diseño_Producto_DP_id = 2), 
-    2,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Miel' AND Diseño_Producto_DP_id = 3), 
-    3
+    'Pearl + Jade', 
+    'Molde Pearl con ojos jade.', 
+    103, 12, -- 'Pearl' (Muñeca 12: Barbie Constructora)
+    139, 12  -- 'Jade' (Ojos) (Muñeca 12: Barbie Constructora) -> MISMO PRODUCTO
 ),
 (
-    'Eden + Jade', 
-    'Molde Eden con ojos jade para un acabado natural y elegante.', 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Eden' AND Diseño_Producto_DP_id = 3), 
-    3,
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Jade' AND Diseño_Producto_DP_id = 2), 
-    2
+    'Mia + Azul Espacial', 
+    'Compatibilidad entre el rostro Mia y ojos Azul Espacial.', 
+    115, 21, -- 'Mia' (Rostro) (Ken Lunar: 21)
+    145, 21  -- 'Azul Espacial' (Ojos) (Ken Lunar: 21) -> ¡MISMO PRODUCTO Y DISTINTA CATEGORÍA!
 );
 
 INSERT INTO Estado (Est_nombre, Est_descripcion) VALUES
@@ -578,36 +563,96 @@ INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
 ('Propiedad', 'Categoría principal para inmuebles y edificaciones.', NULL),
 ('Vehículo', 'Categoría principal para medios de transporte.', NULL),
 ('Accesorio', 'Categoría principal para bolsos, tacones, zarcillos y otros complementos.', NULL),
-('Ropa', 'Categoría principal para prendas de vestir.', NULL);
+('Ropa', 'Categoría principal para prendas de vestir.', NULL),
+('Muñeca', 'Categoría principal para figuras, muñecas articuladas y personajes de Mattel.', NULL);
 
--- Insertar subcategorías (hijos)
 INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
-('Casa', 'Subcategoría para casas de muñecas y residencias.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad')),
-('Apartamento', 'Subcategoría para apartamentos de juguete y estudios.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad')),
-('Carro', 'Subcategoría para automóviles y vehículos de cuatro ruedas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo')),
-('Moto', 'Subcategoría para motocicletas y vehículos de dos ruedas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo')),
-('Camisa', 'Subcategoría para partes superiores de vestir.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Ropa')),
-('Bolso', 'Subcategoría para bolsos, carteras y morrales de colección.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Accesorio'));
+-- Hijos de la nueva categoría padre 'Muñeca'
+('Muñeca Femenina', 'Modelos y figuras de personajes femeninos.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca' AND Categoria_Cat_id IS NULL)),
+('Muñeco Masculino', 'Modelos y figuras de personajes masculinos.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca' AND Categoria_Cat_id IS NULL)),
+
+-- Hijos de 'Propiedad'
+('Casa', 'Para casas de muñecas y residencias de escala coleccionista.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad' AND Categoria_Cat_id IS NULL)),
+('Apartamento', 'Para apartamentos de Muñecas.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Propiedad' AND Categoria_Cat_id IS NULL)),
+
+-- Hijos de 'Vehículo'
+('Carro', 'Para automóviles y vehículos de cuatro ruedas.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo' AND Categoria_Cat_id IS NULL)),
+('Moto', 'Para motocicletas y vehículos de dos ruedas.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo' AND Categoria_Cat_id IS NULL)),
+('Yate', 'Para embarcaciones marítimas y yates de lujo.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Vehículo' AND Categoria_Cat_id IS NULL)),
+
+-- Hijos de 'Ropa'
+('Camisa', 'Para partes superiores de vestir, camisas y blusas.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Ropa' AND Categoria_Cat_id IS NULL)),
+
+-- Hijos de 'Accesorio'
+('Caña de pescar', 'Accesorio de pesca adaptado a las dinámicas de juego del yate.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Accesorio' AND Categoria_Cat_id IS NULL)),
+('Bolso', 'Para bolsos, carteras, mochilas y morrales de colección.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Accesorio' AND Categoria_Cat_id IS NULL));
 
 -- Insertar sub-subcategorías (habitaciones de la casa)
 INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
-('Habitación', 'Dormitorio o cuarto principal de la casa de muñecas.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
-('Cocina', 'Área de cocina con gabinetes y accesorios de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
-('Baño', 'Cuarto de baño con ducha y lavamanos de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa')),
-('Sala', 'Sala de estar o salón de recreación de la casa.', (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'));
+-- Hijos de 'Muñeca Femenina' (Mapeado directo a tus productos del nivel 1)
+('Línea Lunar', 'Ediciones espaciales con trajes galácticos y accesorios estelares.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca Femenina' AND Categoria_Cat_id IS NOT NULL)),
+('Línea Lunar', 'Ediciones espaciales masculinas con trajes galácticos y accesorios estelares.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeco Masculino' AND Categoria_Cat_id IS NOT NULL)),
+
+-- Hijos de 'Casa' (Habitaciones y ambientes de las propiedades 16, 18 y 20)
+('Línea Construtora', 'Ediciones espaciales con trajes de construcción y accesorios de construccion.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca Femenina' AND Categoria_Cat_id IS NOT NULL)),
+('Línea Constructor', 'Ediciones espaciales con trajes de construcción y accesorios de construccion.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeco Masculino' AND Categoria_Cat_id IS NOT NULL)),
+
+('Línea Artista', 'Ediciones espaciales con accesorios de pintura.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca Femenina' AND Categoria_Cat_id IS NOT NULL)),
+('Línea Artista', 'Ediciones espaciales con accesorios de pintura.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeco Masculino' AND Categoria_Cat_id IS NOT NULL)),
+
+('Línea Piloto de carros', 'Ediciones espaciales con trajes de carrera y accesorios de piloto.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca Femenina' AND Categoria_Cat_id IS NOT NULL)),
+('Línea Piloto de carros', 'Ediciones espaciales con trajes de carrera y accesorios de piloto.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeco Masculino' AND Categoria_Cat_id IS NOT NULL)),
+
+('Línea Iluminada', 'Ediciones espaciales con luces led.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeca Femenina' AND Categoria_Cat_id IS NOT NULL)),
+('Línea Iluminada', 'Ediciones espaciales con luces led.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Muñeco Masculino' AND Categoria_Cat_id IS NOT NULL)),
+
+('Habitación', 'Dormitorio o cuarto principal de la casa de muñecas.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa' AND Categoria_Cat_id IS NOT NULL)),
+('Cocina', 'Área de cocina con gabinetes y accesorios de la casa.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa' AND Categoria_Cat_id IS NOT NULL)),
+('Baño', 'Cuarto de baño con ducha y lavamanos de la casa.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa' AND Categoria_Cat_id IS NOT NULL)),
+('Sala', 'Sala de estar o salón de recreación de la casa.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa' AND Categoria_Cat_id IS NOT NULL)),
+
+-- Hijos de 'Yate' (Partes específicas para el producto 17)
+('Salon', 'Sala de estar o salón de recreación del yate.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Yate' AND Categoria_Cat_id IS NOT NULL)),
+('Cubierta', 'Cubierta exterior del yate.', 
+    (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Yate' AND Categoria_Cat_id IS NOT NULL));
 
 
-INSERT INTO Compatibilidad (Categoria_Cat_id, Categoria_Cat_id2) VALUES
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Carro')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Apartamento'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Moto')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Camisa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Bolso')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Sala'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Cocina')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Habitación'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Baño')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Apartamento')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Carro'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Moto')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Habitación'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Camisa')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Sala'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Bolso')),
-((SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Cocina'), (SELECT Cat_id FROM Categoria WHERE Cat_nombre = 'Casa'));
+INSERT INTO compatibilidad (categoria_cat_id, categoria_cat_id2) VALUES
+(12, 14), -- Yate (12) es compatible con Caña de pescar (14)
+(6, 16),  -- Muñeca Femenina (6) es compatible con Línea Lunar Femenina (16)
+(7, 17),  -- Muñeco Masculino (7) es compatible con Línea Lunar Masculina (17)
+(8, 18),  -- Casa (8) es compatible con Habitación (18)
+(8, 19),  -- Casa (8) es compatible con Cocina (19)
+(8, 20),  -- Casa (8) es compatible con Baño (20)
+(8, 21),  -- Casa (8) es compatible con Sala (21)
+(12, 22), -- Yate (12) es compatible con Salon (22)
+(12, 23), -- Yate (12) es compatible con Cubierta (23)
+(4, 13);  -- Ropa (4) es compatible con Camisa (13)
 
 -- Insertar registros en la entidad Pieza con IDs directos
 INSERT INTO Pieza (Pie_fecha_inicio, Pie_fecha_fin, Categoria_Cat_id, Diseño_Producto_DP_id) VALUES
@@ -620,127 +665,76 @@ INSERT INTO Pieza (Pie_fecha_inicio, Pie_fecha_fin, Categoria_Cat_id, Diseño_Pr
 ('2026-06-01', '2027-12-31', 14, 6), -- Sala (14), Barbie Cabaña (6)
 ('2026-06-01', '2027-12-31', 12, 6), -- Cocina (12), Barbie Cabaña (6)
 ('2026-06-01', '2027-12-31', 13, 6), -- Baño (13), Barbie Cabaña (6)
-('2026-06-01', '2027-12-31', 11, 10);-- Habitación (11), Barbie Dream House Deluxe (10)
+('2026-06-01', '2027-12-31', 11, 10),-- Habitación (11), Barbie Dream House Deluxe (10)
+('2026-08-15', '2029-08-15', 12, 24),  -- Barbie Constructora (12) en Línea Construtora (24)
+('2026-09-10', '2028-12-31', 13, 26),  -- Barbie Artista (13) en Línea Artista (26)
+('2026-07-20', '2028-07-20', 14, 28),  -- Barbie Piloto de carros (14) en Línea Piloto de carros (28)
+('2026-08-05', '2030-01-01', 15, 30); -- Barbie Iluminada (15) en Línea Iluminada (30)
 
 -- Insertar registros en la entidad Pieza_Caracteristica
-INSERT INTO Pieza_Caracteristica (
-    PC_valor, 
-    Caracteristica_Car_id, 
-    Caracteristica_Diseño_Producto_DP_id, 
-    Pieza_Pie_id, 
-    Pieza_Categoria_Cat_id, 
-    Pieza_Diseño_Producto_DP_id
+INSERT INTO pieza_caracteristica (
+    pc_valor, 
+    caracteristica_car_id, 
+    caracteristica_diseño_producto_dp_id, 
+    pieza_pie_id, 
+    pieza_categoria_cat_id, 
+    pieza_diseño_producto_dp_id
 ) VALUES
-('Curvy', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 5 AND Diseño_Producto_DP_id = 10), 5, 10),
-('Original', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 6 AND Diseño_Producto_DP_id = 8), 6, 8),
-('Tall', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 4, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 7 AND Diseño_Producto_DP_id = 4), 7, 4),
-('Medio', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 8 AND Diseño_Producto_DP_id = 4), 8, 4),
-('Petite', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 9 AND Diseño_Producto_DP_id = 3), 9, 3),
-('Millie', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 10 AND Diseño_Producto_DP_id = 1), 10, 1),
-('Claro', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 1, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 14 AND Diseño_Producto_DP_id = 6), 14, 6),
-('Oscuro', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 2, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 12 AND Diseño_Producto_DP_id = 6), 12, 6),
-('Fantasía', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 13 AND Diseño_Producto_DP_id = 6), 13, 6),
-('Superstar', (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 3, (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 11 AND Diseño_Producto_DP_id = 10), 11, 10);
-
+('Tipo de cuerpo', 74, 11, 1, 16, 11),   -- Pieza 1 (dp 11) y Característica 74 (dp 11)
+('Tono de piel', 78, 11, 1, 16, 11),     -- Pieza 1 (dp 11) y Característica 78 (dp 11)
+('Color de ojos', 145, 21, 2, 17, 21),   -- Pieza 2 (dp 21) y Característica 145 (dp 21)
+('Molde de rostro', 101, 12, 11, 24, 12),-- Pieza 11 (dp 12) y Característica 101 (dp 12)
+('Tipo de cuerpo', 76, 13, 12, 26, 13),  -- Pieza 12 (dp 13) y Característica 76 (dp 13)
+('Color de ojos', 124, 14, 13, 28, 14),  -- Pieza 13 (dp 14) y Característica 124 (dp 14)
+('Tono de piel', 84, 15, 14, 30, 15),    -- Pieza 14 (dp 15) y Característica 84 (dp 15)
+('Tipo de cuerpo', 75, 22, 15, 16, 22),  -- Pieza 15 (dp 22) y Característica 75 (dp 22)
+('Tono de piel', 82, 23, 16, 16, 23),    -- Pieza 16 (dp 23) y Característica 82 (dp 23)
+('Tipo de cuerpo', 77, 24, 17, 16, 24);  -- Pieza 17 (dp 24) y Característica 77 (dp 24)
 -- Insertar registros en la entidad Lote_Produccion (se crean inicialmente con Control_Calidad_CC_id como NULL)
-INSERT INTO Lote_Produccion (
-    LP_fecha_hora, 
-    LP_cantidad_producida, 
-    Material_M_id, 
-    Pieza_Caracteristica_Caracteristica_Car_id, 
-    Pieza_Caracteristica_Caracteristica_Diseño_Producto_DP_id, 
-    Pieza_Caracteristica_Pieza_Pie_id, 
-    Pieza_Caracteristica_Pieza_Categoria_Cat_id, 
-    Pieza_Caracteristica_Pieza_Diseño_Producto_DP_id, 
-    Compatibilidad_Comp_id, 
-    Compatibilidad_Categoria_Cat_id, 
-    Compatibilidad_Categoria_Cat_id2, 
-    Control_Calidad_CC_id
-) VALUES
-(
-    '2026-06-01 10:00:00', 500, 1, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Curvy' AND Diseño_Producto_DP_id = 1), 1, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 5 AND Diseño_Producto_DP_id = 10), 5, 10, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 5 AND Categoria_Cat_id2 = 7), 5, 7, 
-    NULL
-),
-(
-    '2026-06-02 11:00:00', 450, 2, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Original' AND Diseño_Producto_DP_id = 2), 2, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 6 AND Diseño_Producto_DP_id = 8), 6, 8, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 6 AND Categoria_Cat_id2 = 8), 6, 8, 
-    NULL
-),
-(
-    '2026-06-03 12:00:00', 600, 3, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Tall' AND Diseño_Producto_DP_id = 4), 4, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 7 AND Diseño_Producto_DP_id = 4), 7, 4, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 9 AND Categoria_Cat_id2 = 10), 9, 10, 
-    NULL
-),
-(
-    '2026-06-04 13:00:00', 300, 4, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Medio' AND Diseño_Producto_DP_id = 2), 2, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 8 AND Diseño_Producto_DP_id = 4), 8, 4, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 14 AND Categoria_Cat_id2 = 12), 14, 12, 
-    NULL
-),
-(
-    '2026-06-05 14:00:00', 350, 5, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Petite' AND Diseño_Producto_DP_id = 3), 3, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 9 AND Diseño_Producto_DP_id = 3), 9, 3, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 11 AND Categoria_Cat_id2 = 13), 11, 13, 
-    NULL
-),
-(
-    '2026-06-06 15:00:00', 400, 6, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Millie' AND Diseño_Producto_DP_id = 1), 1, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 10 AND Diseño_Producto_DP_id = 1), 10, 1, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 5 AND Categoria_Cat_id2 = 6), 5, 6, 
-    NULL
-),
-(
-    '2026-06-07 16:00:00', 520, 7, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Claro' AND Diseño_Producto_DP_id = 1), 1, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 14 AND Diseño_Producto_DP_id = 6), 14, 6, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 7 AND Categoria_Cat_id2 = 8), 7, 8, 
-    NULL
-),
-(
-    '2026-06-08 17:00:00', 480, 8, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Oscuro' AND Diseño_Producto_DP_id = 2), 2, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 12 AND Diseño_Producto_DP_id = 6), 12, 6, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 11 AND Categoria_Cat_id2 = 9), 11, 9, 
-    NULL
-),
-(
-    '2026-06-09 18:00:00', 510, 9, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Fantasía' AND Diseño_Producto_DP_id = 3), 3, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 13 AND Diseño_Producto_DP_id = 6), 13, 6, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 14 AND Categoria_Cat_id2 = 10), 14, 10, 
-    NULL
-),
-(
-    '2026-06-10 19:00:00', 550, 10, 
-    (SELECT Car_id FROM Caracteristica WHERE Car_nombre = 'Superstar' AND Diseño_Producto_DP_id = 3), 3, 
-    (SELECT Pie_id FROM Pieza WHERE Categoria_Cat_id = 11 AND Diseño_Producto_DP_id = 10), 11, 10, 
-    (SELECT Comp_id FROM Compatibilidad WHERE Categoria_Cat_id = 12 AND Categoria_Cat_id2 = 5), 12, 5, 
-    NULL
-);
+INSERT INTO lote_produccion (
+    lp_fecha_hora, 
+    lp_cantidad_producida, 
+    material_m_id, 
+    compatibilidad_comp_id, 
+    compatibilidad_categoria_cat_id, 
+    compatibilidad_categoria_cat_id2, 
+    pieza_caracteristica_caracteristica_car_id, 
+    pieza_caracteristica_caracteristica_diseño_producto_dp_id, 
+    pieza_caracteristica_pieza_pie_id, 
+    pieza_caracteristica_pieza_categoria_cat_id, 
+    pieza_caracteristica_pieza_diseño_producto_dp_id
+) VALUES 
+('2026-07-02', 1500, 1, 2, 6, 16, 74, 11, 1, 16, 11),   -- Lote 1: Cuerpo Curvy (Plástico ABS)
+('2026-07-03', 2500, 2, 2, 6, 16, 75, 22, 15, 16, 22),  -- Lote 2: Cuerpo Original (PVC Flexible)
+('2026-09-12', 1800, 1, 13, 6, 26, 76, 13, 12, 26, 13), -- Lote 3: Cuerpo Petite (Plástico ABS)
+('2026-07-05', 1200, 1, 2, 6, 16, 77, 24, 17, 16, 24),  -- Lote 4: Cuerpo Tall (Plástico ABS)
+('2026-07-04', 3000, 3, 2, 6, 16, 78, 11, 1, 16, 11),   -- Lote 5: Tono de piel Claro (Pintura Acrílica)
+('2026-07-06', 1000, 2, 2, 6, 16, 82, 23, 16, 16, 23),  -- Lote 6: Tono de piel Fantasía (PVC Flexible)
+('2026-08-08', 2200, 2, 17, 6, 30, 84, 15, 14, 30, 15), -- Lote 7: Tono de piel Morena (PVC Flexible)
+('2026-08-18', 1350, 5, 11, 6, 24, 101, 12, 11, 24, 12),-- Lote 8: Rostro Mystique (Nylon)
+('2026-09-15', 1600, 3, 15, 6, 28, 124, 14, 13, 28, 14),-- Lote 9: Ojos Azul Oscuro (Pintura Acrílica)
+('2026-07-03', 2000, 2, 3, 7, 17, 145, 21, 2, 17, 21);  -- Lote 10: Ojos Azul Espacial (PVC Flexible)
 
 -- Insertar registros en la entidad Control_Calidad (inspecciones post-producción, cada una referencia su lote)
-INSERT INTO Control_Calidad (CC_fecha, CC_muestras_inspeccionadas, CC_unidades_rechazadas, CC_unidades_aprobadas, CC_resultado, CC_observaciones, Lote_Produccion_LP_id) VALUES
-('2026-06-01', 100, 2, 98, 'Aprobado', 'Lote cumple con los estándares de calidad.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-01' LIMIT 1)),
-('2026-06-02', 100, 5, 95, 'Aprobado', 'Lote aprobado con observaciones mínimas en costuras.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-02' LIMIT 1)),
-('2026-06-03', 100, 1, 99, 'Aprobado', 'Excelente acabado superficial.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-03' LIMIT 1)),
-('2026-06-04', 100, 0, 100, 'Aprobado', 'Lote impecable.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-04' LIMIT 1)),
-('2026-06-05', 100, 3, 97, 'Aprobado', 'Pequeñas rebabas plásticas dentro del límite tolerado.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-05' LIMIT 1)),
-('2026-06-06', 100, 4, 96, 'Aprobado', 'Tono de color correcto, sin imperfecciones.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-06' LIMIT 1)),
-('2026-06-07', 100, 2, 98, 'Aprobado', 'Dimensiones correctas en los encajes.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-07' LIMIT 1)),
-('2026-06-08', 100, 1, 99, 'Aprobado', 'Lote aprobado satisfactoriamente.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-08' LIMIT 1)),
-('2026-06-09', 100, 0, 100, 'Aprobado', 'Cumple plenamente con tolerancias de diseño.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-09' LIMIT 1)),
-('2026-06-10', 100, 2, 98, 'Aprobado', 'Pruebas de resistencia mecánica superadas.', (SELECT LP_id FROM Lote_Produccion WHERE DATE(LP_fecha_hora) = '2026-06-10' LIMIT 1));
-
+INSERT INTO control_calidad (
+    cc_fecha, 
+    cc_muestras_inspeccionadas, 
+    cc_unidades_rechazadas, 
+    cc_unidades_aprobadas, 
+    cc_resultado, 
+    cc_observaciones, 
+    lote_produccion_lp_id
+) VALUES 
+('2026-07-03', 50, 2, 48, 'Aprobado', 'Defectos menores de rebaba plástica en 2 piezas.', 2),
+('2026-07-04', 80, 0, 80, 'Excelente', 'Flexibilidad perfecta, sin burbujas de aire en el PVC.', 3),
+('2026-09-13', 60, 5, 55, 'Aprobado', 'Variación leve en el encaje dimensional corregida en lote.', 4),
+('2026-07-06', 40, 1, 39, 'Aprobado', 'Acabado superficial óptimo, 1 unidad con raya menor.', 5),
+('2026-07-05', 100, 12, 88, 'Condicional', 'Pintura con ligeras manchas; requiere reproceso parcial.', 6),
+('2026-07-07', 35, 0, 35, 'Excelente', 'Color perfectamente consistente con la paleta de diseño.', 7),
+('2026-08-09', 75, 3, 72, 'Aprobado', 'Tono de piel uniforme en la gran mayoría del muestreo.', 8),
+('2026-08-19', 45, 1, 44, 'Aprobado', 'Costuras e implantación de nylon firmes y bien alineadas.', 9),
+('2026-09-16', 50, 4, 46, 'Aprobado', 'Centrado de la mirada correcto en la tampografía ocular.', 10),
+('2026-07-04', 70, 2, 68, 'Aprobado', 'Pigmentación azul brillante cumple estándares estipulados.', 11);
 -- Insertar registros en la entidad Defecto_Calidad
 INSERT INTO Defecto_Calidad (DC_fecha_reporte, DC_estado, DC_gravedad, DC_tipo) VALUES
 ('2026-06-01', 'Reportado', 'Leve', 'Rebaba plástica en el borde del molde'),
@@ -754,15 +748,22 @@ INSERT INTO Defecto_Calidad (DC_fecha_reporte, DC_estado, DC_gravedad, DC_tipo) 
 ('2026-06-09', 'Resuelto', 'Leve', 'Exceso de material en la zona de costura del accesorio'),
 ('2026-06-10', 'Reportado', 'Moderado', 'Desprendimiento de nylon del cabello sintético');
 
-INSERT INTO public.producto_final (pf_nombre, pf_era, pf_rareza, pf_estado, exclusividad_producto_ep_id, lote_produccion_lp_id, orden_compra_oc_id, compra_btc_cbtc_id)
-VALUES
-('Producto Final 1','Era 1','Común','Disponible',1,1,1,1),
-('Producto Final 2','Era 1','Común','Disponible',2,2,2,2),
-('Producto Final 3','Era 2','Rara','Disponible',3,3,3,3),
-('Producto Final 4','Era 2','Épica','Disponible',4,4,4,4),
-('Producto Final 5','Era 3','Legendaria','Disponible',5,5,5,5),
-('Producto Final 6','Era 3','Común','En stock',6,6,6,6),
-('Producto Final 7','Era 4','Rara','En stock',7,7,7,7),
-('Producto Final 8','Era 4','Épica','En stock',8,8,8,8),
-('Producto Final 9','Era 5','Legendaria','En stock',9,9,9,9),
-('Producto Final 10','Era 5','Común','Agotado',10,10,10,10);
+INSERT INTO producto_final(
+    pf_nombre, 
+    pf_era, 
+    pf_estado, 
+    exclusividad_producto_ep_id, 
+    lote_produccion_lp_id, 
+    pf_cantidad, 
+    pf_precio_actual
+    ) VALUES 
+('Barbie Lunar', 'Modern', 'NRFB', 1, 2, 1500, 34), 
+('Skipper Lunar', 'Modern', 'NRFB', 1, 3, 2500, 30), 
+('Barbie Artista', 'Mod', 'NRFB', 2, 4, 1800, 50), 
+('Chelsea Lunar', 'SuperStar', 'NRFB', 1, 5, 1200, 27), 
+('Barbie Lunar', 'Modern', 'NRFB', 1, 6, 3000, 25), 
+('Stacie Lunar', 'Modern', 'NRFB', 4, 7, 1000, 300), 
+('Barbie Iluminada', 'Mod', 'NRFB', 3, 8, 2200, 150), 
+('Barbie Constructora', 'Vintage', 'NRFB', 2, 9, 1350, 70), 
+('Barbie Piloto de carros', 'Vintage', 'NRFB', 1, 10, 1600, 35), 
+('Ken Lunar', 'Modern', 'NRFB', 1, 11, 2000, 30);
