@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MatteUCAB | Roles y Permisos</title>
-    <!-- Font Awesome -->
+    <title>MattelUCAB | Roles y Permisos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
         /* ------ RESET & GLOBAL ------ */
         * {
@@ -109,6 +111,11 @@
             font-size: 1.6rem;
             font-weight: 700;
         }
+        .top-bar-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
         .date {
             background: #fff;
             padding: 0.5rem 1.2rem;
@@ -123,6 +130,34 @@
         }
         .date i {
             color: #d43f6b;
+        }
+
+        /* Indicador de Conexión */
+        .connection-status {
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .connection-status.checking {
+            background: #f1f3f5;
+            color: #6c757d;
+            border-color: #dee2e6;
+        }
+        .connection-status.connected {
+            background: #e3f5e9;
+            color: #1e7a4a;
+            border-color: #a3e635;
+        }
+        .connection-status.disconnected {
+            background: #fce4e4;
+            color: #d43f6b;
+            border-color: #f87171;
         }
 
         .section-title {
@@ -210,25 +245,44 @@
             font-weight: 500;
             border: 1px solid #ffe0e9;
         }
-        .role-card .btn-detalle {
+        
+        .role-card .card-actions {
             margin-top: auto;
-            background: transparent;
-            border: 1px solid #d43f6b;
-            color: #d43f6b;
+            display: flex;
+            gap: 0.5rem;
+            width: 100%;
+        }
+        .role-card .btn-detalle, .role-card .btn-eliminar-card {
             padding: 0.5rem 1rem;
             border-radius: 2rem;
             font-weight: 600;
             font-size: 0.8rem;
             cursor: pointer;
             transition: 0.2s;
-            align-self: flex-start;
+            text-align: center;
+        }
+        .role-card .btn-detalle {
+            flex: 2;
+            background: transparent;
+            border: 1px solid #d43f6b;
+            color: #d43f6b;
         }
         .role-card .btn-detalle:hover {
             background: #d43f6b;
             color: #fff;
         }
+        .role-card .btn-eliminar-card {
+            flex: 1;
+            background: #fff0f2;
+            border: 1px solid #f87171;
+            color: #ef4444;
+        }
+        .role-card .btn-eliminar-card:hover {
+            background: #ef4444;
+            color: #fff;
+        }
 
-        /* Botón Nuevo Rol (enlace) */
+        /* Botón Nuevo Rol */
         .btn-nuevo-rol {
             display: inline-flex;
             align-items: center;
@@ -252,7 +306,7 @@
             transform: translateY(-2px);
         }
 
-        /* ------ MODAL DE DETALLES ------ */
+        /* ------ MODALES ------ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -321,14 +375,6 @@
             font-size: 0.95rem;
             margin-bottom: 1.5rem;
         }
-        .modal-usuarios {
-            color: #a8637c;
-            font-size: 0.85rem;
-            margin-bottom: 1.2rem;
-        }
-        .modal-usuarios strong {
-            color: #b13e61;
-        }
         .modal-tabla {
             overflow-x: auto;
             margin: 1rem 0;
@@ -361,6 +407,8 @@
             font-weight: 600;
             margin-right: 0.8rem;
             font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 0.3rem;
         }
         .modal-tabla .permiso-check i {
             color: #2c7a4d;
@@ -369,6 +417,7 @@
         .modal-actions {
             display: flex;
             justify-content: flex-end;
+            gap: 1rem;
             margin-top: 1.5rem;
         }
         .modal-actions .btn-cerrar {
@@ -386,31 +435,99 @@
             background: #b83a61;
             transform: translateY(-2px);
         }
+        .modal-actions .btn-secundario {
+            background: transparent;
+            border: 1px solid #d43f6b;
+            color: #d43f6b;
+            padding: 0.6rem 2rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-actions .btn-secundario:hover {
+            background: #fff0f3;
+        }
+        .modal-actions .btn-peligro {
+            background: #ef4444;
+            border: none;
+            color: #fff;
+            padding: 0.6rem 2rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .modal-actions .btn-peligro:hover {
+            background: #dc2626;
+        }
+
+        /* Formulario Estilos */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #aa4e72;
+            font-size: 0.85rem;
+            margin-bottom: 0.4rem;
+        }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1.5px solid #ffe0e9;
+            border-radius: 1rem;
+            outline: none;
+            font-family: inherit;
+            font-size: 0.9rem;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            border-color: #d43f6b;
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .contenedor-permisos {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ffe0e9;
+            border-radius: 1rem;
+            margin-top: 0.5rem;
+        }
+        .text-center {
+            text-align: center !important;
+        }
+        .chk-privilegio {
+            width: 1.2rem;
+            height: 1.2rem;
+            accent-color: #d43f6b;
+            cursor: pointer;
+        }
+
+        /* Custom SweetAlert Styles para encajar con la marca MattelUCAB */
+        .swal2-popup {
+            border-radius: 2rem !important;
+            font-family: 'Inter', sans-serif !important;
+        }
+        .swal2-title {
+            color: #b13e61 !important;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .sidebar {
-                width: 200px;
-            }
-            .main-content {
-                padding: 1rem;
-            }
-            .roles-grid {
-                grid-template-columns: 1fr;
-            }
-            .modal {
-                padding: 1.5rem;
-            }
+            .sidebar { width: 200px; }
+            .main-content { padding: 1rem; }
+            .roles-grid { grid-template-columns: 1fr; }
+            .modal { padding: 1.5rem; }
         }
         @media (max-width: 600px) {
-            .sidebar {
-                display: none;
-            }
+            .sidebar { display: none; }
         }
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <h2>Mattel<span>UCAB</span></h2>
@@ -427,234 +544,549 @@
         </nav>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
         <div class="top-bar">
             <div class="welcome">
-                <h1>Bienvenido al Sistema MatteUCAB</h1>
+                <h1>Bienvenido al Sistema MattelUCAB</h1>
             </div>
-            <div class="date">
-                <i class="fas fa-calendar-alt"></i>
-                <span id="fechaActual"></span>
+            <div class="top-bar-actions">
+                <div id="dbStatusBadge" class="connection-status checking">
+                    <i class="fas fa-circle-notch fa-spin"></i> Validando BD...
+                </div>
+                <div class="date">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span id="fechaActual"></span>
+                </div>
             </div>
         </div>
 
         <div class="section-title">
             <h2>Gestión de Roles y Permisos</h2>
-            <p>Administra roles personalizados y asigna permisos específicos a cada uno</p>
+            <p>Administra roles personalizados y asigna privilegios específicos a cada uno de forma dinámica</p>
         </div>
 
-        <!-- Tarjetas de roles (datos de ejemplo) -->
         <div class="roles-grid" id="rolesGrid">
-            <!-- Se llenarán dinámicamente con JavaScript -->
+            <div style="grid-column: 1/-1; text-align: center; color: #a8637c; padding: 3rem;">
+                <i class="fas fa-spinner fa-spin fa-2x"></i><br><br>Cargando roles desde Supabase...
+            </div>
         </div>
 
-        <!-- Botón Nuevo Rol -->
-        <a href="crearnuevorol.html" class="btn-nuevo-rol">
+        <button id="btnAbrirCrearRol" class="btn-nuevo-rol">
             <i class="fas fa-plus-circle"></i> Nuevo Rol
-        </a>
+        </button>
     </main>
 
-    <!-- ============ MODAL DE DETALLES ============ -->
     <div class="modal-overlay" id="modalDetalles">
         <div class="modal">
             <div class="modal-header">
                 <div>
-                    <h2 id="modalTitulo">Gerente de Inventario</h2>
-                    <span class="badge" id="modalBadge">5 usuarios</span>
+                    <h2 id="modalTitulo">Cargando...</h2>
+                    <span class="badge" id="modalBadge">0 privilegios</span>
                 </div>
                 <button class="modal-close" id="btnCerrarModal">&times;</button>
             </div>
-            <div class="modal-desc" id="modalDescripcion">
-                Gestión de productos, inventario y movimientos
+            
+            <form id="formEditarRol">
+                <input type="hidden" id="txtEditRolId" />
+                <div class="form-group">
+                    <label for="txtEditNombreRol">Nombre del Rol *</label>
+                    <input type="text" id="txtEditNombreRol" required />
+                </div>
+                <div class="form-group">
+                    <label for="txtEditDescRol">Descripción *</label>
+                    <textarea id="txtEditDescRol" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Modificar Privilegios Asignados</label>
+                    <div class="contenedor-permisosmodal modal-tabla contenedor-permisos">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Privilegio Asignado</th>
+                                    <th>Descripción del Privilegio</th>
+                                    <th class="text-center">Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody id="modalTablaBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-peligro" id="btnEliminarRolModal" style="margin-right: auto;">Eliminar Rol</button>
+                    <button type="button" class="btn-secundario" id="btnCerrarModal2">Cancelar</button>
+                    <button type="submit" class="btn-cerrar" id="btnActualizarRol">Guardar Cambios</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalCrearRol">
+        <div class="modal">
+            <div class="modal-header">
+                <div>
+                    <h2>Crear Nuevo Rol</h2>
+                    <p style="color: #a8637c; font-size: 0.85rem; margin-top: 2px;">Inserta un rol y vincula sus privilegios en tiempo real.</p>
+                </div>
+                <button class="modal-close" id="btnCerrarForm">&times;</button>
             </div>
-            <div class="modal-usuarios">
-                <strong id="modalUsuariosTexto">5 usuarios</strong> con este rol
-            </div>
-            <div class="modal-tabla">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Módulo</th>
-                            <th>Permisos</th>
-                        </tr>
-                    </thead>
-                    <tbody id="modalTablaBody">
-                        <!-- Se llena con JS -->
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-cerrar" id="btnCerrarModal2">Cerrar</button>
-            </div>
+            
+            <form id="formNuevoRol">
+                <div class="form-group">
+                    <label for="txtNombreRol">Nombre del Rol *</label>
+                    <input type="text" id="txtNombreRol" placeholder="ej. Administrador de Inventario" required />
+                </div>
+                <div class="form-group">
+                    <label for="txtDescRol">Descripción *</label>
+                    <textarea id="txtDescRol" placeholder="Escribe un breve resumen de las facultades de este rol... (Obligatorio)" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Asignar Privilegios del Sistema</label>
+                    <div class="contenedor-permisosmodal modal-tabla contenedor-permisos">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th class="text-center">Asignar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tablaPrivilegiosForm">
+                                <tr>
+                                    <td colspan="3" class="text-center" style="padding:1.5rem; color:#a8637c;">
+                                        <i class="fas fa-spinner fa-spin"></i> Cargando lista de privilegios...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-secundario" id="btnCancelarForm">Cancelar</button>
+                    <button type="submit" class="btn-cerrar" id="btnGuardarRol">Guardar Rol</button>
+                </div>
+            </form>
         </div>
     </div>
 
     <script>
-        // ----- DATOS DE EJEMPLO (roles y permisos) -----
-        const rolesData = [
-            {
-                id: 1,
-                nombre: "Administrador",
-                descripcion: "Acceso completo a todas las funcionalidades del sistema",
-                usuarios: 2,
-                permisos: {
-                    "Productos": ["Crear", "Ver", "Editar", "Eliminar"],
-                    "Inventario": ["Crear", "Ver", "Editar", "Eliminar"],
-                    "Proveedores": ["Crear", "Ver", "Editar", "Eliminar"],
-                    "Clientes": ["Crear", "Ver", "Editar", "Eliminar"],
-                    "Órdenes B2B": ["Crear", "Ver", "Editar", "Eliminar"],
-                    "Órdenes B2C": ["Crear", "Ver", "Editar", "Eliminar"]
-                },
-                // Para mostrar en la tarjeta (resumen de permisos)
-                tags: ["Productos", "Inventario", "Proveedores", "Clientes", "+2 módulos más"]
-            },
-            {
-                id: 2,
-                nombre: "Gerente de Inventario",
-                descripcion: "Gestión de productos, inventario y movimientos",
-                usuarios: 5,
-                permisos: {
-                    "Productos": ["Crear", "Ver", "Editar"],
-                    "Inventario": ["Crear", "Ver", "Editar"],
-                    "Proveedores": ["Ver"],
-                    "Reportes": ["Ver"],
-                    "Ciclo de Vida PLM": ["Crear", "Ver", "Editar"]
-                },
-                tags: ["Productos", "Inventario", "Proveedores", "Reportes", "+1 módulo más"]
-            },
-            {
-                id: 3,
-                nombre: "Agente de Ventas",
-                descripcion: "Gestión de órdenes B2C y atención al cliente",
-                usuarios: 8,
-                permisos: {
-                    "Órdenes B2C": ["Crear", "Ver", "Editar"],
-                    "Clientes": ["Crear", "Ver", "Editar"],
-                    "Productos": ["Ver"],
-                    "Facturación": ["Ver"]
-                },
-                tags: ["Órdenes B2C", "Clientes", "Productos", "Facturación"]
-            },
-            {
-                id: 4,
-                nombre: "Contador",
-                descripcion: "Gestión de facturación, nómina y reportes financieros",
-                usuarios: 2,
-                permisos: {
-                    "Facturación": ["Crear", "Ver", "Editar"],
-                    "Nómina": ["Crear", "Ver", "Editar"],
-                    "Reportes": ["Ver"],
-                    "Órdenes B2B": ["Ver"]
-                },
-                tags: ["Facturación", "Nómina", "Reportes", "Órdenes B2B"]
-            }
-        ];
+        // --- 1. CONFIGURACIÓN SUPABASE ---
+        const SUPABASE_URL = 'https://qrigbgqpcwchaykaqrnr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyaWdiZ3FwY3djaGF5a2Fxcm5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NTY0NjEsImV4cCI6MjA5NTIzMjQ2MX0.tbKXha7EyxDK48dbcwgoI9tFvf1juqCNhCzQHH46D7w';
+        
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        let rolesCache = [];
+        let privilegiosCache = [];
 
-        // ----- FUNCIÓN PARA GENERAR LAS TARJETAS -----
-        function renderTarjetas() {
+        // --- VERIFICAR ESTADO DE LA CONEXIÓN ---
+        async function verificarConexionBD() {
+            const badge = document.getElementById('dbStatusBadge');
+            try {
+                const { error } = await _supabase.from('rol').select('r_id').limit(1);
+                if (error) throw error;
+                badge.className = 'connection-status connected';
+                badge.innerHTML = '<i class="fas fa-check-circle"></i> Conectado';
+            } catch (err) {
+                console.error("Fallo de conexión Supabase:", err);
+                badge.className = 'connection-status disconnected';
+                badge.innerHTML = '<i class="fas fa-times-circle"></i> Desconectado';
+            }
+        }
+
+        // --- PRE-CARGAR TODOS LOS PRIVILEGIOS DEL SISTEMA ---
+        async function cargarGlobalPrivilegios() {
+            try {
+                const { data, error } = await _supabase
+                    .from('privilegio')
+                    .select('pri_id, pri_nombre, pri_descripcion')
+                    .order('pri_nombre', { ascending: true });
+                if (error) throw error;
+                privilegiosCache = data;
+            } catch (err) {
+                console.error("Error cargando tabla de privilegios base:", err);
+            }
+        }
+
+        // --- 2. CARGAR ROLES ---
+        async function cargarRoles() {
+            try {
+                const { data, error } = await _supabase
+                    .from('rol')
+                    .select(`
+                        r_id,
+                        r_nombre,
+                        r_descripcion,
+                        rol_privilegio (
+                            privilegio (
+                                pri_id,
+                                pri_nombre,
+                                pri_descripcion
+                            )
+                        )
+                    `);
+
+                if (error) throw error;
+                rolesCache = data;
+                renderTarjetas(data);
+
+            } catch (err) {
+                console.error("Error al obtener roles:", err);
+                document.getElementById('rolesGrid').innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; color: #d43f6b; padding: 3rem;">
+                        <i class="fas fa-exclamation-circle fa-2x"></i><br><br>Error al conectar con la BD: ${err.message}
+                    </div>`;
+            }
+        }
+
+        function renderTarjetas(roles) {
             const grid = document.getElementById('rolesGrid');
+            if (!roles || roles.length === 0) {
+                grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #a8637c;">No hay roles registrados en la base de datos.</div>';
+                return;
+            }
+
             grid.innerHTML = '';
-            rolesData.forEach(rol => {
+            roles.forEach(rol => {
+                const privilegiosAsignados = rol.rol_privilegio 
+                    ? rol.rol_privilegio.map(rp => rp.privilegio).filter(Boolean)
+                    : [];
+
+                const maxTags = 3;
+                let tagsHtml = privilegiosAsignados.slice(0, maxTags).map(p => `<span>${p.pri_nombre}</span>`).join('');
+                if (privilegiosAsignados.length > maxTags) {
+                    tagsHtml += `<span>+${privilegiosAsignados.length - maxTags} más</span>`;
+                }
+                if (privilegiosAsignados.length === 0) {
+                    tagsHtml = '<span style="color:#a8637c; background:#fff;">Sin permisos asignados</span>';
+                }
+
                 const card = document.createElement('div');
                 card.className = 'role-card';
                 card.innerHTML = `
                     <div class="rol-header">
-                        <h3>${rol.nombre}</h3>
-                        <span class="badge">${rol.usuarios} usuarios</span>
+                        <h3>${rol.r_nombre}</h3>
+                        <span class="badge">${privilegiosAsignados.length} privilegios</span>
                     </div>
-                    <div class="desc">${rol.descripcion}</div>
+                    <div class="desc">${rol.r_descripcion || 'Sin descripción disponible.'}</div>
                     <div class="permisos">
-                        <div class="label">PERMISOS ASIGNADOS</div>
+                        <div class="label">PRIVILEGIOS ASIGNADOS</div>
                         <div class="tags">
-                            ${rol.tags.map(tag => `<span>${tag}</span>`).join('')}
+                            ${tagsHtml}
                         </div>
                     </div>
-                    <button class="btn-detalle" data-id="${rol.id}">Ver Detalles</button>
+                    <div class="card-actions">
+                        <button class="btn-detalle" data-id="${rol.r_id}">Ver / Editar</button>
+                        <button class="btn-eliminar-card" data-id="${rol.r_id}" data-nombre="${rol.r_nombre}"><i class="fas fa-trash"></i></button>
+                    </div>
                 `;
                 grid.appendChild(card);
             });
 
-            // Agregar event listeners a los botones "Ver Detalles"
+            // Eventos Ver/Editar
             document.querySelectorAll('.btn-detalle').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const id = parseInt(this.getAttribute('data-id'));
-                    abrirModal(id);
+                    abrirModalDetalles(id);
+                });
+            });
+
+            // Eventos Eliminar directo desde tarjeta
+            document.querySelectorAll('.btn-eliminar-card').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const id = parseInt(this.getAttribute('data-id'));
+                    const nombre = this.getAttribute('data-nombre');
+                    confirmarEliminarRol(id, nombre);
                 });
             });
         }
 
-        // ----- FUNCIÓN PARA ABRIR EL MODAL CON LOS DATOS DEL ROL -----
-        function abrirModal(id) {
-            const rol = rolesData.find(r => r.id === id);
+        // --- 3. MODAL DETALLES Y EDICIÓN ---
+        function abrirModalDetalles(id) {
+            const rol = rolesCache.find(r => r.r_id === id);
             if (!rol) return;
 
-            // Llenar campos del modal
-            document.getElementById('modalTitulo').textContent = rol.nombre;
-            document.getElementById('modalBadge').textContent = `${rol.usuarios} usuarios`;
-            document.getElementById('modalDescripcion').textContent = rol.descripcion;
-            document.getElementById('modalUsuariosTexto').textContent = `${rol.usuarios} usuarios`;
+            const privilegiosAsignadosIds = rol.rol_privilegio 
+                ? rol.rol_privilegio.map(rp => rp.privilegio ? rp.privilegio.pri_id : null).filter(Boolean)
+                : [];
 
-            // Construir tabla de permisos
+            document.getElementById('txtEditRolId').value = rol.r_id;
+            document.getElementById('txtEditNombreRol').value = rol.r_nombre;
+            document.getElementById('txtEditDescRol').value = rol.r_descripcion || '';
+            document.getElementById('modalTitulo').textContent = `Editar: ${rol.r_nombre}`;
+            document.getElementById('modalBadge').textContent = `${privilegiosAsignadosIds.length} privilegios`;
+
             const tbody = document.getElementById('modalTablaBody');
             tbody.innerHTML = '';
-            const permisosKeys = Object.keys(rol.permisos);
-            if (permisosKeys.length === 0) {
+
+            // Mostrar el catálogo completo con los checks marcados si ya posee el privilegio
+            privilegiosCache.forEach(p => {
+                const poseePermiso = privilegiosAsignadosIds.includes(p.pri_id);
                 const row = document.createElement('tr');
-                row.innerHTML = `<td colspan="2" style="text-align:center; color:#a8637c;">Este rol no tiene permisos asignados.</td>`;
+                row.innerHTML = `
+                    <td><strong>${p.pri_nombre}</strong></td>
+                    <td>${p.pri_descripcion || 'Sin descripción.'}</td>
+                    <td class="text-center">
+                        <input type="checkbox" class="chk-edit-privilegio" value="${p.pri_id}" ${poseePermiso ? 'checked' : ''} />
+                    </td>
+                `;
                 tbody.appendChild(row);
-            } else {
-                permisosKeys.forEach(modulo => {
-                    const permisos = rol.permisos[modulo];
-                    const row = document.createElement('tr');
-                    // Columna de módulo
-                    const tdModulo = document.createElement('td');
-                    tdModulo.textContent = modulo;
-                    row.appendChild(tdModulo);
+            });
 
-                    // Columna de permisos (lista de tags)
-                    const tdPermisos = document.createElement('td');
-                    if (permisos.length === 0) {
-                        tdPermisos.textContent = 'Sin permisos';
-                        tdPermisos.style.color = '#a8637c';
-                    } else {
-                        // Mostrar cada permiso con un check verde
-                        const permisosHtml = permisos.map(p => 
-                            `<span class="permiso-check"><i class="fas fa-check-circle"></i> ${p}</span>`
-                        ).join(' ');
-                        tdPermisos.innerHTML = permisosHtml;
-                    }
-                    row.appendChild(tdPermisos);
-                    tbody.appendChild(row);
-                });
-            }
-
-            // Mostrar el modal
             document.getElementById('modalDetalles').classList.add('mostrar');
             document.body.style.overflow = 'hidden';
         }
 
-        // ----- FUNCIÓN PARA CERRAR EL MODAL -----
         function cerrarModal() {
             document.getElementById('modalDetalles').classList.remove('mostrar');
             document.body.style.overflow = '';
         }
 
-        // ----- EVENTOS PARA CERRAR EL MODAL -----
         document.getElementById('btnCerrarModal').addEventListener('click', cerrarModal);
         document.getElementById('btnCerrarModal2').addEventListener('click', cerrarModal);
         document.getElementById('modalDetalles').addEventListener('click', function(e) {
-            if (e.target === this) {
-                cerrarModal();
-            }
+            if (e.target === this) cerrarModal();
         });
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('modalDetalles').classList.contains('mostrar')) {
+
+        // --- ACTUALIZAR DATOS EN LA BASE DE DATOS (Transacción lógica) ---
+        document.getElementById('formEditarRol').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const idRol = parseInt(document.getElementById('txtEditRolId').value);
+            const nombre = document.getElementById('txtEditNombreRol').value.trim();
+            const descripcion = document.getElementById('txtEditDescRol').value.trim();
+            const btnActualizar = document.getElementById('btnActualizarRol');
+
+            btnActualizar.disabled = true;
+            btnActualizar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Guardando...';
+
+            try {
+                // 1. Actualizar los datos básicos del Rol
+                const { error: errRol } = await _supabase
+                    .from('rol')
+                    .update({ r_nombre: nombre, r_descripcion: descripcion })
+                    .eq('r_id', idRol);
+
+                if (errRol) throw errRol;
+
+                // 2. Limpiar privilegios existentes del rol en la tabla intermedia
+                const { error: errDel } = await _supabase
+                    .from('rol_privilegio')
+                    .delete()
+                    .eq('rol_r_id', idRol);
+
+                if (errDel) throw errDel;
+
+                // 3. Insertar el nuevo set de privilegios marcados
+                const checks = document.querySelectorAll('.chk-edit-privilegio:checked');
+                const nuevosPrivilegiosIds = Array.from(checks).map(cb => parseInt(cb.value));
+
+                if (nuevosPrivilegiosIds.length > 0) {
+                    const relaciones = nuevosPrivilegiosIds.map(pId => ({
+                        rol_r_id: idRol,
+                        privilegio_pri_id: pId
+                    }));
+
+                    const { error: errIns } = await _supabase
+                        .from('rol_privilegio')
+                        .insert(relaciones);
+
+                    if (errIns) throw errIns;
+                }
+
+                Swal.fire({
+                    title: '¡Rol Actualizado!',
+                    text: `Los cambios en el rol han sido guardados y sincronizados con éxito.`,
+                    icon: 'success',
+                    confirmButtonText: 'Perfecto',
+                    confirmButtonColor: '#d43f6b'
+                });
+
                 cerrarModal();
+                cargarRoles();
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    title: 'Error de Actualización',
+                    text: `Detalle: ${err.message}`,
+                    icon: 'error',
+                    confirmButtonText: 'Aceptar',
+                    confirmButtonColor: '#b13e61'
+                });
+            } finally {
+                btnActualizar.disabled = false;
+                btnActualizar.innerHTML = 'Guardar Cambios';
             }
         });
 
-        // ----- MOSTRAR FECHA ACTUAL -----
+
+        // --- 4. FORMULARIO: CREAR NUEVO ROL ---
+        const modalCrearRol = document.getElementById('modalCrearRol');
+        const btnAbrirCrear = document.getElementById('btnAbrirCrearRol');
+        const btnCerrarForm = document.getElementById('btnCerrarForm');
+        const btnCancelarForm = document.getElementById('btnCancelarForm');
+
+        btnAbrirCrear.addEventListener('click', async () => {
+            modalCrearRol.classList.add('mostrar');
+            document.body.style.overflow = 'hidden';
+            cargarPrivilegiosEnFormulario();
+        });
+
+        function cerrarFormularioRol() {
+            modalCrearRol.classList.remove('mostrar');
+            document.body.style.overflow = '';
+            document.getElementById('formNuevoRol').reset();
+        }
+
+        btnCerrarForm.addEventListener('click', cerrarFormularioRol);
+        btnCancelarForm.addEventListener('click', cerrarFormularioRol);
+
+        function cargarPrivilegiosEnFormulario() {
+            const tbody = document.getElementById('tablaPrivilegiosForm');
+            if (privilegiosCache.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="text-center">No hay privilegios guardados en la BD.</td></tr>`;
+                return;
+            }
+            tbody.innerHTML = '';
+            privilegiosCache.forEach(p => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${p.pri_nombre}</strong></td>
+                    <td><span style="color:#6b4e5c; font-size:0.8rem;">${p.pri_descripcion || 'Sin descripción.'}</span></td>
+                    <td class="text-center">
+                        <input type="checkbox" class="chk-privilegio" value="${p.pri_id}" />
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // --- GUARDAR NUEVO ROL ---
+        document.getElementById('formNuevoRol').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btnGuardar = document.getElementById('btnGuardarRol');
+            const nombre = document.getElementById('txtNombreRol').value.trim();
+            const descripcion = document.getElementById('txtDescRol').value.trim();
+
+            btnGuardar.disabled = true;
+            btnGuardar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+            try {
+                const { data: insertado, error: errRol } = await _supabase
+                    .from('rol')
+                    .insert([{ r_nombre: nombre, r_descripcion: descripcion }])
+                    .select('r_id')
+                    .single();
+
+                if (errRol) throw errRol;
+
+                const nuevoRolId = insertado.r_id;
+                const checks = document.querySelectorAll('.chk-privilegio:checked');
+                const privilegiosIds = Array.from(checks).map(cb => parseInt(cb.value));
+
+                if (privilegiosIds.length > 0) {
+                    const relaciones = privilegiosIds.map(pId => ({
+                        rol_r_id: nuevoRolId,
+                        privilegio_pri_id: pId
+                    }));
+
+                    const { error: errRelacion } = await _supabase
+                        .from('rol_privilegio')
+                        .insert(relaciones);
+
+                    if (errRelacion) throw errRelacion;
+                }
+
+                Swal.fire({
+                    title: '¡Rol Registrado!',
+                    text: `El rol "${nombre}" ha sido guardado con éxito.`,
+                    icon: 'success',
+                    confirmButtonText: 'Genial',
+                    confirmButtonColor: '#d43f6b'
+                });
+
+                cerrarFormularioRol();
+                cargarRoles();
+
+            } catch (err) {
+                console.error(err);
+                Swal.fire({
+                    title: 'Error al guardar',
+                    text: `Detalle: ${err.message}`,
+                    icon: 'error',
+                    confirmButtonText: 'Corregir datos',
+                    confirmButtonColor: '#b13e61'
+                });
+            } finally {
+                btnGuardar.disabled = false;
+                btnGuardar.innerHTML = 'Guardar Rol';
+            }
+        });
+
+
+        // --- 5. LÓGICA DE ELIMINACIÓN DE ROL ---
+        function confirmarEliminarRol(id, nombre) {
+            Swal.fire({
+                title: '¿Estás completamente seguro?',
+                text: `Vas a eliminar el rol "${nombre}". Esta acción removerá todas sus asociaciones de privilegios en cascada.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#a8637c',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    try {
+                        // Primero limpiamos la tabla intermedia por integridad referencial si no está en ON DELETE CASCADE
+                        await _supabase.from('rol_privilegio').delete().eq('rol_r_id', id);
+
+                        // Eliminamos el rol principal
+                        const { error } = await _supabase.from('rol').delete().eq('r_id', id);
+                        if (error) throw error;
+
+                        Swal.fire({
+                            title: '¡Eliminado!',
+                            text: 'El rol ha sido removido de la base de datos.',
+                            icon: 'success',
+                            confirmButtonColor: '#d43f6b'
+                        });
+
+                        cerrarModal();
+                        cargarRoles();
+
+                    } catch (err) {
+                        Swal.fire({
+                            title: 'Error al eliminar',
+                            text: `No se pudo eliminar el rol. Asegúrate de que ningún usuario tenga este rol asignado en este momento. Detalle: ${err.message}`,
+                            icon: 'error',
+                            confirmButtonColor: '#b13e61'
+                        });
+                    }
+                }
+            });
+        }
+
+        // Evento eliminar desde el botón interno del modal de edición
+        document.getElementById('btnEliminarRolModal').addEventListener('click', function() {
+            const id = parseInt(document.getElementById('txtEditRolId').value);
+            const nombre = document.getElementById('txtEditNombreRol').value;
+            confirmarEliminarRol(id, nombre);
+        });
+
+        // CERRAR CON ESCAPE
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                cerrarModal();
+                cerrarFormularioRol();
+            }
+        });
+
+        // MOSTRAR FECHA
         function mostrarFecha() {
             const hoy = new Date();
             const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -662,10 +1094,13 @@
             fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
             document.getElementById('fechaActual').textContent = fecha;
         }
-        mostrarFecha();
 
-        // Inicializar las tarjetas
-        renderTarjetas();
+        // Inicialización
+        mostrarFecha();
+        verificarConexionBD();
+        cargarGlobalPrivilegios().then(() => {
+            cargarRoles();
+        });
     </script>
 </body>
 </html>

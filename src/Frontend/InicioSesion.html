@@ -2,8 +2,10 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MattelUCAB | Iniciar Sesión</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MatteIUCAB | Iniciar Sesión</title>
+    <!-- CDN de Supabase para la conexión -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -22,7 +24,7 @@
         }
 
         .card {
-            max-width: 550px;
+            max-width: 450px;
             width: 100%;
             background: #ffffff;
             border-radius: 2rem;
@@ -54,35 +56,29 @@
             color: #fff0b5;
         }
 
-        .brand p {
-            color: #fff0e6;
-            font-size: 0.8rem;
-            margin-top: 0.3rem;
-            letter-spacing: 0.5px;
-        }
-
         .form-container {
-            padding: 2rem 2rem 1.8rem;
+            padding: 2.5rem 2rem 1.8rem;
         }
 
         .titulo-principal {
-            font-size: 1.7rem;
+            font-size: 1.9rem;
             font-weight: 700;
             color: #b13e61;
             margin-bottom: 0.3rem;
         }
 
-        .subtitulo {
-            font-size: 0.85rem;
+        .subtitulo-registro {
+            font-size: 0.9rem;
             color: #a8637c;
             border-left: 3px solid #f7a1c4;
             padding-left: 0.75rem;
-            margin-bottom: 1.8rem;
+            margin-bottom: 2rem;
             font-weight: 500;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+            position: relative;
         }
 
         label {
@@ -113,7 +109,38 @@
             background: #ffffff;
         }
 
-        .btn-login {
+        /* ===== CONTENEDOR DE ERROR BONITO ===== */
+        .error-message-box {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            background: #fff0f3;
+            border: 1px solid #ffccd5;
+            color: #c92a4a;
+            padding: 0;
+            border-radius: 1rem;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .error-message-box.show {
+            max-height: 100px;
+            opacity: 1;
+            padding: 0.85rem 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .error-icon {
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .btn-ingresar {
             background: #d43f6b;
             color: white;
             border: none;
@@ -131,14 +158,14 @@
             box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
         }
 
-        .btn-login:hover {
+        .btn-ingresar:hover {
             background: #b83a61;
             transform: translateY(-2px);
         }
 
         .register-link {
             text-align: center;
-            margin: 1rem 0 1.5rem;
+            margin: 1rem 0 1.2rem;
         }
 
         .register-link a {
@@ -154,170 +181,201 @@
             border-bottom-color: #d43f6b;
         }
 
-        .demo-credentials {
+        .db-status-container {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px dashed #ffe0ea;
+            text-align: center;
+        }
+
+        .btn-check-db {
             background: #fff5f8;
-            border-radius: 1.2rem;
-            padding: 1rem 1.2rem;
-            margin: 1.5rem 0 1rem;
-            border: 1px solid #ffcddd;
-        }
-
-        .demo-credentials h3 {
-            font-size: 0.9rem;
             color: #b13e61;
-            margin-bottom: 0.8rem;
-            font-weight: 700;
-            display: flex;
+            border: 1.5px solid #ffcddd;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
             align-items: center;
-            gap: 0.4rem;
+            gap: 0.5rem;
+            font-family: inherit;
         }
 
-        .demo-item {
-            margin-bottom: 1rem;
-            border-left: 2px solid #f0a6c1;
-            padding-left: 0.8rem;
+        .btn-check-db:hover {
+            background: #ffeef3;
+            border-color: #e86f96;
+            transform: translateY(-1px);
         }
 
-        .demo-item strong {
-            color: #d43f6b;
-            font-size: 0.8rem;
-            display: block;
-            margin-bottom: 0.2rem;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #aaa;
+            display: inline-block;
         }
+        .status-dot.online { background: #2c7a4d; }
+        .status-dot.offline { background: #d43f6b; }
+        .status-dot.loading { background: #e6a23c; animation: pulseDb 1s infinite; }
 
-        .demo-item p {
-            font-size: 0.75rem;
-            color: #6b4e5c;
-            margin: 0.2rem 0;
-            font-family: monospace;
-            word-break: break-all;
+        @keyframes pulseDb {
+            0% { opacity: 1; }
+            50% { opacity: 0.4; }
+            100% { opacity: 1; }
         }
 
         .footer {
             text-align: center;
-            margin-top: 1rem;
-            padding-top: 1rem;
+            margin-top: 1.2rem;
+            padding-top: 1.2rem;
             border-top: 1px solid #ffe0ea;
             font-size: 0.7rem;
             color: #bb7c95;
         }
-
-        .error-message {
-            background: #ffe0e7;
-            color: #c62828;
-            padding: 0.6rem;
-            border-radius: 2rem;
-            font-size: 0.8rem;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        @media (max-width: 500px) {
-            .form-container {
-                padding: 1.5rem;
-            }
-            .brand h1 {
-                font-size: 1.5rem;
-            }
-        }
     </style>
 </head>
 <body>
+
 <div class="card">
     <div class="brand">
-        <h1>Mattel<span>UCAB</span></h1>
-        <p>Sistema de Gestión Empresarial</p>
+        <h1>Matte<span>IUCAB</span></h1>
     </div>
     <div class="form-container">
-        <h2 class="titulo-principal">Iniciar Sesión</h2>
-        <div class="subtitulo">Accede a tu cuenta</div>
+        <h2 class="titulo-principal">¡Hola de nuevo!</h2>
+        <div class="subtitulo-registro">Inicio de Sesión</div>
 
         <form id="loginForm">
             <div class="form-group">
-                <label for="email">Correo Electrónico</label>
-                <input type="email" id="email" name="email" 
-                       placeholder="tu@email.com" 
-                       value="tu@email.com"
-                       autocomplete="off">
+                <label for="username">Nombre de Usuario</label>
+                <input type="text" id="username" name="username" placeholder="Ingresa tu usuario" autocomplete="username" required>
             </div>
 
             <div class="form-group">
                 <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" 
-                       placeholder="********" 
-                       value=""
-                       autocomplete="off">
+                <input type="password" id="password" name="password" placeholder="Ingresa tu contraseña" autocomplete="current-password" required>
             </div>
 
-            <div id="errorMsg" class="error-message" style="display: none;"></div>
+            <!-- BLOQUE DE ERROR DINÁMICO UBICADO ARRIBA DEL BOTÓN -->
+            <div id="errorContainer" class="error-message-box">
+                <span class="error-icon">❌</span>
+                <span id="errorMessageText"></span>
+            </div>
 
-            <button type="submit" class="btn-login">Iniciar Sesión</button>
+            <button type="submit" class="btn-ingresar">Ingresar</button>
 
             <div class="register-link">
-                ¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a>
+                <a href="Registro.html">¿No tienes cuenta? Regístrate aquí</a>
             </div>
 
-            <div class="demo-credentials">
-                <h3>🔐 Credenciales de Demostración</h3>
-                <div class="demo-item">
-                    <strong>👑 Administrador</strong>
-                    <p>Email: admin@email.com</p>
-                    <p>Contraseña: admin123</p>
-                </div>
-                <div class="demo-item">
-                    <strong>🧑 Cliente Individual</strong>
-                    <p>Email: maria@personal.com</p>
-                    <p>Contraseña: maria123</p>
-                </div>
-                <div class="demo-item">
-                    <strong>🏢 Cliente Corporativo</strong>
-                    <p>Email: corporativo@empresa.com</p>
-                    <p>Contraseña: personal123</p>
-                </div>
+            <div class="db-status-container">
+                <button type="button" id="btnCheckDb" class="btn-check-db">
+                    <span id="dotDb" class="status-dot"></span>
+                    <span id="textDb">Probar conexión con BD</span>
+                </button>
             </div>
 
             <div class="footer">
-                © 2025 MattelUCAB. Todos los derechos reservados.
+                © 2026 MatteIUCAB. Todos los derechos reservados.
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    // Mantener el comportamiento de borrar el ejemplo al hacer foco
-    const emailInput = document.getElementById('email');
-    const defaultEmail = "tu@email.com";
-    emailInput.dataset.cleaned = "false";
-    emailInput.addEventListener('focus', function() {
-        if (emailInput.dataset.cleaned === "false" && emailInput.value === defaultEmail) {
-            emailInput.value = '';
-            emailInput.dataset.cleaned = "true";
+    // ========== CONFIGURACIÓN DE SUPABASE ==========
+    const SUPABASE_URL = 'https://qrigbgqpcwchaykaqrnr.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyaWdiZ3FwY3djaGF5a2Fxcm5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NTY0NjEsImV4cCI6MjA5NTIzMjQ2MX0.tbKXha7EyxDK48dbcwgoI9tFvf1juqCNhCzQHH46D7w'; 
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const errorContainer = document.getElementById('errorContainer');
+    const errorMessageText = document.getElementById('errorMessageText');
+    let errorTimeout;
+
+    // Función estilizada para pintar errores arriba del botón
+    function mostrarErrorBonito(mensaje) {
+        clearTimeout(errorTimeout); // Resetea el tiempo si ya había otro error activo
+        errorMessageText.textContent = mensaje;
+        errorContainer.classList.add('show');
+
+        // Desaparece automáticamente después de 5 segundos
+        errorTimeout = setTimeout(() => {
+            ocultarErrorBonito();
+        }, 5000);
+    }
+
+    function ocultarErrorBonito() {
+        errorContainer.classList.remove('show');
+    }
+
+    // ========== BOTÓN DE DIAGNÓSTICO DE CONEXIÓN ==========
+    document.getElementById('btnCheckDb').addEventListener('click', async () => {
+        const dot = document.getElementById('dotDb');
+        const text = document.getElementById('textDb');
+        dot.className = "status-dot loading";
+        text.textContent = "Conectando...";
+        try {
+            const { error } = await supabaseClient.from('usuario').select('u_nombre').limit(1);
+            if (error) throw error;
+            dot.className = "status-dot online";
+            text.textContent = "Conexión Exitosa";
+            ocultarErrorBonito();
+        } catch (e) {
+            dot.className = "status-dot offline";
+            text.textContent = "Error de Conexión";
+            mostrarErrorBonito("No se pudo establecer conexión con el servidor de Supabase.");
         }
     });
 
-    // Lógica de validación de administrador y redirección
-    const form = document.getElementById('loginForm');
-    const errorDiv = document.getElementById('errorMsg');
-
-    form.addEventListener('submit', function(e) {
+    // ========== PROCESAR INICIO DE SESIÓN Y REDIRECCIÓN ==========
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
         e.preventDefault();
-        const email = document.getElementById('email').value.trim();
+        ocultarErrorBonito(); // Limpia alertas previas al enviar
+
+        const username = document.getElementById('username').value.trim();
         const password = document.getElementById('password').value;
 
-        // Solo el administrador puede acceder al dashboard
-        if (email === 'admin@email.com' && password === 'admin123') {
-            // Guardar sesión (puede ser sessionStorage o localStorage)
-            sessionStorage.setItem('userRole', 'admin');
-            sessionStorage.setItem('userEmail', email);
-            // Redirigir al dashboard
-            window.location.href = 'dashboard.html';
-        } else {
-            errorDiv.textContent = '❌ Credenciales incorrectas o no tienes permisos de administrador.';
-            errorDiv.style.display = 'block';
-            // Opcional: ocultar después de 3 segundos
-            setTimeout(() => {
-                errorDiv.style.display = 'none';
-            }, 3000);
+        try {
+            // 1. Buscamos las credenciales en la tabla 'usuario'
+            const { data: usuario, error } = await supabaseClient
+                .from('usuario')
+                .select('rol_r_id, cliente_cl_id')
+                .eq('u_nombre', username)
+                .eq('u_contraseña', password)
+                .maybeSingle();
+
+            if (error) throw error;
+
+            // 2. Si no hay coincidencias exactas
+            if (!usuario) {
+                mostrarErrorBonito('Nombre de usuario o contraseña incorrectos.');
+                return;
+            }
+
+            // 3. Guardar sesión local
+            localStorage.setItem('usuarioLogueado', username);
+            localStorage.setItem('clienteId', usuario.cliente_cl_id);
+
+            // 4. Mapeo de IDs de Roles para Redirección Dinámica
+            const ROL_ADMIN = 1; // Administrador
+            const ROL_B2C = 2;   // clienteb2c
+            const ROL_B2B = 3;   // clienteb2b
+
+            if (usuario.rol_r_id === ROL_ADMIN) {
+                window.location.href = 'dashboard.html';
+            } else if (usuario.rol_r_id === ROL_B2B) {
+                window.location.href = 'dashb2b.html';
+            } else if (usuario.rol_r_id === ROL_B2C) {
+                window.location.href = 'dashb2c.html';
+            } else {
+                mostrarErrorBonito('Tu cuenta posee un rol no asignado a un panel tradicional.');
+            }
+
+        } catch (err) {
+            console.error(err);
+            mostrarErrorBonito(`Error inesperado: ${err.message}`);
         }
     });
 </script>

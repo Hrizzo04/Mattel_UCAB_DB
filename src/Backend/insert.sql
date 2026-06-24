@@ -297,7 +297,26 @@ INSERT INTO Exclusividad_Producto (EP_nombre, EP_cantidad) VALUES
 ('Gold label', 22),
 ('Platinum label', 30),
 ('Pink label', 14),
-('Gold label', 28);
+('Gold label', 28);-- Actualizar Pink Label (Sin límite -> NULL)
+
+UPDATE exclusividad_producto 
+SET ep_cantidad = 999999999 
+WHERE ep_id = 1;
+
+-- Actualizar Black Label (Sin límite/No especificado -> NULL)
+UPDATE exclusividad_producto 
+SET ep_cantidad = 999999999
+WHERE ep_id = 2;
+
+-- Actualizar Gold Label (Límite estricto < 25,000 -> ponemos el tope máximo de 24999 o 25000)
+UPDATE exclusividad_producto 
+SET ep_cantidad = 25000 
+WHERE ep_id = 3;
+
+-- Actualizar Platinum Label (Límite estricto < 1,000 -> ponemos el tope máximo de 999 o 1000)
+UPDATE exclusividad_producto 
+SET ep_cantidad = 1000 
+WHERE ep_id = 4;
 
 INSERT INTO Courier (Cou_direccion, Cou_nombre) VALUES
 ('Av. Libertador 1001, Caracas', 'Courier Express'),
@@ -546,19 +565,62 @@ INSERT INTO Estado_Envio (EstEn_fecha_inicio, EstEn_fecha_fin, Envio_E_id, Estad
 ('2026-06-09', '2026-06-10', 9, 5),
 ('2026-06-10', '2026-06-11', 10, 5);
 
-INSERT INTO Responsable (R_fecha_inicio, R_fecha_fin, Empleado_Em_id, Cargo_Car_id) VALUES
-('2026-06-01', '2026-12-31', 1, 1),
-('2026-06-02', '2026-12-31', 2, 2),
-('2026-06-03', '2026-12-31', 3, 3),
-('2026-06-04', '2026-12-31', 4, 4),
-('2026-06-05', '2026-12-31', 5, 5),
-('2026-06-06', '2026-12-31', 6, 6),
-('2026-06-07', '2026-12-31', 7, 7),
-('2026-06-08', '2026-12-31', 8, 8),
-('2026-06-09', '2026-12-31', 9, 9),
-('2026-06-10', '2026-12-31', 10, 10);
+INSERT INTO responsable 
+(
+  r_fecha_inicio, 
+  r_fecha_fin,
+  empleado_em_id,
+  cargo_car_id,
+  fase_diseno_fd_id,
+  fase_diseno_fase_f_id,
+  fase_diseno_dp_id,
+  fase_operativa_fo_id, 
+  fase_operativa_lote_produccion_lp_id, 
+  fase_operativa_fase_f_id,
+  fase_logistica_fl_id, 
+  fase_logistica_fase_f_id, 
+  fase_logistica_desbtb_id, 
+  fase_logistica_desbtc_id,
+  fase_compra_fc_id,
+  fase_post_venta_fpv_id, 
+  fase_post_venta_pf_id, 
+  fase_post_venta_f_id, 
+  fase_post_venta_fc_id
+) 
+VALUES 
+-- Registro 1
+('2026-01-05', '2026-06-30', 1, 1,   1, 2, 11,   2, 2, 1,   1, 3, 1, NULL,   1,   1, 1, 5, 1),
 
--- Insertar categorías principales (padres)
+-- Registro 2
+('2026-02-10', '2026-06-30', 2, 2,   2, 2, 12,   3, 3, 1,   2, 3, 2, NULL,   2,   2, 2, 5, 2),
+
+-- Registro 3
+('2026-03-01', '2026-06-30', 3, 3,   3, 2, 13,   4, 4, 1,   3, 3, 3, NULL,   3,   3, 3, 5, 3),
+
+-- Registro 4
+('2026-01-15', '2026-06-30', 4, 4,   4, 2, 14,   5, 5, 1,   4, 3, 4, NULL,   4,   4, 4, 5, 4),
+
+-- Registro 5
+('2026-02-01', '2026-06-30', 5, 5,   5, 2, 15,   6, 6, 1,   5, 3, 5, NULL,   5,   5, 5, 5, 5),
+
+-- -----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Filas del 6 al 10: Usan la segunda tanda de datos existentes reales (Logística B2C)
+-- -----------------------------------------------------------------------------------------------------------------------------------------------------------
+-- Registro 6
+('2026-04-01', '2026-06-30', 6, 6,   6, 2, 16,   7, 7, 1,   6, 3, NULL, 12,  6,   6, 11, 5, 6),
+
+-- Registro 7
+('2026-04-15', '2026-06-30', 7, 7,   7, 2, 17,   8, 8, 1,   7, 3, NULL, 13,  7,   7, 12, 5, 7),
+
+-- Registro 8
+('2026-05-02', '2026-06-30', 8, 8,   8, 2, 18,   9, 9, 1,   8, 3, NULL, 14,  8,   8, 13, 5, 8),
+
+-- Registro 9
+('2026-05-18', '2026-06-30', 9, 9,   9, 2, 19,  10, 10, 1,  9, 3, NULL, 15,  9,   9, 14, 5, 9),
+
+-- Registro 10
+('2026-06-01', '2026-06-30', 10, 10, 10, 2, 20,  11, 11, 1, 10, 3, NULL, 16, 10,  10, 15, 5, 10);
+
 INSERT INTO Categoria (Cat_nombre, Cat_descripcion, Categoria_Cat_id) VALUES
 ('Propiedad', 'Categoría principal para inmuebles y edificaciones.', NULL),
 ('Vehículo', 'Categoría principal para medios de transporte.', NULL),
@@ -757,13 +819,311 @@ INSERT INTO producto_final(
     pf_cantidad, 
     pf_precio_actual
     ) VALUES 
-('Barbie Lunar', 'Modern', 'NRFB', 1, 2, 1500, 34), 
-('Skipper Lunar', 'Modern', 'NRFB', 1, 3, 2500, 30), 
-('Barbie Artista', 'Mod', 'NRFB', 2, 4, 1800, 50), 
-('Chelsea Lunar', 'SuperStar', 'NRFB', 1, 5, 1200, 27), 
-('Barbie Lunar', 'Modern', 'NRFB', 1, 6, 3000, 25), 
-('Stacie Lunar', 'Modern', 'NRFB', 4, 7, 1000, 300), 
-('Barbie Iluminada', 'Mod', 'NRFB', 3, 8, 2200, 150), 
-('Barbie Constructora', 'Vintage', 'NRFB', 2, 9, 1350, 70), 
-('Barbie Piloto de carros', 'Vintage', 'NRFB', 1, 10, 1600, 35), 
-('Ken Lunar', 'Modern', 'NRFB', 1, 11, 2000, 30);
+('Barbie Lunar', 'Modern', 'NRFB', 1, 2, 34), 
+('Skipper Lunar', 'Modern', 'NRFB', 1, 3, 30), 
+('Barbie Artista', 'Mod', 'NRFB', 2, 4, 50), 
+('Chelsea Lunar', 'SuperStar', 'NRFB', 1, 5, 27), 
+('Barbie Lunar', 'Modern', 'NRFB', 1, 6, 25), 
+('Stacie Lunar', 'Modern', 'NRFB', 4, 7, 300), 
+('Barbie Iluminada', 'Mod', 'NRFB', 3, 8, 150), 
+('Barbie Constructora', 'Vintage', 'NRFB', 2, 9, 70), 
+('Barbie Piloto de carros', 'Vintage', 'NRFB', 1, 10, 35), 
+('Ken Lunar', 'Modern', 'NRFB', 1, 11, 30);
+
+INSERT INTO vinculo (
+    vi_nombre,
+    vi_descripcion,
+    producto_final_pf_id, 
+    producto_final_pf_id2
+) VALUES 
+-- Vínculos de Hermana
+('hermana','Barbie Lunar es hermana de Skipper Lunar',1, 2),
+('hermana','Barbie Lunar es hermana de Chelsea Lunar',1, 4),
+('hermana','Barbie Lunar es hermana de Stacie Lunar',1, 6),
+('hermana','Skipper Lunar es hermana de Stacie Lunar',2, 4),
+('hermana','Stacie Lunar es hermana de Chelsea Lunar',6, 4),
+
+-- Vínculos de Pareja
+('pareja','Barbie Lunar es pareja de Ken Lunar',1, 10), -- Corregido el nombre del vínculo según el comentario
+
+-- Vínculos de Amiga
+('amiga','Barbie Artista es Amiga de Barbie Constructora',3, 8),
+('amiga','Barbie Iluminada es amiga de Barbie piloto de carreras',7, 9), -- Corregido el comentario inconsistente
+
+-- Vínculos de Rival 
+('rival', 'Barbie Piloto de carros es rival de Barbie Artista',9,3),  
+('rival', 'Barbie Lunar es rival de Barbie Iluminada',5,7);
+
+INSERT INTO historico_producto (
+    hp_fecha_hora_lanzamiento,
+    hp_precio,
+    producto_final_pf_id
+) VALUES 
+-- Registro 1: Barbie Lunar (Precio: 34.00, ID: 1)
+('2026-01-15 08:00:00', 34.00, 1),
+
+-- Registro 2: Skipper Lunar (Precio: 30.00, ID: 2)
+('2026-02-10 09:30:00', 30.00, 2),
+
+-- Registro 3: Barbie Artista (Precio: 50.00, ID: 3)
+('2026-01-20 14:00:00', 50.00, 3),
+
+-- Registro 4: Chelsea Lunar (Precio: 27.00, ID: 4)
+('2026-02-01 10:15:00', 27.00, 4),
+
+-- Registro 5: Barbie Lunar Lote 6 (Precio: 25.00, ID: 5)
+('2026-02-15 11:00:00', 25.00, 5),
+
+-- Registro 6: Stacie Lunar (Precio: 300.00, ID: 6)
+('2026-02-20 13:45:00', 300.00, 6),
+
+-- Registro 7: Barbie Iluminada (Precio: 150.00, ID: 7)
+('2026-03-01 18:30:00', 150.00, 7),
+
+-- Registro 8: Barbie Constructora (Precio: 70.00, ID: 8)
+('2026-03-08 07:00:00', 70.00, 8),
+
+-- Registro 9: Barbie Piloto de carros (Precio: 35.00, ID: 9)
+('2026-03-15 12:00:00', 35.00, 9),
+
+-- Registro 10: Ken Lunar (Precio: 30.00, ID: 10)
+('2026-03-22 15:20:00', 30.00, 10);
+
+INSERT INTO mercado_secundario (
+    ms_condicion_fisica,
+    ms_precio_actual,
+    producto_final_pf_id
+) VALUES 
+-- Registro 1: Barbie Lunar (Precio orig: 34 -> NRFB: 55.00)
+('NRFB', 55.00, 1),
+
+-- Registro 2: Skipper Lunar (Precio orig: 30 -> Mint: 42.00)
+('Mint', 42.00, 2),
+
+-- Registro 3: Barbie Artista (Precio orig: 50 -> Mint: 78.00)
+('Mint', 78.00, 3),
+
+-- Registro 4: Chelsea Lunar (Precio orig: 27 -> NRFB: 45.00)
+('NRFB', 45.00, 4),
+
+-- Registro 5: Barbie Lunar Lote 6 (Precio orig: 25 -> restoration needed por caja rota)
+('restoration needed', 18.00, 5),
+
+-- Registro 6: Stacie Lunar [Platinum Exclusivo] (Precio orig: 300 -> NRFB Coleccionista: 680.00)
+('NRFB', 680.00, 6),
+
+-- Registro 7: Barbie Iluminada [Gold Exclusivo] (Precio orig: 150 -> Mint Impecable: 290.00)
+('Mint', 290.00, 7),
+
+-- Registro 8: Barbie Constructora (Precio orig: 70 -> Mint: 115.00)
+('Mint', 115.00, 8),
+
+-- Registro 9: Barbie Piloto de carros (Precio orig: 35 -> NRFB: 60.00)
+('NRFB', 60.00, 9),
+
+-- Registro 10: Ken Lunar (Precio orig: 30 -> restoration needed por desgaste)
+('restoration needed', 22.00, 10);
+
+INSERT INTO fase_diseno (
+    fd_fecha_hora_inicio,
+    fd_fecha_hora_fin,
+    fase_f_id,
+    diseño_producto_dp_id,
+    departamento_de_id
+) VALUES 
+-- Registro 1: Diseño de Barbie Lunar (Lanzamiento: 2026-07-01)
+('2026-01-05 08:00:00', '2026-03-20 17:00:00', 2, 11, 1),
+
+-- Registro 2: Diseño de Barbie Constructora (Lanzamiento: 2026-08-15)
+('2026-02-10 08:00:00', '2026-05-15 16:30:00', 2, 12, 1),
+
+-- Registro 3: Diseño de Barbie Artista (Lanzamiento: 2026-09-10)
+('2026-03-01 09:00:00', '2026-06-12 15:00:00', 2, 13, 1),
+
+-- Registro 4: Diseño de Barbie Piloto de carros (Lanzamiento: 2026-07-20)
+('2026-01-15 08:00:00', '2026-04-10 17:00:00', 2, 14, 1),
+
+-- Registro 5: Diseño de Barbie Iluminada (Lanzamiento: 2026-08-05)
+('2026-02-01 08:30:00', '2026-05-02 16:00:00', 2, 15, 1),
+
+-- Registro 6: Diseño de Barbie Cabaña (Lanzamiento: 2026-10-01)
+('2026-04-01 07:30:00', '2026-07-25 17:00:00', 2, 16, 1),
+
+-- Registro 7: Diseño de Barbie Yate (Lanzamiento: 2026-10-15)
+('2026-04-15 08:00:00', '2026-08-10 16:30:00', 2, 17, 1),
+
+-- Registro 8: Diseño de Barbie Apartamento (Lanzamiento: 2026-11-05)
+('2026-05-02 08:00:00', '2026-09-05 15:45:00', 2, 18, 1),
+
+-- Registro 9: Diseño de Barbie Dream Studio (Lanzamiento: 2026-11-20)
+('2026-05-18 09:00:00', '2026-09-20 17:00:00', 2, 19, 1),
+
+-- Registro 10: Diseño de Barbie Dream House Deluxe (Lanzamiento: 2026-12-01)
+('2026-06-01 08:00:00', '2026-10-15 16:00:00', 2, 20, 1);
+
+
+INSERT INTO fase_logistica (fl_fecha_hora_inicio, fl_fecha_hora_fin, fase_f_id, despacho_btb_desbtb_id, despacho_btc_desbtc_id) VALUES
+-- 5 Casos exclusivos para Despachos BTB (BTC queda en NULL)
+('2026-06-01 10:00:00', '2026-06-01 14:00:00', 3, 1, NULL),
+('2026-06-02 11:00:00', '2026-06-02 15:30:00', 3, 2, NULL),
+('2026-06-03 12:00:00', '2026-06-03 16:45:00', 3, 3, NULL),
+('2026-06-04 09:00:00', '2026-06-04 13:15:00', 3, 4, NULL),
+('2026-06-05 15:00:00', '2026-06-05 19:00:00', 3, 5, NULL),
+
+-- 5 Casos exclusivos para Despachos BTC (BTB queda en NULL)
+('2026-06-06 17:00:00', '2026-06-06 21:30:00', 3, NULL, 12),
+('2026-06-07 10:00:00', '2026-06-07 14:00:00', 3, NULL, 13),
+('2026-06-08 13:00:00', '2026-06-08 17:45:00', 3, NULL, 14),
+('2026-06-09 16:00:00', '2026-06-09 20:00:00', 3, NULL, 15),
+('2026-06-10 19:00:00', '2026-06-10 23:50:00', 3, NULL, 16);
+
+INSERT INTO fase_operativa 
+(
+  fase_f_id, 
+  departamento_de_id, 
+  lote_produccion_lp_id, 
+  fo_fecha_hora_inicio, 
+  fo_fecha_hora_fin
+) 
+VALUES 
+(1, 2, 2, '2026-07-02 06:00:00', '2026-07-02 14:30:00'),
+(1, 2, 3, '2026-07-03 07:00:00', '2026-07-03 15:45:00'),
+(1, 2, 4, '2026-09-12 08:00:00', '2026-09-12 17:00:00'),
+(1, 2, 5, '2026-07-05 06:30:00', '2026-07-05 13:00:00'),
+(1, 2, 6, '2026-07-04 06:00:00', '2026-07-04 18:00:00'),
+(1, 2, 7, '2026-07-06 08:00:00', '2026-07-06 12:30:00'),
+(1, 2, 8, '2026-08-08 07:00:00', '2026-08-08 16:15:00'),
+(1, 2, 9, '2026-08-18 09:00:00', '2026-08-18 15:30:00'),
+(1, 2, 10, '2026-09-15 08:30:00', '2026-09-15 16:00:00'),
+(1, 2, 11, '2026-07-03 16:00:00', '2026-07-03 23:30:00');
+
+INSERT INTO fase_compra 
+(
+  fase_f_id, 
+  departamento_de_id, 
+  orden_compra_oc_id, 
+  compra_btc_cbtc_id, 
+  fc_fecha_hora_inicio, 
+  fc_fecha_hora_fin
+) 
+VALUES 
+(4, 4, NULL, 1, '2026-06-01 10:30:00', '2026-06-01 12:00:00'),
+(4, 4, NULL, 2, '2026-06-02 11:30:00', '2026-06-02 13:00:00'),
+(4, 4, NULL, 3, '2026-06-03 12:15:00', '2026-06-03 13:00:00'),
+(4, 4, NULL, 4, '2026-06-04 13:30:00', '2026-06-04 15:00:00'),
+(4, 4, NULL, 5, '2026-06-05 14:30:00', '2026-06-05 16:00:00'),
+
+(4, 4, 1, NULL, '2026-06-01 08:00:00', '2026-06-01 10:00:00'),
+
+(4, 4, 2, NULL, '2026-06-02 08:30:00', '2026-06-02 10:30:00'),
+
+(4, 4, 3, NULL, '2026-06-03 09:00:00', '2026-06-03 11:00:00'),
+
+(4, 4, 4, NULL, '2026-06-04 09:30:00', '2026-06-04 11:30:00'),
+
+(4, 4, 5, NULL, '2026-06-05 10:00:00', '2026-06-05 12:00:00');
+
+INSERT INTO fase_post_venta 
+(
+  fase_f_id, 
+  departamento_de_id, 
+  producto_final_pf_id, 
+  fase_compra_fc_id, 
+  fpv_fecha_hora_inicio, 
+  fpv_fecha_hora_fin
+) 
+VALUES 
+
+(5, 6, 1, 1, '2026-06-10 09:00:00', '2026-06-10 10:30:00'),
+
+
+(5, 6, 2, 2, '2026-06-11 14:15:00', '2026-06-11 15:00:00'),
+
+
+(5, 6, 3, 3, '2026-06-12 11:00:00', '2026-06-12 12:45:00'),
+
+
+(5, 6, 4, 4, '2026-06-15 16:30:00', '2026-06-15 17:15:00'),
+
+
+(5, 6, 5, 5, '2026-06-16 09:45:00', '2026-06-16 11:15:00'),
+
+
+(5, 6, 11, 6, '2026-06-18 08:30:00', '2026-06-18 10:00:00'),
+
+
+(5, 6, 12, 7, '2026-06-19 13:00:00', '2026-06-19 15:30:00'),
+
+
+(5, 6, 13, 8, '2026-06-22 10:15:00', '2026-06-22 11:30:00'),
+
+
+(5, 6, 14, 9, '2026-06-23 15:00:00', '2026-06-23 16:00:00'),
+
+
+(5, 6, 15, 10, '2026-06-24 11:00:00', '2026-06-24 12:15:00');
+
+INSERT INTO responsable 
+(
+  r_fecha_inicio, 
+  r_fecha_fin,
+  empleado_em_id,
+  cargo_car_id,
+  fase_diseno_fd_id,
+  fase_diseno_fase_f_id,
+  fase_diseno_dp_id,
+  fase_operativa_fo_id, 
+  fase_operativa_lote_produccion_lp_id, 
+  fase_operativa_fase_f_id,
+  fase_logistica_fl_id, 
+  fase_logistica_fase_f_id, 
+  fase_logistica_desbtb_id, 
+  fase_logistica_desbtc_id,
+  fase_compra_fc_id,
+  fase_post_venta_fpv_id, 
+  fase_post_venta_pf_id, 
+  fase_post_venta_f_id, 
+  fase_post_venta_fc_id
+) 
+VALUES 
+-- Registro 1
+('2026-01-05', '2026-06-30', 1, 1,   1, 2, 11,   2, 2, 1,   1, 3, 1, NULL,   1,   1, 1, 5, 1),
+
+-- Registro 2
+('2026-02-10', '2026-06-30', 2, 2,   2, 2, 12,   3, 3, 1,   2, 3, 2, NULL,   2,   2, 2, 5, 2),
+
+-- Registro 3
+('2026-03-01', '2026-06-30', 3, 3,   3, 2, 13,   4, 4, 1,   3, 3, 3, NULL,   3,   3, 3, 5, 3),
+
+-- Registro 4
+('2026-01-15', '2026-06-30', 4, 4,   4, 2, 14,   5, 5, 1,   4, 3, 4, NULL,   4,   4, 4, 5, 4),
+
+-- Registro 5
+('2026-02-01', '2026-06-30', 5, 5,   5, 2, 15,   6, 6, 1,   5, 3, 5, NULL,   5,   5, 5, 5, 5),
+
+-- Registro 6
+('2026-04-01', '2026-06-30', 6, 6,   6, 2, 16,   7, 7, 1,   6, 3, NULL, 12,  6,   6, 11, 5, 6),
+
+-- Registro 7
+('2026-04-15', '2026-06-30', 7, 7,   7, 2, 17,   8, 8, 1,   7, 3, NULL, 13,  7,   7, 12, 5, 7),
+
+-- Registro 8
+('2026-05-02', '2026-06-30', 8, 8,   8, 2, 18,   9, 9, 1,   8, 3, NULL, 14,  8,   8, 13, 5, 8),
+
+-- Registro 9
+('2026-05-18', '2026-06-30', 9, 9,   9, 2, 19,  10, 10, 1,  9, 3, NULL, 15,  9,   9, 14, 5, 9),
+
+-- Registro 10
+('2026-06-01', '2026-06-30', 10, 10, 10, 2, 20,  11, 11, 1, 10, 3, NULL, 16, 10,  10, 15, 5, 10);
+
+INSERT INTO asignacion_horario (responsable_r_id, turno_tu_id) VALUES 
+(1, 1), --  Turno (Diurno)
+(2, 2), --  Turno (Vespertino)
+(3, 3), --  Turno (Nocturno)
+(4, 1), --  Turno (Diurno)
+(5, 2), --  Turno (Vespertino)
+(6, 3), --  Turno (Nocturno)
+(7, 1), --  Turno (Diurno)
+(8, 2), --  Turno (Vespertino)
+(9, 3), --  Turno (Nocturno)
+(10, 1); -- Turno (Diurno)
