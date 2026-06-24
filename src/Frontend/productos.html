@@ -4,8 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MattelUCAB | Gestión de Productos</title>
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <style>
         /* ------ RESET Y GLOBAL ------ */
         * {
@@ -100,7 +103,7 @@
         .top-bar {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             margin-bottom: 1.8rem;
             flex-wrap: wrap;
             gap: 1rem;
@@ -110,6 +113,22 @@
             font-size: 1.6rem;
             font-weight: 700;
         }
+        
+        /* Contenedor de acciones superiores alineadas a la derecha */
+        .top-bar-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.6rem;
+        }
+
+        /* Fila con el estado y la fecha */
+        .status-date-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
         .date {
             background: #fff;
             padding: 0.5rem 1.2rem;
@@ -124,6 +143,36 @@
         }
         .date i {
             color: #d43f6b;
+        }
+
+        /* Indicador / Botón de Conexión */
+        .connection-status {
+            padding: 0.5rem 1.2rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+        .connection-status.checking {
+            background: #f1f3f5;
+            color: #6c757d;
+            border-color: #dee2e6;
+        }
+        .connection-status.connected {
+            background: #e3f5e9;
+            color: #1e7a4a;
+            border-color: #a3e635;
+        }
+        .connection-status.disconnected {
+            background: #fce4e4;
+            color: #d43f6b;
+            border-color: #f87171;
         }
 
         /* Título de sección */
@@ -141,7 +190,29 @@
             margin-top: 0.2rem;
         }
 
-        /* ------ TARJETAS DE MÉTRICAS (actualizadas) ------ */
+        /* ------ BOTÓN DISEÑAR NUEVO PRODUCTO ------ */
+        .btn-nuevo {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            background: #d43f6b;
+            color: #fff;
+            border: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 3rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 10px rgba(212, 63, 107, 0.25);
+        }
+        .btn-nuevo:hover {
+            background: #b83a61;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(212, 63, 107, 0.35);
+        }
+
+        /* ------ TARJETAS DE MÉTRICAS REALES ------ */
         .metric-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -180,12 +251,12 @@
         }
         .search-bar input {
             width: 100%;
-            max-width: 500px;
-            padding: 0.7rem 1.2rem;
+            max-width: 850px;
+            padding: 0.8rem 1.5rem;
             border: 1.5px solid #ffe0e9;
             border-radius: 2rem;
             font-family: inherit;
-            font-size: 0.9rem;
+            font-size: 1rem;
             outline: none;
             background: #fff;
             transition: 0.2s;
@@ -223,54 +294,42 @@
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
+            gap: 0.5rem;
         }
         .product-card .product-header h3 {
             font-size: 1rem;
             color: #b13e61;
             font-weight: 700;
         }
-        .product-card .product-header .sku {
-            font-size: 0.7rem;
-            color: #a8637c;
+        .product-card .product-header .precio {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #d43f6b;
             background: #fef2f5;
             padding: 0.2rem 0.6rem;
             border-radius: 1rem;
+            white-space: nowrap;
         }
-        .product-card .era {
-            font-size: 0.75rem;
+        .product-card .descripcion-corta {
+            font-size: 0.8rem;
             color: #6b4e5c;
-            margin: 0.3rem 0 0.2rem;
+            margin: 0.5rem 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
-        .product-card .rareza {
+        .product-card .detalles-tecnicos {
             font-size: 0.75rem;
-            color: #6b4e5c;
+            color: #8c727e;
             margin: 0.2rem 0;
         }
-        .product-card .estado {
-            display: inline-block;
-            padding: 0.2rem 0.8rem;
-            border-radius: 2rem;
-            font-size: 0.7rem;
-            font-weight: 600;
-            margin: 0.4rem 0 0.8rem;
-            align-self: flex-start;
-        }
-        .estado.disponible {
-            background: #e3f5e9;
-            color: #1e7a4a;
-        }
-        .estado.agotado {
-            background: #fce4e4;
-            color: #b13e61;
-        }
-        .estado.pendiente {
-            background: #fff3cd;
-            color: #856404;
-        }
+        
         .product-card .acciones {
             display: flex;
             gap: 0.6rem;
             margin-top: auto;
+            padding-top: 0.8rem;
         }
         .product-card .acciones button {
             flex: 1;
@@ -282,44 +341,14 @@
             cursor: pointer;
             transition: 0.2s;
         }
-        .btn-ver {
-            background: #f7a1c4;
-            color: #fff;
-        }
-        .btn-ver:hover {
-            background: #d43f6b;
-        }
-        .btn-editar {
-            background: #fff0b5;
-            color: #b13e61;
-        }
-        .btn-editar:hover {
-            background: #ffd966;
-        }
+        .btn-ver { background: #f7a1c4; color: #fff; }
+        .btn-ver:hover { background: #d43f6b; }
+        
+        /* ------ BOTÓN ELIMINAR ------ */
+        .btn-eliminar { background: #f87171; color: #fff; }
+        .btn-eliminar:hover { background: #dc2626; }
 
-        /* ------ BOTÓN NUEVO PRODUCTO (rosa) ------ */
-        .btn-nuevo {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: #d43f6b;
-            color: #fff;
-            border: none;
-            padding: 0.7rem 1.8rem;
-            border-radius: 3rem;
-            font-weight: 700;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 1.5rem;
-            box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
-        }
-        .btn-nuevo:hover {
-            background: #b83a61;
-            transform: translateY(-2px);
-        }
-
-        /* ------ MODALES (ventanas emergentes) ------ */
+        /* ------ MODALES ------ */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -333,15 +362,13 @@
             align-items: center;
             z-index: 1000;
         }
-        .modal-overlay.mostrar {
-            display: flex;
-        }
+        .modal-overlay.mostrar { display: flex; }
         .modal {
             background: #fff;
             border-radius: 2rem;
-            max-width: 550px;
+            max-width: 600px;
             width: 90%;
-            max-height: 90vh;
+            max-height: 85vh;
             overflow-y: auto;
             padding: 2rem;
             box-shadow: 0 25px 50px rgba(0,0,0,0.2);
@@ -355,11 +382,7 @@
             border-bottom: 1px solid #ffe0e9;
             padding-bottom: 0.8rem;
         }
-        .modal-header h2 {
-            color: #b13e61;
-            font-size: 1.4rem;
-            font-weight: 700;
-        }
+        .modal-header h2 { color: #b13e61; font-size: 1.4rem; font-weight: 700; }
         .modal-close {
             background: transparent;
             border: none;
@@ -369,95 +392,110 @@
             transition: 0.2s;
             padding: 0 0.5rem;
         }
-        .modal-close:hover {
-            color: #d43f6b;
-            transform: rotate(90deg);
-        }
-        .modal-body {
-            margin: 0.5rem 0;
-        }
+        .modal-close:hover { color: #d43f6b; transform: rotate(90deg); }
+        
         .modal-body .detail-item {
             display: flex;
             justify-content: space-between;
-            padding: 0.4rem 0;
+            padding: 0.6rem 0;
             border-bottom: 1px solid #f0e2e8;
+            font-size: 0.9rem;
         }
-        .modal-body .detail-item .label {
-            font-weight: 600;
-            color: #aa4e72;
-        }
-        .modal-body .detail-item .value {
-            color: #2d2f36;
-        }
+        .modal-body .detail-item .label { font-weight: 600; color: #aa4e72; width: 40%; }
+        .modal-body .detail-item .value { color: #2d2f36; width: 60%; text-align: right; word-break: break-word; }
 
-        /* Formulario dentro del modal */
-        .form-group {
-            margin-bottom: 1rem;
+        /* Formulario Grid de Dos Columnas */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            color: #aa4e72;
-            font-size: 0.85rem;
-            margin-bottom: 0.3rem;
+        .form-group.full-width {
+            grid-column: span 2;
         }
-        .form-group input,
+        .form-group { margin-bottom: 0.5rem; }
+        .form-group label { display: block; font-weight: 600; color: #aa4e72; font-size: 0.85rem; margin-bottom: 0.3rem; }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 0.7rem 1rem; border: 1.5px solid #ffe0e9; border-radius: 1rem; font-family: inherit; font-size: 0.9rem; outline: none; background: #fefefe;
+        }
+        .form-group textarea { resize: vertical; height: 70px; }
+        .form-group input:focus, .form-group textarea:focus { border-color: #d43f6b; box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.1); }
+        .form-group input:disabled, .form-group textarea:disabled { background: #f1f3f5; color: #555; border-color: #dee2e6; cursor: not-allowed; }
+        
+        /* ------ DESPLEGABLE DE MATERIALES ------ */
+        .select-wrapper {
+            position: relative;
+            width: 100%;
+        }
         .form-group select {
             width: 100%;
-            padding: 0.7rem 1rem;
+            padding: 0.7rem 2.5rem 0.7rem 1.2rem;
             border: 1.5px solid #ffe0e9;
             border-radius: 1rem;
             font-family: inherit;
             font-size: 0.9rem;
+            color: #2d2f36;
+            background-color: #fefefe;
             outline: none;
-            background: #fefefe;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
         }
-        .form-group input:focus,
+        .form-group select:hover {
+            border-color: #f7a1c4;
+            background-color: #fff;
+        }
         .form-group select:focus {
             border-color: #d43f6b;
-            box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.1);
+            box-shadow: 0 0 0 4px rgba(212, 63, 107, 0.15);
+            background-color: #fff;
         }
-        .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-top: 1.5rem;
+        .select-wrapper::after {
+            content: '\f078';
+            font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.8rem;
+            color: #b13e61;
+            position: absolute;
+            right: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            transition: transform 0.25s ease;
         }
-        .modal-actions .btn-cancelar {
-            background: transparent;
-            border: 1px solid #d43f6b;
+        .select-wrapper:focus-within::after {
+            transform: translateY(-50%) rotate(180deg);
             color: #d43f6b;
-            padding: 0.6rem 1.8rem;
-            border-radius: 3rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
         }
-        .modal-actions .btn-cancelar:hover {
-            background: #d43f6b;
-            color: #fff;
+        .form-group select option {
+            color: #2d2f36;
+            padding: 0.8rem;
+            background-color: #fff;
         }
+        .form-group select option:first-child {
+            color: #b9c4d4;
+            font-style: italic;
+        }
+        
+        .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem; }
+        .modal-actions .btn-cancelar {
+            background: transparent; border: 1px solid #d43f6b; color: #d43f6b; padding: 0.6rem 1.8rem; border-radius: 3rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .modal-actions .btn-cancelar:hover { background: #d43f6b; color: #fff; }
         .modal-actions .btn-guardar {
-            background: #d43f6b;
-            border: none;
-            color: #fff;
-            padding: 0.6rem 2rem;
-            border-radius: 3rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.2s;
-            box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
+            background: #d43f6b; border: none; color: #fff; padding: 0.6rem 2rem; border-radius: 3rem; font-weight: 700; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(212, 63, 107, 0.3);
         }
-        .modal-actions .btn-guardar:hover {
-            background: #b83a61;
-            transform: translateY(-2px);
-        }
+        .modal-actions .btn-guardar:hover { background: #b83a61; transform: translateY(-2px); }
 
-        /* Responsive */
         @media (max-width: 768px) {
             .sidebar { width: 200px; }
             .main-content { padding: 1rem; }
             .product-grid { grid-template-columns: 1fr; }
+            .top-bar-actions { align-items: flex-start; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-group.full-width { grid-column: span 1; }
         }
         @media (max-width: 600px) {
             .sidebar { display: none; }
@@ -465,7 +503,6 @@
     </style>
 </head>
 <body>
-    <!-- SIDEBAR -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <h2>Mattel<span>UCAB</span></h2>
@@ -482,311 +519,402 @@
         </nav>
     </aside>
 
-    <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
         <div class="top-bar">
             <div class="welcome">
                 <h1>Bienvenido al Sistema MattelUCAB</h1>
             </div>
-            <div class="date">
-                <i class="fas fa-calendar-alt"></i>
-                <span id="fechaActual"></span>
+            <div class="top-bar-actions">
+                <div class="status-date-row">
+                    <div id="dbStatusBadge" class="connection-status checking" onclick="verificarConexionBD(true)">
+                        <i class="fas fa-circle-notch fa-spin"></i> Validando BD...
+                    </div>
+                    <div class="date">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="fechaActual"></span>
+                    </div>
+                </div>
+                <button class="btn-nuevo" id="btnDiseñarProducto">
+                    <i class="fas fa-drafting-compass"></i> Diseñar nuevo producto
+                </button>
             </div>
         </div>
 
         <div class="section-title">
-            <h2>Gestión de Productos</h2>
-            <p>Catálogo completo de productos Barbie</p>
+            <h2>Gestión de Diseños de Productos</h2>
+            <p>Catálogo conectado a la tabla técnica: <strong>diseño_producto</strong></p>
         </div>
 
-        <!-- Métricas (ajustadas a los nuevos campos) -->
         <div class="metric-grid">
             <div class="metric-card">
-                <div class="label">Total Productos</div>
+                <div class="label">Total Diseños Real</div>
                 <div class="value" id="totalProductos">0</div>
-                <div class="sub">en catálogo</div>
+                <div class="sub">en diseño_producto</div>
             </div>
             <div class="metric-card">
-                <div class="label">Eras</div>
-                <div class="value" id="totalEras">0</div>
-                <div class="sub">diferentes</div>
+                <div class="label">Precio Promedio</div>
+                <div class="value" id="precioPromedio">$0.00</div>
+                <div class="sub">valor inicial</div>
             </div>
             <div class="metric-card">
-                <div class="label">Rarezas</div>
-                <div class="value" id="totalRarezas">0</div>
-                <div class="sub">en stock</div>
+                <div class="label">Peso Vol. Máx</div>
+                <div class="value" id="maxPeso">0 kg</div>
+                <div class="sub">empaque registrado</div>
             </div>
             <div class="metric-card">
-                <div class="label">Estados</div>
-                <div class="value" id="totalEstados">0</div>
-                <div class="sub">variados</div>
+                <div class="label">Materiales Usados</div>
+                <div class="value" id="totalMateriales">0</div>
+                <div class="sub">tipos en diseños</div>
             </div>
         </div>
 
-        <!-- Barra de búsqueda -->
         <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar por SKU, nombre, era, rareza..." />
+            <input type="text" id="searchInput" placeholder="Buscar por nombre comercial, descripción o manual..." />
         </div>
 
-        <!-- Contenedor de tarjetas de productos -->
-        <div class="product-grid" id="productGrid">
-            <!-- Se llena con JavaScript -->
-        </div>
-
-        <!-- Botón Nuevo Producto (rosa) -->
-        <button class="btn-nuevo" id="btnNuevoProducto">
-            <i class="fas fa-plus-circle"></i> Nuevo Producto
-        </button>
+        <div class="product-grid" id="productGrid"></div>
     </main>
 
-    <!-- ===== MODAL PARA VER DETALLES ===== -->
     <div class="modal-overlay" id="modalVer">
         <div class="modal">
             <div class="modal-header">
-                <h2 id="modalVerTitulo">Detalles del Producto</h2>
+                <h2 id="modalVerTitulo">Detalles del Diseño</h2>
                 <button class="modal-close" id="btnCerrarVer">&times;</button>
             </div>
-            <div class="modal-body" id="modalVerBody">
-                <!-- Se llena con JS -->
-            </div>
+            <div class="modal-body" id="modalVerBody"></div>
             <div class="modal-actions">
-                <button class="btn-cancelar" id="btnCerrarVer2">Cerrar</button>
+                <button class="btn-cancelar" id="btnCerrarVer2">Cerrar Detalle</button>
             </div>
         </div>
     </div>
 
-    <!-- ===== MODAL PARA EDITAR ===== -->
-    <div class="modal-overlay" id="modalEditar">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>Editar Producto</h2>
-                <button class="modal-close" id="btnCerrarEditar">&times;</button>
-            </div>
-            <form id="formEditarProducto">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="editSKU">SKU (Código)</label>
-                        <input type="text" id="editSKU" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="editNombre">Nombre</label>
-                        <input type="text" id="editNombre" required />
-                    </div>
-                    <div class="form-group">
-                        <label for="editEra">Era</label>
-                        <input type="text" id="editEra" required placeholder="ej. Moderna, Clásica" />
-                    </div>
-                    <div class="form-group">
-                        <label for="editRareza">Rareza</label>
-                        <input type="text" id="editRareza" required placeholder="ej. Común, Rara, Épica" />
-                    </div>
-                    <div class="form-group">
-                        <label for="editEstado">Estado</label>
-                        <select id="editEstado">
-                            <option value="Disponible">Disponible</option>
-                            <option value="Agotado">Agotado</option>
-                            <option value="Pendiente">Pendiente</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-cancelar" id="btnCancelarEditar">Cancelar</button>
-                    <button type="submit" class="btn-guardar">Guardar cambios</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ===== MODAL PARA AÑADIR NUEVO PRODUCTO ===== -->
     <div class="modal-overlay" id="modalNuevo">
         <div class="modal">
             <div class="modal-header">
-                <h2>Nuevo Producto</h2>
+                <h2>Diseñar Nuevo Producto</h2>
                 <button class="modal-close" id="btnCerrarNuevo">&times;</button>
             </div>
             <form id="formNuevoProducto">
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="nuevoSKU">SKU (Código)</label>
-                        <input type="text" id="nuevoSKU" required placeholder="ej. BRB-XX-999" />
+                <div class="modal-body form-grid">
+                    
+                    <div class="form-group full-width">
+                        <label for="dp_nombre_comercial">Nombre comercial (dp_nombre_comercial) *</label>
+                        <input type="text" id="dp_nombre_comercial" required placeholder="ej. Barbie Star Wars Colección Especial 2026" />
                     </div>
-                    <div class="form-group">
-                        <label for="nuevoNombre">Nombre</label>
-                        <input type="text" id="nuevoNombre" required placeholder="ej. Barbie Extra #10" />
+
+                    <div class="form-group full-width">
+                        <label for="dp_descripcion">Descripción (dp_descripcion) *</label>
+                        <textarea id="dp_descripcion" required placeholder="Detalles de la estética, acabados, ropa y empaque del prototipo..."></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label for="nuevoEra">Era</label>
-                        <input type="text" id="nuevoEra" required placeholder="ej. Moderna" />
+                        <label for="dp_fecha_lanzamiento">Fecha de lanzamiento (dp_fecha_lanzamiento) *</label>
+                        <input type="date" id="dp_fecha_lanzamiento" required />
                     </div>
+
                     <div class="form-group">
-                        <label for="nuevoRareza">Rareza</label>
-                        <input type="text" id="nuevoRareza" required placeholder="ej. Épica" />
+                        <label for="dp_precio_inicial">Precio estimado (dp_precio_inicial) *</label>
+                        <input type="number" step="0.01" id="dp_precio_inicial" required placeholder="ej. 49.99" />
                     </div>
+
+                    <div class="form-group full-width">
+                        <label for="dp_manual_instrucciones">Manual de instrucciones / URL (dp_manual_instrucciones)</label>
+                        <input type="text" id="dp_manual_instrucciones" placeholder="ej. https://mattel.com/manuals/barbie-sw.pdf" />
+                    </div>
+
                     <div class="form-group">
-                        <label for="nuevoEstado">Estado</label>
-                        <select id="nuevoEstado">
-                            <option value="Disponible">Disponible</option>
-                            <option value="Agotado">Agotado</option>
-                            <option value="Pendiente">Pendiente</option>
-                        </select>
+                        <label for="dp_ancho_cm">Ancho en cm (dp_ancho_cm) *</label>
+                        <input type="number" step="0.1" id="dp_ancho_cm" required placeholder="ej. 15.5" />
                     </div>
+
+                    <div class="form-group">
+                        <label for="dp_largo_cm">Largo en cm (dp_largo_cm) *</label>
+                        <input type="number" step="0.1" id="dp_largo_cm" required placeholder="ej. 32.0" />
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="dp_peso_volumetrico">Peso volumétrico (dp_peso_volumetrico) *</label>
+                        <input type="number" step="0.01" id="dp_peso_volumetrico" required placeholder="ej. 1.45" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="material_m_id">Material (material_m_id) *</label>
+                        <div class="select-wrapper">
+                            <select id="material_m_id" required>
+                                <option value="">-- Seleccione Material --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="m_descripcion_visual">Descripción del Material (m_descripcion)</label>
+                        <textarea id="m_descripcion_visual" disabled placeholder="Se autocompletará según el material seleccionado..."></textarea>
+                    </div>
+
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancelar" id="btnCancelarNuevo">Cancelar</button>
-                    <button type="submit" class="btn-guardar">Agregar Producto</button>
+                    <button type="submit" class="btn-guardar"><i class="fas fa-save"></i> Guardar Diseño</button>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // ======================== DATOS DE EJEMPLO (nuevos campos) ========================
-        let productos = [
-            { id: 1, sku: "BRB-FH-142", nombre: "Barbie Fashionista #142", era: "Moderna", rareza: "Común", estado: "Disponible" },
-            { id: 2, sku: "BRB-DH-001", nombre: "Barbie Dreamhouse", era: "Clásica", rareza: "Rara", estado: "Disponible" },
-            { id: 3, sku: "BRB-CR-009", nombre: "Barbie Color Reveal", era: "Moderna", rareza: "Épica", estado: "Agotado" },
-            { id: 4, sku: "BRB-EF-021", nombre: "Barbie Extra Fancy", era: "Contemporánea", rareza: "Rara", estado: "Disponible" },
-            { id: 5, sku: "BRB-MH-003", nombre: "Barbie Malibú House", era: "Clásica", rareza: "Común", estado: "Pendiente" }
-        ];
+        // ======================== CONFIGURACIÓN DE SUPABASE ========================
+        const SUPABASE_URL = 'https://qrigbgqpcwchaykaqrnr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFyaWdiZ3FwY3djaGF5a2Fxcm5yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk2NTY0NjEsImV4cCI6MjA5NTIzMjQ2MX0.tbKXha7EyxDK48dbcwgoI9tFvf1juqCNhCzQHH46D7w';
 
-        let productoActual = null;  // Para edición
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // ======================== FUNCIONES DE RENDERIZADO ========================
+        let diseños = [];
+        let listaMateriales = []; 
+
+        // ======================== VERIFICAR CONEXIÓN BD ========================
+        async function verificarConexionBD(manual = false) {
+            const badge = document.getElementById('dbStatusBadge');
+            badge.className = "connection-status checking";
+            badge.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Validando BD...`;
+
+            try {
+                const { error } = await _supabase.from('diseño_producto').select('dp_id').limit(1);
+                if (error) throw error;
+
+                badge.className = "connection-status connected";
+                badge.innerHTML = `<i class="fas fa-check-circle"></i> Conectado a BD`;
+                
+                if (manual) {
+                    Swal.fire({
+                        title: '¡Conexión Exitosa!',
+                        text: 'El panel está sincronizado y respondiendo correctamente a Supabase.',
+                        icon: 'success',
+                        confirmButtonColor: '#b13e61'
+                    });
+                }
+            } catch (err) {
+                console.error("Error de conexión:", err);
+                badge.className = "connection-status disconnected";
+                badge.innerHTML = `<i class="fas fa-times-circle"></i> Desconectado`;
+                
+                if (manual) {
+                    Swal.fire({
+                        title: 'Error de Conexión',
+                        text: `No se pudo conectar a la base de datos. Detalle: ${err.message}`,
+                        icon: 'error',
+                        confirmButtonColor: '#b13e61'
+                    });
+                }
+            }
+        }
+
+        // ======================== CARGAR MATERIALES ========================
+        async function cargarMateriales() {
+            try {
+                const { data, error } = await _supabase
+                    .from('material')
+                    .select('m_id, m_nombre, m_descripcion');
+
+                if (error) throw error;
+                listaMateriales = data || [];
+                
+                const selectMaterial = document.getElementById('material_m_id');
+                selectMaterial.innerHTML = '<option value="">-- Seleccione Material --</option>';
+                
+                listaMateriales.forEach(mat => {
+                    const opt = document.createElement('option');
+                    opt.value = mat.m_id;
+                    opt.textContent = mat.m_nombre;
+                    selectMaterial.appendChild(opt);
+                });
+            } catch (err) {
+                console.error("Error al cargar materiales de Supabase, usando respaldo local:", err);
+                listaMateriales = [
+                    { m_id: 1, m_nombre: "Plástico ABS Inyectado", m_descripcion: "Polímero de alta resistencia al impacto y rigidez estructural, ideal para figuras coleccionables." },
+                    { m_id: 2, m_nombre: "Vinilo Suave (PVC)", m_descripcion: "Plástico moldeable de tacto blando y flexible utilizado para las cabezas y extremidades de las muñecas." },
+                    { m_id: 3, m_nombre: "Poliéster Premium", m_descripcion: "Fibra textil sintética de alta durabilidad para vestidos y accesorios cosidos a mano." }
+                ];
+                
+                const selectMaterial = document.getElementById('material_m_id');
+                listaMateriales.forEach(mat => {
+                    const opt = document.createElement('option');
+                    opt.value = mat.m_id;
+                    opt.textContent = mat.m_nombre;
+                    selectMaterial.appendChild(opt);
+                });
+            }
+        }
+
+        document.getElementById('material_m_id').addEventListener('change', function() {
+            const idSeleccionado = parseInt(this.value);
+            const txtDescripcionMaterial = document.getElementById('m_descripcion_visual');
+            
+            const materialEncontrado = listaMateriales.find(m => m.m_id === idSeleccionado);
+            if (materialEncontrado) {
+                txtDescripcionMaterial.value = materialEncontrado.m_descripcion || "Sin descripción cargada.";
+            } else {
+                txtDescripcionMaterial.value = "";
+            }
+        });
+
+        // ======================== CARGAR DISEÑOS ========================
+        async function cargarDiseñosDesdeBD() {
+            try {
+                const { data, error } = await _supabase
+                    .from('diseño_producto')
+                    .select('*, material(m_nombre, m_descripcion)')
+                    .order('dp_id', { ascending: true });
+
+                if (error) throw error;
+                diseños = data || [];
+                
+                renderizarProductos();
+                actualizarMetricas();
+            } catch (error) {
+                console.error('Error al traer los datos de diseño_producto, usando contingencia local:', error);
+                diseños = [
+                    { 
+                        dp_id: 1, 
+                        dp_nombre_comercial: "Barbie Glitz & Glamour 2026", 
+                        dp_descripcion: "Edición especial con vestido de lentejuelas brillantes y zapatos de cristal de resina.", 
+                        dp_fecha_lanzamiento: "2026-11-20", 
+                        dp_precio_inicial: 34.99, 
+                        dp_manual_instrucciones: "https://mattel.ucab/manuals/glitz-glam.pdf", 
+                        dp_ancho_cm: 14.0, 
+                        dp_largo_cm: 32.5, 
+                        dp_peso_volumetrico: 1.20,
+                        material_m_id: 2,
+                        material: { m_nombre: "Vinilo Suave (PVC)", m_descripcion: "Plástico moldeable de tacto blando y flexible utilizado para las cabezas y extremidades de las muñecas." }
+                    },
+                    { 
+                        dp_id: 2, 
+                        dp_nombre_comercial: "Ken Piloto de Carreras Extremo", 
+                        dp_descripcion: "Prototipo articulado equipado con traje antiflama sintético y casco de plástico reforzado.", 
+                        dp_fecha_lanzamiento: "2026-08-15", 
+                        dp_precio_inicial: 29.99, 
+                        dp_manual_instrucciones: "Manual físico incluido en empaque", 
+                        dp_ancho_cm: 16.0, 
+                        dp_largo_cm: 33.0, 
+                        dp_peso_volumetrico: 1.50,
+                        material_m_id: 1,
+                        material: { m_nombre: "Plástico ABS Inyectado", m_descripcion: "Polímero de alta resistencia al impacto y rigidez estructural, ideal para figuras coleccionables." }
+                    }
+                ];
+                renderizarProductos();
+                actualizarMetricas();
+            }
+        }
+
+        // ======================== RENDERIZAR TARJETAS ========================
         function renderizarProductos(filtro = '') {
             const grid = document.getElementById('productGrid');
             const filtroLower = filtro.toLowerCase();
-            const filtrados = productos.filter(p =>
-                p.sku.toLowerCase().includes(filtroLower) ||
-                p.nombre.toLowerCase().includes(filtroLower) ||
-                p.era.toLowerCase().includes(filtroLower) ||
-                p.rareza.toLowerCase().includes(filtroLower) ||
-                p.estado.toLowerCase().includes(filtroLower)
+            
+            const filtrados = diseños.filter(d =>
+                String(d.dp_nombre_comercial).toLowerCase().includes(filtroLower) ||
+                String(d.dp_descripcion).toLowerCase().includes(filtroLower) ||
+                (d.material && String(d.material.m_nombre).toLowerCase().includes(filtroLower))
             );
 
             if (filtrados.length === 0) {
-                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#a8637c; padding:2rem;">No se encontraron productos.</div>`;
+                grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; color:#a8637c; padding:2rem;">No hay diseños de productos registrados o que coincidan con la búsqueda.</div>`;
                 return;
             }
 
-            grid.innerHTML = filtrados.map(p => `
-                <div class="product-card" data-id="${p.id}">
+            grid.innerHTML = filtrados.map(d => `
+                <div class="product-card" id="producto-card-${d.dp_id}">
                     <div class="product-header">
-                        <h3>${p.nombre}</h3>
-                        <span class="sku">${p.sku}</span>
+                        <h3>${d.dp_nombre_comercial}</h3>
+                        <span class="precio">$${parseFloat(d.dp_precio_inicial).toFixed(2)}</span>
                     </div>
-                    <div class="era">🗓️ Era: ${p.era}</div>
-                    <div class="rareza">⭐ Rareza: ${p.rareza}</div>
-                    <span class="estado ${p.estado.toLowerCase()}">${p.estado}</span>
+                    <p class="descripcion-corta">${d.dp_descripcion}</p>
+                    <div class="detalles-tecnicos">🗓️ Lanzamiento: ${d.dp_fecha_lanzamiento}</div>
+                    <div class="detalles-tecnicos">🛠️ Material: ${d.material ? d.material.m_nombre : 'ID: ' + d.material_m_id}</div>
+                    <div class="detalles-tecnicos">📐 Medidas: ${d.dp_largo_cm}cm x ${d.dp_ancho_cm}cm</div>
                     <div class="acciones">
-                        <button class="btn-ver" data-id="${p.id}">Ver</button>
-                        <button class="btn-editar" data-id="${p.id}">Editar</button>
+                        <button class="btn-ver" data-id="${d.dp_id}"><i class="fas fa-eye"></i> Ver Detalles</button>
+                        <button class="btn-eliminar" data-id="${d.dp_id}"><i class="fas fa-trash"></i> Eliminar</button>
                     </div>
                 </div>
             `).join('');
 
-            // Eventos
+            // Listeners para ver detalles
             document.querySelectorAll('.btn-ver').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const id = parseInt(this.getAttribute('data-id'));
-                    abrirVer(id);
+                    abrirVer(parseInt(this.getAttribute('data-id')));
                 });
             });
-            document.querySelectorAll('.btn-editar').forEach(btn => {
+
+            // Listeners para eliminar producto
+            document.querySelectorAll('.btn-eliminar').forEach(btn => {
                 btn.addEventListener('click', function() {
-                    const id = parseInt(this.getAttribute('data-id'));
-                    abrirEditar(id);
+                    eliminarProductoBD(parseInt(this.getAttribute('data-id')));
                 });
             });
         }
 
         // ======================== ACTUALIZAR MÉTRICAS ========================
         function actualizarMetricas() {
-            const total = productos.length;
-            const eras = new Set(productos.map(p => p.era));
-            const rarezas = new Set(productos.map(p => p.rareza));
-            const estados = new Set(productos.map(p => p.estado));
-
+            const total = diseños.length;
             document.getElementById('totalProductos').textContent = total;
-            document.getElementById('totalEras').textContent = eras.size;
-            document.getElementById('totalRarezas').textContent = rarezas.size;
-            document.getElementById('totalEstados').textContent = estados.size;
+
+            if (total > 0) {
+                const sumaPrecios = diseños.reduce((acc, curr) => acc + parseFloat(curr.dp_precio_inicial || 0), 0);
+                document.getElementById('precioPromedio').textContent = `$${(sumaPrecios / total).toFixed(2)}`;
+
+                const maxP = Math.max(...diseños.map(d => d.dp_peso_volumetrico || 0));
+                document.getElementById('maxPeso').textContent = `${maxP.toFixed(2)} kg`;
+
+                const materialesUnicos = new Set(diseños.map(d => d.material_m_id));
+                document.getElementById('totalMateriales').textContent = materialesUnicos.size;
+            } else {
+                document.getElementById('precioPromedio').textContent = "$0.00";
+                document.getElementById('maxPeso').textContent = "0 kg";
+                document.getElementById('totalMateriales').textContent = "0";
+            }
         }
 
         // ======================== MODAL VER DETALLES ========================
         function abrirVer(id) {
-    const producto = productos.find(p => p.id === id);
-    if (!producto) return;
-    productoActual = producto;
+            const diseño = diseños.find(d => d.dp_id === id);
+            if (!diseño) return;
 
-    document.getElementById('modalVerTitulo').textContent = producto.nombre;
-    const body = document.getElementById('modalVerBody');
-    body.innerHTML = `
-        <div class="detail-item"><span class="label">SKU</span><span class="value">${producto.sku}</span></div>
-        <div class="detail-item"><span class="label">Nombre</span><span class="value">${producto.nombre}</span></div>
-        <div class="detail-item"><span class="label">Era</span><span class="value">${producto.era}</span></div>
-        <div class="detail-item"><span class="label">Rareza</span><span class="value">${producto.rareza}</span></div>
-        <div class="detail-item"><span class="label">Estado</span><span class="value">${producto.estado}</span></div>
-    `;
-    document.getElementById('modalVer').classList.add('mostrar');
-    document.body.style.overflow = 'hidden';
-}
+            document.getElementById('modalVerTitulo').textContent = diseño.dp_nombre_comercial;
+            
+            const matCache = listaMateriales.find(m => m.m_id === diseño.material_m_id);
+            const nombreMat = diseño.material ? diseño.material.m_nombre : (matCache ? matCache.m_nombre : 'No especificado');
+            const descMat = diseño.material ? diseño.material.m_descripcion : (matCache ? matCache.m_descripcion : 'Sin descripción disponible');
+
+            const body = document.getElementById('modalVerBody');
+            body.innerHTML = `
+                <div class="detail-item"><span class="label">ID del Prototipo (dp_id):</span><span class="value">#${diseño.dp_id}</span></div>
+                <div class="detail-item"><span class="label">1. Nombre comercial:</span><span class="value"><strong>${diseño.dp_nombre_comercial}</strong></span></div>
+                <div class="detail-item"><span class="label">2. Descripción:</span><span class="value">${diseño.dp_descripcion}</span></div>
+                <div class="detail-item"><span class="label">3. Fecha lanzamiento:</span><span class="value">${diseño.dp_fecha_lanzamiento}</span></div>
+                <div class="detail-item"><span class="label">4. Precio inicial:</span><span class="value" style="color:#d43f6b; font-weight:700;">$${parseFloat(diseño.dp_precio_inicial).toFixed(2)}</span></div>
+                <div class="detail-item"><span class="label">5. Manual / Enlace:</span><span class="value" style="font-size:0.8rem; font-family:monospace;">${diseño.dp_manual_instrucciones || 'Ninguno'}</span></div>
+                <div class="detail-item"><span class="label">6. Ancho del artículo:</span><span class="value">${diseño.dp_ancho_cm} cm</span></div>
+                <div class="detail-item"><span class="label">7. Largo del artículo:</span><span class="value">${diseño.dp_largo_cm} cm</span></div>
+                <div class="detail-item"><span class="label">8. Peso volumétrico:</span><span class="value">${diseño.dp_peso_volumetrico} kg</span></div>
+                <div class="detail-item"><span class="label">9. Material (ID Guardado):</span><span class="value"><strong>${nombreMat}</strong> (ID: ${diseño.material_m_id})</span></div>
+                <div class="detail-item" style="border:none; background:#fff5f7; padding:0.8rem; border-radius:0.8rem; margin-top:0.5rem; flex-direction:column; align-items:flex-start;">
+                    <span class="label" style="width:100%; margin-bottom:0.2rem;">10. Descripción técnica del material:</span>
+                    <span class="value" style="width:100%; text-align:left; color:#555; font-style:italic;">${descMat}</span>
+                </div>
+            `;
+            
+            document.getElementById('modalVer').classList.add('mostrar');
+            document.body.style.overflow = 'hidden';
+        }
 
         function cerrarVer() {
             document.getElementById('modalVer').classList.remove('mostrar');
             document.body.style.overflow = '';
         }
 
-        // ======================== MODAL EDITAR ========================
-        function abrirEditar(id) {
-            const producto = productos.find(p => p.id === id);
-            if (!producto) return;
-            productoActual = producto;
-
-            document.getElementById('editSKU').value = producto.sku;
-            document.getElementById('editNombre').value = producto.nombre;
-            document.getElementById('editEra').value = producto.era;
-            document.getElementById('editRareza').value = producto.rareza;
-            document.getElementById('editEstado').value = producto.estado;
-
-            document.getElementById('modalEditar').classList.add('mostrar');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function cerrarEditar() {
-            document.getElementById('modalEditar').classList.remove('mostrar');
-            document.body.style.overflow = '';
-        }
-
-        // ======================== MANEJAR EDICIÓN ========================
-        document.getElementById('formEditarProducto').addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (!productoActual) return;
-
-            const sku = document.getElementById('editSKU').value.trim();
-            const nombre = document.getElementById('editNombre').value.trim();
-            const era = document.getElementById('editEra').value.trim();
-            const rareza = document.getElementById('editRareza').value.trim();
-            const estado = document.getElementById('editEstado').value;
-
-            if (!sku || !nombre || !era || !rareza) {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-
-            const index = productos.findIndex(p => p.id === productoActual.id);
-            if (index !== -1) {
-                productos[index] = { ...productos[index], sku, nombre, era, rareza, estado };
-            }
-
-            cerrarEditar();
-            renderizarProductos(document.getElementById('searchInput').value);
-            actualizarMetricas();
-            alert('✅ Producto actualizado correctamente.');
-        });
-
-        // ======================== MODAL NUEVO PRODUCTO ========================
+        // ======================== MODAL NUEVO ========================
         function abrirNuevo() {
             document.getElementById('formNuevoProducto').reset();
+            document.getElementById('m_descripcion_visual').value = ""; 
             document.getElementById('modalNuevo').classList.add('mostrar');
             document.body.style.overflow = 'hidden';
         }
@@ -796,72 +924,134 @@
             document.body.style.overflow = '';
         }
 
-        document.getElementById('btnNuevoProducto').addEventListener('click', abrirNuevo);
+        document.getElementById('formNuevoProducto').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const nuevoDiseño = {
+                dp_nombre_comercial: document.getElementById('dp_nombre_comercial').value.trim(),
+                dp_descripcion: document.getElementById('dp_descripcion').value.trim(),
+                dp_fecha_lanzamiento: document.getElementById('dp_fecha_lanzamiento').value,
+                dp_precio_inicial: parseFloat(document.getElementById('dp_precio_inicial').value),
+                dp_manual_instrucciones: document.getElementById('dp_manual_instrucciones').value.trim() || null,
+                dp_ancho_cm: parseFloat(document.getElementById('dp_ancho_cm').value),
+                dp_largo_cm: parseFloat(document.getElementById('dp_largo_cm').value),
+                dp_peso_volumetrico: parseFloat(document.getElementById('dp_peso_volumetrico').value),
+                material_m_id: parseInt(document.getElementById('material_m_id').value)
+            };
+
+            try {
+                const { error } = await _supabase
+                    .from('diseño_producto')
+                    .insert([nuevoDiseño]);
+
+                if (error) throw error;
+
+                cerrarNuevo();
+                Swal.fire('¡Prototipo Guardado!', 'El nuevo diseño de producto se insertó con éxito en Supabase.', 'success');
+                cargarDiseñosDesdeBD();
+            } catch (error) {
+                console.error("Error al insertar:", error);
+                const artificialId = diseños.length > 0 ? Math.max(...diseños.map(d => d.dp_id)) + 1 : 1;
+                const cacheMat = listaMateriales.find(m => m.m_id === nuevoDiseño.material_m_id);
+                
+                diseños.push({ 
+                    dp_id: artificialId, 
+                    ...nuevoDiseño,
+                    material: cacheMat ? { m_nombre: cacheMat.m_nombre, m_descripcion: cacheMat.m_descripcion } : null
+                });
+                
+                cerrarNuevo();
+                renderizarProductos();
+                actualizarMetricas();
+                Swal.fire('Guardado Local', 'Se guardó en la memoria volátil del navegador debido a fallas de red.', 'warning');
+            }
+        });
+
+        // ======================== ELIMINAR PRODUCTO ========================
+        async function eliminarProductoBD(id) {
+            const diseño = diseños.find(d => d.dp_id === id);
+            if (!diseño) return;
+
+            // Mensaje de confirmación SweetAlert2
+            const resultadoConfirmacion = await Swal.fire({
+                title: '¿Estás seguro de eliminar este diseño?',
+                text: `Se borrará definitivamente "${diseño.dp_nombre_comercial}" del sistema.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'Cancelar'
+            });
+
+            // Si se confirma la acción
+            if (resultadoConfirmacion.isConfirmed) {
+                try {
+                    // Ejecución del DELETE en Supabase
+                    const { error } = await _supabase
+                        .from('diseño_producto')
+                        .delete()
+                        .eq('dp_id', id);
+
+                    if (error) throw error;
+
+                    // Remover del arreglo global en memoria local
+                    diseños = diseños.filter(d => d.dp_id !== id);
+                    
+                    // Refrescar tarjetas visuales y contadores de métricas
+                    renderizarProductos(document.getElementById('searchInput').value);
+                    actualizarMetricas();
+
+                    Swal.fire(
+                        '¡Eliminado!',
+                        'El registro ha sido removido con éxito de Supabase.',
+                        'success'
+                    );
+
+                } catch (error) {
+                    console.error("Error al eliminar de Supabase:", error);
+                    
+                    // Respaldo de contingencia local
+                    diseños = diseños.filter(d => d.dp_id !== id);
+                    renderizarProductos(document.getElementById('searchInput').value);
+                    actualizarMetricas();
+
+                    Swal.fire(
+                        'Eliminado Localmente',
+                        'Debido a fallas de conexión, el producto se removió de la vista actual, pero no pudo sincronizarse en el servidor.',
+                        'warning'
+                    );
+                }
+            }
+        }
+
+        // ======================== EVENTOS GENERALES ========================
+        document.getElementById('btnDiseñarProducto').addEventListener('click', abrirNuevo);
         document.getElementById('btnCerrarNuevo').addEventListener('click', cerrarNuevo);
         document.getElementById('btnCancelarNuevo').addEventListener('click', cerrarNuevo);
-        document.getElementById('modalNuevo').addEventListener('click', function(e) {
-            if (e.target === this) cerrarNuevo();
-        });
-
-        document.getElementById('formNuevoProducto').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const sku = document.getElementById('nuevoSKU').value.trim();
-            const nombre = document.getElementById('nuevoNombre').value.trim();
-            const era = document.getElementById('nuevoEra').value.trim();
-            const rareza = document.getElementById('nuevoRareza').value.trim();
-            const estado = document.getElementById('nuevoEstado').value;
-
-            if (!sku || !nombre || !era || !rareza) {
-                alert('Por favor, completa todos los campos.');
-                return;
-            }
-
-            // Verificar SKU duplicado
-            if (productos.some(p => p.sku.toLowerCase() === sku.toLowerCase())) {
-                alert('⚠️ Ya existe un producto con ese SKU.');
-                return;
-            }
-
-            const nuevoId = productos.length > 0 ? Math.max(...productos.map(p => p.id)) + 1 : 1;
-            const nuevoProducto = { id: nuevoId, sku, nombre, era, rareza, estado };
-            productos.push(nuevoProducto);
-
-            cerrarNuevo();
-            renderizarProductos(document.getElementById('searchInput').value);
-            actualizarMetricas();
-            alert('✅ Producto agregado correctamente.');
-        });
-
-        // ======================== EVENTOS DE CIERRE DE MODALES ========================
-        // Cerrar modal Ver
         document.getElementById('btnCerrarVer').addEventListener('click', cerrarVer);
         document.getElementById('btnCerrarVer2').addEventListener('click', cerrarVer);
-        document.getElementById('modalVer').addEventListener('click', function(e) {
-            if (e.target === this) cerrarVer();
+
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    cerrarVer();
+                    cerrarNuevo();
+                }
+            });
         });
 
-        // Cerrar modal Editar
-        document.getElementById('btnCerrarEditar').addEventListener('click', cerrarEditar);
-        document.getElementById('btnCancelarEditar').addEventListener('click', cerrarEditar);
-        document.getElementById('modalEditar').addEventListener('click', function(e) {
-            if (e.target === this) cerrarEditar();
-        });
-
-        // Cerrar con tecla ESC (todos los modales)
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                if (document.getElementById('modalVer').classList.contains('mostrar')) cerrarVer();
-                if (document.getElementById('modalEditar').classList.contains('mostrar')) cerrarEditar();
-                if (document.getElementById('modalNuevo').classList.contains('mostrar')) cerrarNuevo();
+                cerrarVer();
+                cerrarNuevo();
             }
         });
 
-        // ======================== BÚSQUEDA ========================
         document.getElementById('searchInput').addEventListener('input', function() {
             renderizarProductos(this.value);
         });
 
-        // ======================== FECHA ACTUAL ========================
         function mostrarFecha() {
             const hoy = new Date();
             const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -869,11 +1059,13 @@
             fecha = fecha.charAt(0).toUpperCase() + fecha.slice(1);
             document.getElementById('fechaActual').textContent = fecha;
         }
-        mostrarFecha();
 
-        // ======================== INICIALIZAR ========================
-        renderizarProductos();
-        actualizarMetricas();
+        // ======================== INICIALIZACIÓN ========================
+        mostrarFecha();
+        verificarConexionBD();
+        cargarMateriales().then(() => {
+            cargarDiseñosDesdeBD();
+        });
     </script>
 </body>
 </html>
